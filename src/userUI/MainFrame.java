@@ -6,7 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import userUI.information.myColors;
+import userUI.information.Mycolors;
+import userUI.subFrames.Playerpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,25 +48,26 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel pnl_Player = new JPanel();
-		pnl_Player.setPreferredSize(new Dimension(0,this.getSize().height/10));
+		JPanel pnl_Player = new Playerpanel();
+		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
-		pnl_Player.setBackground(myColors.openGray);
+		pnl_Player.setBackground(Mycolors.openGray);
 		
 		JPanel pnl_Center = new JPanel();
 		contentPane.add(pnl_Center, BorderLayout.CENTER);
 		pnl_Center.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane spnl_Selection = new JScrollPane();
-		spnl_Selection.setPreferredSize(new Dimension(this.getSize().width/8,0));
+		spnl_Selection.setPreferredSize(new Dimension(100,0));
 		pnl_Center.add(spnl_Selection, BorderLayout.WEST);
 		
 		JScrollPane spnl_Songs = new JScrollPane();
 		pnl_Center.add(spnl_Songs, BorderLayout.CENTER);
 		
 		JPanel pnl_Selection = new JPanel();
-		pnl_Selection.setPreferredSize(new Dimension(this.getSize().width/6,0));
+		pnl_Selection.setPreferredSize(new Dimension(133,0));
 		spnl_Selection.setPreferredSize(pnl_Selection.getPreferredSize());
+		pnl_Selection.setBackground(Mycolors.openGray);
 		spnl_Selection.add(pnl_Selection);
 		//pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		
