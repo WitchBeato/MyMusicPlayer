@@ -5,7 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import userUI.information.myColors;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
@@ -34,6 +38,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setTitle("MymusicPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 510);
 		contentPane = new JPanel();
@@ -45,6 +50,7 @@ public class MainFrame extends JFrame {
 		JPanel pnl_Player = new JPanel();
 		pnl_Player.setPreferredSize(new Dimension(0,this.getSize().height/10));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
+		pnl_Player.setBackground(myColors.openGray);
 		
 		JPanel pnl_Center = new JPanel();
 		contentPane.add(pnl_Center, BorderLayout.CENTER);
@@ -59,11 +65,14 @@ public class MainFrame extends JFrame {
 		
 		JPanel pnl_Selection = new JPanel();
 		pnl_Selection.setPreferredSize(new Dimension(this.getSize().width/6,0));
+		spnl_Selection.setPreferredSize(pnl_Selection.getPreferredSize());
 		spnl_Selection.add(pnl_Selection);
 		//pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		
 		JPanel pnl_Songs = new JPanel();
 		spnl_Songs.add(pnl_Songs);
+		spnl_Songs.setViewportView(pnl_Songs);
+		spnl_Selection.setViewportView(pnl_Selection);
 		//pnl_Center.add(pnl_Songs, BorderLayout.CENTER);
 	}
 
