@@ -12,8 +12,14 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import backend.Photoeditor;
+import directories.Imagedtr;
+
 import javax.swing.JProgressBar;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Playerpanel extends JPanel {
 
@@ -37,7 +43,8 @@ public class Playerpanel extends JPanel {
 		SpringLayout sl_pnl_Prev = new SpringLayout();
 		pnl_Prev.setLayout(sl_pnl_Prev);
 		
-		JButton btn_Prev = new JButton("New button");
+		JButton btn_Prev = new JButton("");
+		btn_Prev.setIcon(Photoeditor.photoScaleImage(Imagedtr.prev, 10, 50));
 		sl_pnl_Prev.putConstraint(SpringLayout.NORTH, btn_Prev, 10, SpringLayout.NORTH, pnl_Prev);
 		sl_pnl_Prev.putConstraint(SpringLayout.WEST, btn_Prev, 10, SpringLayout.WEST, pnl_Prev);
 		sl_pnl_Prev.putConstraint(SpringLayout.SOUTH, btn_Prev, -10, SpringLayout.SOUTH, pnl_Prev);
@@ -48,7 +55,12 @@ public class Playerpanel extends JPanel {
 		pnl_Buttons.add(pnl_Stop);
 		pnl_Stop.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_Stop = new JButton("stopico");
+		JButton btn_Stop = new JButton("");
+		btn_Stop.setIcon(Photoeditor.photoScaleImage(Imagedtr.stop, 30, 51));
+		btn_Stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		pnl_Stop.add(btn_Stop, BorderLayout.CENTER);
 		
 		JPanel pnl_Onward = new JPanel();
@@ -56,7 +68,8 @@ public class Playerpanel extends JPanel {
 		SpringLayout sl_pnl_Onward = new SpringLayout();
 		pnl_Onward.setLayout(sl_pnl_Onward);
 		
-		JButton btn_Onward = new JButton("New button");
+		JButton btn_Onward = new JButton("");
+		btn_Onward.setIcon(Photoeditor.photoScaleImage(Imagedtr.onward, 10, 50));
 		sl_pnl_Onward.putConstraint(SpringLayout.NORTH, btn_Onward, 10, SpringLayout.NORTH, pnl_Onward);
 		sl_pnl_Onward.putConstraint(SpringLayout.WEST, btn_Onward, 10, SpringLayout.WEST, pnl_Onward);
 		sl_pnl_Onward.putConstraint(SpringLayout.SOUTH, btn_Onward, -10, SpringLayout.SOUTH, pnl_Onward);
@@ -92,7 +105,9 @@ public class Playerpanel extends JPanel {
 		pnl_East.add(pnl_Soundicon, BorderLayout.EAST);
 		pnl_Soundicon.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_Soundicon = new JButton("New button");
+		JButton btn_Soundicon = new JButton("");
+		btn_Soundicon.setIcon(Photoeditor.photoScaleImage(Imagedtr.sound, 45, 51));
+		
 		pnl_Soundicon.add(btn_Soundicon, BorderLayout.CENTER);
 		
 		JPanel pnl_Timeline = new JPanel();
