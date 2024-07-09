@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	private Boolean show = true;
 	/**
 	 * Launch the application.
 	 */
@@ -47,7 +47,6 @@ public class MainFrame extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
 		JPanel pnl_Player = new Playerpanel(this.contentPane);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
@@ -71,7 +70,7 @@ public class MainFrame extends JFrame {
 		spnl_Selection.add(pnl_Selection);
 		//pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		
-		JPanel pnl_Songs = new JPanel();
+		JPanel pnl_Songs =  new JPanel();
 		spnl_Songs.add(pnl_Songs);
 		spnl_Songs.setViewportView(pnl_Songs);
 		spnl_Selection.setViewportView(pnl_Selection);
