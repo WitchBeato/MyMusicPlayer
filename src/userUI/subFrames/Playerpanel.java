@@ -1,6 +1,8 @@
 package userUI.subFrames;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -8,6 +10,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -27,10 +30,31 @@ public class Playerpanel extends JPanel {
 	private JPanel pnl_Buttons;
 	private JPanel pnl_Time;
 	private JPanel pnl_Soundicon;
+	private JButton btn_Soundicon;
 	/**
 	 * Create the panel.
 	 */
 	public Playerpanel() {
+		initiliaze();
+	}
+	public Playerpanel(JPanel father) {
+		initiliaze();
+		btn_Soundicon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Soundpanel soundpanel = new Soundpanel(btn_Soundicon);
+				soundpanel.setSize(new Dimension(393,85));
+				JPopupMenu menu = new JPopupMenu();
+				menu.setPopupSize(soundpanel.getSize());
+				menu.add(soundpanel);
+				menu.setSize(new Dimension(soundpanel.getWidth(),soundpanel.getHeight()));
+				menu.show(father, father.getWidth()-soundpanel.getWidth()/2,
+						father.getHeight()-btn_Soundicon.getPreferredSize().height
+						-soundpanel.getHeight());
+			}
+		});
+
+	}
+	private void initiliaze() {
 		setLayout(new BorderLayout(0, 0));
 		setSize(510,51);
 		pnl_Buttons = new JPanel();
@@ -85,27 +109,27 @@ public class Playerpanel extends JPanel {
 		pnl_East.add(pnl_Time, BorderLayout.WEST);
 		pnl_Time.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("00:00");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		pnl_Time.add(lblNewLabel);
+		JLabel lbl_Currenttime = new JLabel("00:00");
+		lbl_Currenttime.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_Currenttime.setFont(new Font("Tahoma", Font.PLAIN, 6));
+		pnl_Time.add(lbl_Currenttime);
 		
 		JLabel lbl_Slash = new JLabel("/");
 		lbl_Slash.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Slash.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		pnl_Time.add(lbl_Slash);
 		
-		JLabel lblNewLabel_1 = new JLabel("00:00");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		pnl_Time.add(lblNewLabel_1);
+		JLabel lbl_Fulltime = new JLabel("00:00");
+		lbl_Fulltime.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_Fulltime.setFont(new Font("Tahoma", Font.PLAIN, 6));
+		pnl_Time.add(lbl_Fulltime);
 		
 		pnl_Soundicon = new JPanel();
 		pnl_Soundicon.setPreferredSize(new Dimension(50,0));
 		pnl_East.add(pnl_Soundicon, BorderLayout.EAST);
 		pnl_Soundicon.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_Soundicon = new JButton("");
+		btn_Soundicon = new JButton("");
 		btn_Soundicon.setIcon(Photoeditor.photoScaleImage(Imagedtr.sound, 45, 51));
 		
 		pnl_Soundicon.add(btn_Soundicon, BorderLayout.CENTER);
@@ -115,13 +139,12 @@ public class Playerpanel extends JPanel {
 		SpringLayout sl_pnl_Timeline = new SpringLayout();
 		pnl_Timeline.setLayout(sl_pnl_Timeline);
 		
-		JProgressBar progressBar_1 = new JProgressBar();
-		sl_pnl_Timeline.putConstraint(SpringLayout.NORTH, progressBar_1, 10, SpringLayout.NORTH, pnl_Timeline);
-		sl_pnl_Timeline.putConstraint(SpringLayout.WEST, progressBar_1, 20, SpringLayout.WEST, pnl_Timeline);
-		sl_pnl_Timeline.putConstraint(SpringLayout.SOUTH, progressBar_1, 41, SpringLayout.NORTH, pnl_Timeline);
-		sl_pnl_Timeline.putConstraint(SpringLayout.EAST, progressBar_1, 0, SpringLayout.EAST, pnl_Timeline);
-		progressBar_1.setForeground(new Color(102, 0, 153));
-		pnl_Timeline.add(progressBar_1);
-
+		JProgressBar pb_Time = new JProgressBar();
+		sl_pnl_Timeline.putConstraint(SpringLayout.NORTH, pb_Time, 10, SpringLayout.NORTH, pnl_Timeline);
+		sl_pnl_Timeline.putConstraint(SpringLayout.WEST, pb_Time, 20, SpringLayout.WEST, pnl_Timeline);
+		sl_pnl_Timeline.putConstraint(SpringLayout.SOUTH, pb_Time, 41, SpringLayout.NORTH, pnl_Timeline);
+		sl_pnl_Timeline.putConstraint(SpringLayout.EAST, pb_Time, 0, SpringLayout.EAST, pnl_Timeline);
+		pb_Time.setForeground(new Color(102, 0, 153));
+		pnl_Timeline.add(pb_Time);
 	}
 }

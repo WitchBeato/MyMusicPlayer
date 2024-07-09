@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel pnl_Player = new Playerpanel();
+		JPanel pnl_Player = new Playerpanel(this.contentPane);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
 		pnl_Player.setBackground(Mycolors.openGray);
