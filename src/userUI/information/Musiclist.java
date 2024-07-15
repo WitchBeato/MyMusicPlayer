@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class Musiclist {
 	private Integer id;
+	private Boolean nullIDExist;
 	private String name;
 	private String logo;
 	private ArrayList<String> directorylist = new ArrayList<>();
 	private ArrayList<Musicinfo> musiclist = new ArrayList<>();
-	Musiclist(int id, String name, String logo){
+	public Musiclist(int id, String name, String logo){
 		setID(id);
 		setName(name);
 		setLogo(logo);
@@ -43,5 +44,11 @@ public class Musiclist {
 	}
 	public void addMusic(Musicinfo music) {
 		musiclist.add(music);
+	}
+	public Boolean getNullIDExist() {
+		return nullIDExist;
+	}
+	public void setNullIDExist(Boolean nullIDExist) {
+		this.nullIDExist = nullIDExist;
 	}
 }
