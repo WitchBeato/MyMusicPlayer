@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import userUI.information.Mycolors;
 import userUI.subFrames.Playerpanel;
+import userUI.subFrames.Playlistpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,6 +48,7 @@ public class MainFrame extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+
 		JPanel pnl_Player = new Playerpanel(this.contentPane);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
@@ -56,25 +58,21 @@ public class MainFrame extends JFrame {
 		contentPane.add(pnl_Center, BorderLayout.CENTER);
 		pnl_Center.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane spnl_Selection = new JScrollPane();
-		spnl_Selection.setPreferredSize(new Dimension(100,0));
-		pnl_Center.add(spnl_Selection, BorderLayout.WEST);
+
 		
 		JScrollPane spnl_Songs = new JScrollPane();
 		pnl_Center.add(spnl_Songs, BorderLayout.CENTER);
 		
-		JPanel pnl_Selection = new JPanel();
+		JPanel pnl_Selection = new Playlistpanel();
 		pnl_Selection.setPreferredSize(new Dimension(133,0));
-		spnl_Selection.setPreferredSize(pnl_Selection.getPreferredSize());
 		pnl_Selection.setBackground(Mycolors.openGray);
-		spnl_Selection.add(pnl_Selection);
-		//pnl_Center.add(pnl_Selection, BorderLayout.WEST);
+		pnl_Center.add(pnl_Selection, BorderLayout.WEST);
+		pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		
 		JPanel pnl_Songs =  new JPanel();
 		spnl_Songs.add(pnl_Songs);
 		spnl_Songs.setViewportView(pnl_Songs);
-		spnl_Selection.setViewportView(pnl_Selection);
-		//pnl_Center.add(pnl_Songs, BorderLayout.CENTER);
+		pnl_Center.add(pnl_Songs, BorderLayout.CENTER);
 	}
 
 }

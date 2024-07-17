@@ -1,6 +1,7 @@
 package userUI.information;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Musiclist {
 	private Integer id;
@@ -8,7 +9,7 @@ public class Musiclist {
 	private String name;
 	private String logo;
 	private ArrayList<String> directorylist = new ArrayList<>();
-	private ArrayList<Musicinfo> musiclist = new ArrayList<>();
+	private ArrayList<Playlist> musiclist = new ArrayList<>();
 	public Musiclist(int id, String name, String logo){
 		setID(id);
 		setName(name);
@@ -39,16 +40,41 @@ public class Musiclist {
 	public void removeDirectorylist(String directory) {
 		directorylist.remove(directory);
 	}
-	public ArrayList<Musicinfo> getMusic() {
-		return musiclist;
+	public ArrayList<String> getDirectorylist(){
+		if(directorylist.size() == 0) return getStringlist();
+		return directorylist;
 	}
-	public void addMusic(Musicinfo music) {
-		musiclist.add(music);
+	public String getDirectory(int id){
+		return directorylist.get(id);
 	}
+	
 	public Boolean getNullIDExist() {
 		return nullIDExist;
 	}
 	public void setNullIDExist(Boolean nullIDExist) {
 		this.nullIDExist = nullIDExist;
+	}
+	public ArrayList<Playlist> getMusiclist() {
+		return musiclist;
+	}
+	public void setMusiclist(ArrayList<Playlist> musiclist) {
+		this.musiclist = musiclist;
+	}
+	private ArrayList<String> getStringlist(){
+		ArrayList<String> stringlist = new ArrayList<>();
+		for (int i = 0; i<musiclist.size(); i++) {
+			String string = musiclist.get(i).toString();
+			stringlist.add(string);
+		}
+		return stringlist;
+	}
+	public void addPlaylist(String name) {
+		if(directorylist.size()>0) {
+			System.out.println("directorylist var");
+			return;
+		}
+		int newID = (musiclist.size()>0) ? musiclist.getLast().getId()+1 : 0;
+		Playlist playlist = new Playlist(name, newID);
+		musiclist.add(playlist);
 	}
 }
