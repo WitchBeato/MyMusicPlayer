@@ -7,19 +7,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import userUI.information.Mycolors;
+import userUI.information.PlayerMessages;
+import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private Boolean show = true;
+	private JPanel contentPane, pnl_Songs;
 	/**
 	 * Launch the application.
 	 */
@@ -69,10 +69,15 @@ public class MainFrame extends JFrame {
 		pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		pnl_Center.add(pnl_Selection, BorderLayout.WEST);
 		
-		JPanel pnl_Songs =  new JPanel();
-		spnl_Songs.add(pnl_Songs);
-		spnl_Songs.setViewportView(pnl_Songs);
+		pnl_Songs =  new JPanel();
 		pnl_Center.add(pnl_Songs, BorderLayout.CENTER);
+		pnl_Songs.setLayout(new BorderLayout(0, 0));
+		PlayerError playererror = new PlayerError(PlayerMessages.noChoice);
+		panelChange(playererror);
+	}
+	private void panelChange(JPanel panel) {
+		pnl_Songs.removeAll();
+		pnl_Songs.add(panel,BorderLayout.CENTER);
 	}
 
 }
