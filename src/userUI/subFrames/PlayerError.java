@@ -15,6 +15,7 @@ import javax.swing.SpringLayout;
 public class PlayerError extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	public static Font universal = new Font("Yu Gothic UI", Font.PLAIN, 25);
 	private JLabel lbl_Entry, lbl_Text;
 	private JPanel pnl_North;
 	/**

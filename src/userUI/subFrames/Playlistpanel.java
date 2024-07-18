@@ -2,6 +2,7 @@ package userUI.subFrames;
 
 import javax.swing.JPanel;
 
+import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
 import userUI.information.Mycolors;
@@ -34,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 public class Playlistpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private MainFrame parent = null;
 	private Musiclist[] musiclist = new Musiclist[2];
 	private AtomicInteger  chosedID = new AtomicInteger();
 	private JPanel pnl_List;
@@ -41,7 +43,14 @@ public class Playlistpanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	public Playlistpanel(MainFrame parent) {
+		this.parent = parent;
+		init();
+	}
 	public Playlistpanel() {
+		init();
+	}
+	private void init() {
 		setLayout(new BorderLayout(0, 0));
 		initiliazeList();
 		chosedID.set(-1);
@@ -120,10 +129,10 @@ public class Playlistpanel extends JPanel {
 		for (int i = 0; i < stringlist.size(); i++) {
 			Submenu menu = null;
 			if(chosedID.get() == 0) {
-				 menu = new Submenu(list[chosedID.get()].getDirectory(i),null,new ImageIcon(Imagedtr.folder));
+				 menu = new Submenu(list[chosedID.get()].getDirectory(i),null,parent);
 			}
 			else {
-				 menu = new Submenu(null,list[chosedID.get()].getMusiclist().get(i),new ImageIcon(Imagedtr.playlist));
+				 menu = new Submenu(null,list[chosedID.get()].getMusiclist().get(i),parent);
 			}
 			menu.setPreferredSize(size);
 			menu.setBackground(Mycolors.openGray);

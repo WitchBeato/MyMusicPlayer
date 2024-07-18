@@ -24,20 +24,13 @@ public class Soundpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	//this panel do change sound when music playing
-	private String dtr;
-	JLabel lbl_Photo;
+	private JButton btn_Sound;
+	private JLabel lbl_Photo;
+	private String prevDirect = null;
 	public Soundpanel(JButton btn_Sound) {
 
 		initiliazer();
-		lbl_Photo.addPropertyChangeListener(new PropertyChangeListener() {	
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if(evt.getPropertyName().equals("icon") && dtr != null) {
-					btn_Sound.setIcon(Photoeditor.photoScaleImage(dtr,
-							btn_Sound.getSize().width, btn_Sound.getSize().width));
-				}
-			}
-		});
+		this.btn_Sound = btn_Sound;
 		lbl_Photo.setIcon(Photoeditor.photoScaleImage(Imagedtr.sound,
 				btn_Sound.getPreferredSize().width, btn_Sound.getPreferredSize().height));
 	}
@@ -67,12 +60,14 @@ public class Soundpanel extends JPanel {
 		sl_pnl_Soundsetter.putConstraint(SpringLayout.NORTH, sld_Sound, 10, SpringLayout.NORTH, pnl_Soundsetter);
 		sl_pnl_Soundsetter.putConstraint(SpringLayout.SOUTH, sld_Sound, -10, SpringLayout.SOUTH, pnl_Soundsetter);
 		pnl_Soundsetter.add(sld_Sound);
+		
 		sld_Sound.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				setSoundPhoto(sld_Sound.getValue());
 			}
 		});
 	}
+	//this method set the soundphoto for pop-up as the level of the sound for immersion
 	private void setSoundPhoto(int value) {
 		int low = 20, medium = 50, high = 80;
 		String dtr = null;
@@ -92,9 +87,13 @@ public class Soundpanel extends JPanel {
 		else {
 			dtr = Imagedtr.soundlvl3;
 		}
-		this.dtr = dtr;
-		lbl_Photo.setIcon(Photoeditor.photoScaleImage(dtr,
-				lbl_Photo.getPreferredSize().width, 
-				this.getHeight()));
+		if(!dtr.equals(prevDirect)) {
+			lbl_Photo.setIcon(Photoeditor.photoScaleImage(dtr,			
+					lbl_Photo.getPreferredSize().width, 
+					lbl_Photo.getIcon().getIconHeight()));
+			btn_Sound.setIcon(Photoeditor.photoScaleImage(dtr, btn_Sound.getIcon().getIconHeight()
+					, btn_Sound.getIcon().getIconHeight()));
+			prevDirect = dtr;
+		}
 	}
 }
