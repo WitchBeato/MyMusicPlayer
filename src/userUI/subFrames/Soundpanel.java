@@ -64,6 +64,7 @@ public class Soundpanel extends JPanel {
 		sld_Sound.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				setSoundPhoto(sld_Sound.getValue());
+				sld_Sound.repaint();
 			}
 		});
 	}
