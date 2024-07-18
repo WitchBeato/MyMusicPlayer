@@ -76,10 +76,13 @@ public class MainFrame extends JFrame {
 		pnl_Songs.setLayout(new BorderLayout(0, 0));
 		PlayerError playererror = new PlayerError(PlayerMessages.noChoice);
 		panelChange(playererror);
+		PlayerError player2 = new PlayerError(PlayerMessages.playlistNoFile);
+		panelChange(player2);
 	}
 	public void panelChange(JPanel panel) {
 		pnl_Songs.removeAll();
 		pnl_Songs.add(panel,BorderLayout.CENTER);
+
 	}
 
 }

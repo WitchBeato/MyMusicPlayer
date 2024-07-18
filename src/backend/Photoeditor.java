@@ -8,6 +8,8 @@ import java.awt.Window.Type;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -31,4 +33,5 @@ public class Photoeditor {
 		Image newImage =  photoScale(directory, widht, height);
 		return new ImageIcon(newImage);
 	}
+
 }

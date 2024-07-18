@@ -6,6 +6,7 @@ import userUI.information.Playlist;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -48,7 +49,23 @@ public class Musicpanel extends JPanel {
 		pnl_Settings.setPreferredSize(new Dimension(60,0));
 		pnl_North.add(pnl_Settings, BorderLayout.EAST);
 		
-		lbl_Text = new JLabel("Title");
+		lbl_Text = new JLabel("Title") {
+			@Override
+			public void setText(String text) {
+				super.setText(text);
+				if(lbl_Text == null) return;
+				Font font = lbl_Text.getFont();
+				text = text.replaceAll("\\\\", "/");
+				if(text.length() > 15) {
+					lbl_Text.setFont(new Font(font.getName(),font.getStyle(),font.getSize()-10));
+					text = "<html>"+text+"</html>";
+				}
+				else {
+					lbl_Text.setFont(PlayerError.universal);
+				}
+				super.setText(text);
+			}
+		};
 		lbl_Text.setFont(PlayerError.universal);
 		pnl_North.add(lbl_Text, BorderLayout.CENTER);
 		
