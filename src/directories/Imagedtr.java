@@ -11,4 +11,6 @@ public class Imagedtr {
 			prev = local+"prev.png", onward = local+"onward.png";
 	static public String arrowup = local+"arrowup.png",arrowdown = local+"arrowdown.png";
 	static public String folder = local+"folder.png", playlist = local+"playlist.png";
+	static public String cancel = local+"cancel.png", musicIcon = local+"Musicicon.png",
+			threeDot = local+"threedot.png", playbutton = local+"play-button.png";
 }

@@ -4,13 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Musicinfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String directory;
 	private String name;
 	private String singer;
 	private String date;
 	private int time;
-	Musicinfo(int id, String directory){
+	public Musicinfo(int id, String directory){
 		String substring = directory.length() > 4 ? directory.substring(directory.length() - 4) : directory;
 		if(!substring.equals(".mp3")) return;
 		this.id = id;
