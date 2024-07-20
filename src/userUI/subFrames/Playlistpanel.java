@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import backend.Photoeditor;
 import directories.Imagedtr;
 
 import java.awt.Font;
@@ -61,10 +62,11 @@ public class Playlistpanel extends JPanel {
 		add(pnl_Logo, BorderLayout.NORTH);
 		pnl_Logo.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lbl_Logo = new JLabel("Logo");
+		JLabel lbl_Logo = new JLabel("");
 		lbl_Logo.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Logo.setPreferredSize(new Dimension(50,pnl_Logo.getPreferredSize().height));
 		pnl_Logo.add(lbl_Logo, BorderLayout.CENTER);
+		lbl_Logo.setIcon(Photoeditor.photoScaleImage(Imagedtr.logo, lbl_Logo.getPreferredSize().height, lbl_Logo.getPreferredSize().height));
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.CENTER);
