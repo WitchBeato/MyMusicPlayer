@@ -124,6 +124,7 @@ public class SelectTitle extends JPanel {
 		lbl_Title.setText(title.getName());
 	}
 	public void setButtonsVisible(Boolean buttonsVisible) {
+		if(isDirectory == null) return;
 		if(!isDirectory) btn_Delete.setVisible(buttonsVisible);
 		btn_Play.setVisible(buttonsVisible);
 		btn_Property.setVisible(buttonsVisible);

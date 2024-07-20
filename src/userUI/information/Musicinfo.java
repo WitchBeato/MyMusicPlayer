@@ -18,7 +18,7 @@ public class Musicinfo implements Serializable{
 	private int time;
 	public Musicinfo(int id, String directory){
 		String substring = directory.length() > 4 ? directory.substring(directory.length() - 4) : directory;
-		if(!substring.equals(".mp3")) return;
+		//if(!substring.equals(".mp3")) return;
 		this.id = id;
 		setDirectory(directory);
 	}
