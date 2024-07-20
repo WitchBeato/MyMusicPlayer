@@ -24,11 +24,11 @@ public class SelectTitle extends JPanel {
 	private Musicinfo title;
 	private Boolean isDirectory;
 	private Mybutton btn_Play, btn_Property, btn_Delete;
+	private JLabel lbl_Title;
 	public SelectTitle(Musicinfo info, Boolean isDirectory) {
-		setTitle(info);
 		this.isDirectory = isDirectory;
 		init();
-
+		setTitle(info);
 	}
 	public SelectTitle() {
 		init();
@@ -63,7 +63,7 @@ public class SelectTitle extends JPanel {
 		JPanel pnl_Title = new JPanel();
 		add(pnl_Title,BorderLayout.CENTER);
 		pnl_Title.setLayout(new BorderLayout(0, 0));
-		JLabel lbl_Title = new JLabel("text");
+		lbl_Title = new JLabel("text");
 		lbl_Title.setOpaque(false);
 		lbl_Title.setFont(new Font("Tahoma", Font.BOLD, 12));
 		pnl_Title.add(lbl_Title, BorderLayout.CENTER);
@@ -121,6 +121,7 @@ public class SelectTitle extends JPanel {
 	}
 	public void setTitle(Musicinfo title) {
 		this.title = title;
+		lbl_Title.setText(title.getName());
 	}
 	public void setButtonsVisible(Boolean buttonsVisible) {
 		if(!isDirectory) btn_Delete.setVisible(buttonsVisible);
