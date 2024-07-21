@@ -2,7 +2,7 @@ package backend;
 
 public class StringEditor {
 	//it found last iteratives of letter according to qualitive
-	private static int[] lastCharLocation(String text, char letter, int qualitive) {
+	public static int[] lastCharLocation(String text, char letter, int qualitive) {
 		int[] location = new int[2];
 		int counter = 0;
 		for (int i = text.length()-1; i > 0; i--) {

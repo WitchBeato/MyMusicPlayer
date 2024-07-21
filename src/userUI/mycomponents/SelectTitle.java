@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
 
+import backend.MusicPlayer;
 import backend.Photoeditor;
 import directories.Imagedtr;
 import userUI.information.Musicinfo;
@@ -47,6 +48,15 @@ public class SelectTitle extends JPanel {
 		lpnl_Photo.setLayout(null);
 		
 		JLabel lbl_Photo = new JLabel("");
+		lbl_Photo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if(e.getClickCount() == 2) {
+					playMusic(title.getDirectory());
+				}
+			}
+		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Photo.setBounds(0, 0, 133,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
@@ -99,6 +109,10 @@ public class SelectTitle extends JPanel {
 			public void mouseEntered(MouseEvent e) {
 				mouseEnterGlob();
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				playMusic(title.getDirectory());
+			}
 		});
 		btn_Delete.addMouseListener(new MouseAdapter() {
 			@Override
@@ -134,5 +148,7 @@ public class SelectTitle extends JPanel {
 	}
 	private void mouseEnterGlob() {
 		setButtonsVisible(true);
+	}
+	private void playMusic(String directory) {
 	}
 }

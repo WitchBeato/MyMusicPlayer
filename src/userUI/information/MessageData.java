@@ -1,5 +1,6 @@
 package userUI.information;
 
+
 public class MessageData{
 	private String title;
 	private String text;
