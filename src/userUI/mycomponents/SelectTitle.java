@@ -58,6 +58,16 @@ public class SelectTitle extends JPanel {
 					playMusic(title.getDirectory());
 				}
 			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				mouseEnterGlob();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseExited(e);
+				mouseLeaveGlob();
+			}
 		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Photo.setBounds(0, 0, 133,95);
