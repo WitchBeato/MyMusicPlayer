@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import backend.MusicPlayer;
 import backend.Photoeditor;
 import directories.Imagedtr;
 
@@ -27,31 +28,19 @@ import java.awt.event.ActionEvent;
 public class Playerpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel pnl_Buttons;
-	private JPanel pnl_Time;
-	private JPanel pnl_Soundicon;
+	private JPanel pnl_Buttons, pnl_Time, pnl_Soundicon;
 	private JButton btn_Soundicon;
+	private MusicPlayer player;
 	/**
 	 * Create the panel.
 	 */
 	public Playerpanel() {
 		initiliaze();
 	}
-	public Playerpanel(JPanel father) {
+	public Playerpanel(JPanel father, MusicPlayer player) {
 		initiliaze();
-		btn_Soundicon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Soundpanel soundpanel = new Soundpanel(btn_Soundicon);
-				soundpanel.setSize(new Dimension(393,85));
-				JPopupMenu menu = new JPopupMenu();
-				menu.setPopupSize(soundpanel.getSize());
-				menu.add(soundpanel);
-				menu.setSize(new Dimension(soundpanel.getWidth(),soundpanel.getHeight()));
-				menu.show(father, father.getWidth()-soundpanel.getWidth()/2,
-						father.getHeight()-btn_Soundicon.getPreferredSize().height
-						-soundpanel.getHeight());
-			}
-		});
+		globalListeners(father);
+		this.player = player;
 
 	}
 	private void initiliaze() {
@@ -83,6 +72,7 @@ public class Playerpanel extends JPanel {
 		btn_Stop.setIcon(Photoeditor.photoScaleImage(Imagedtr.stop, 30, 51));
 		btn_Stop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				player.playerwait();
 			}
 		});
 		pnl_Stop.add(btn_Stop, BorderLayout.CENTER);
@@ -146,5 +136,20 @@ public class Playerpanel extends JPanel {
 		sl_pnl_Timeline.putConstraint(SpringLayout.EAST, pb_Time, 0, SpringLayout.EAST, pnl_Timeline);
 		pb_Time.setForeground(new Color(102, 0, 153));
 		pnl_Timeline.add(pb_Time);
+	}
+	private void globalListeners(JPanel father) {
+		btn_Soundicon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Soundpanel soundpanel = new Soundpanel(btn_Soundicon);
+				soundpanel.setSize(new Dimension(393,85));
+				JPopupMenu menu = new JPopupMenu();
+				menu.setPopupSize(soundpanel.getSize());
+				menu.add(soundpanel);
+				menu.setSize(new Dimension(soundpanel.getWidth(),soundpanel.getHeight()));
+				menu.show(father, father.getWidth()-soundpanel.getWidth()/2,
+						father.getHeight()-btn_Soundicon.getPreferredSize().height
+						-soundpanel.getHeight());
+			}
+		});
 	}
 }

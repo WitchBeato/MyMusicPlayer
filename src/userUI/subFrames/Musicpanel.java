@@ -20,6 +20,7 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
 
+import backend.MusicPlayer;
 import backend.Photoeditor;
 import directories.Imagedtr;
 
@@ -34,15 +35,18 @@ public class Musicpanel extends JPanel {
 	private Playlist playlist = null;
 	private JLabel lbl_Text;
 	private int column, row;
+	private MusicPlayer player;
 	/**
 	 * Create the panel.
 	 */
-	public Musicpanel(String directory) {
+	public Musicpanel(String directory,MusicPlayer player) {
 		this.directory = directory;
+		this.player = player;
 		init();
 		lbl_Text.setText(directory);
 	}
-	public Musicpanel(Playlist playlist){
+	public Musicpanel(Playlist playlist,MusicPlayer player){
+		this.player = player;
 		this.playlist = playlist;
 		init();
 		lbl_Text.setText(playlist.getName());
@@ -99,7 +103,7 @@ public class Musicpanel extends JPanel {
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
 		
-		ListMusicPanel pnl_Musics = new ListMusicPanel(list,false);
+		ListMusicPanel pnl_Musics = new ListMusicPanel(list,false,player);
 		pnl_Musics.setBackground(new Color(255, 255, 255));
 		pnl_South.add(pnl_Musics);
 		

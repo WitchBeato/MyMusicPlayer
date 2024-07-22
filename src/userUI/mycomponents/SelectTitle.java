@@ -26,8 +26,10 @@ public class SelectTitle extends JPanel {
 	private Boolean isDirectory;
 	private Mybutton btn_Play, btn_Property, btn_Delete;
 	private JLabel lbl_Title;
-	public SelectTitle(Musicinfo info, Boolean isDirectory) {
+	private MusicPlayer musicplayer;
+	public SelectTitle(Musicinfo info, Boolean isDirectory, MusicPlayer musicplayer) {
 		this.isDirectory = isDirectory;
+		this.musicplayer = musicplayer;
 		init();
 		setTitle(info);
 	}
@@ -150,5 +152,6 @@ public class SelectTitle extends JPanel {
 		setButtonsVisible(true);
 	}
 	private void playMusic(String directory) {
+		musicplayer.play(title);
 	}
 }

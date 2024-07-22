@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import backend.MusicPlayer;
 import backend.StringEditor;
 import directories.Imagedtr;
 import userUI.MainFrame;
@@ -32,6 +33,7 @@ public class Submenu extends JPanel {
 	private Playlist list = null;
 	private String directory = null;
 	private MainFrame greatparent;
+	private MusicPlayer player;
 	/**
 	 * Create the panel.
 	 */
@@ -40,6 +42,7 @@ public class Submenu extends JPanel {
 		this.list = list;
 		this.directory = directory;
 		this.greatparent = greatparent;
+		player = greatparent.getPlayer();
 		String name = null;
 		ImageIcon icon = null;
 		if(directory == null) {
@@ -112,8 +115,8 @@ public class Submenu extends JPanel {
 	}
 	private void menuClicked() {
 		Musicpanel mscPanel = (directory == null) ? 
-				new Musicpanel(list) : 
-				new Musicpanel(directory);
+				new Musicpanel(list,player) : 
+				new Musicpanel(directory,player);
 			greatparent.panelChange(mscPanel);
 			mscPanel.revalidate();
 	}

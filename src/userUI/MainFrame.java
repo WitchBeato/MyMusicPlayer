@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import backend.MusicPlayer;
 import userUI.information.Musiclist;
 import userUI.information.Mycolors;
 import userUI.information.PlayerMessages;
@@ -22,6 +23,7 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, pnl_Songs;
+	private MusicPlayer player;
 	/**
 	 * Launch the application.
 	 */
@@ -42,6 +44,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setPlayer(new MusicPlayer());
 		setTitle("MymusicPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 510);
@@ -51,7 +54,7 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		JPanel pnl_Player = new Playerpanel(this.contentPane);
+		JPanel pnl_Player = new Playerpanel(this.contentPane,player);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
 		pnl_Player.setBackground(Mycolors.openGray);
@@ -76,13 +79,19 @@ public class MainFrame extends JFrame {
 		pnl_Songs.setLayout(new BorderLayout(0, 0));
 		PlayerError playererror = new PlayerError(PlayerMessages.noChoice);
 		panelChange(playererror);
-		PlayerError player2 = new PlayerError(PlayerMessages.playlistNoFile);
-		panelChange(player2);
 	}
 	public void panelChange(JPanel panel) {
 		pnl_Songs.removeAll();
 		pnl_Songs.add(panel,BorderLayout.CENTER);
 
+	}
+
+	public MusicPlayer getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(MusicPlayer player) {
+		this.player = player;
 	}
 
 }

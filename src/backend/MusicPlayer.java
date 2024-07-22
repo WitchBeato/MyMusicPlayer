@@ -5,71 +5,48 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ProcessHandle.Info;
-
-import javax.sound.sampled.*;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import javazoom.jl.converter.Converter;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import userUI.information.Musicinfo;
-import userUI.subFrames.PlayerError;
 
 public class MusicPlayer {
-	//it holds old wav file directory, with that we can remove old files.
-	private String oldWav = null;
+	//main Instance of app
 	private Player player = null;
+	private boolean isPlay = false;
+	private MusicplayerRunnable runnable;
 	//it can play the file free from function play files
 	public void play(Musicinfo info) {
 		String directory = info.getDirectory();
-		/*if(oldWav != null) {
-			File f = new File(oldWav);
-			f.delete();
-		}
-		String newDirectory = extensionConverter(directory, ".wav");*/
-		File f = new File(directory);
-		FileInputStream fis = null;
-		try {
-			 fis = new FileInputStream(f);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BufferedInputStream bis = new BufferedInputStream(fis);
-		try {
-			player = new Player(bis);
-		} catch (JavaLayerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		new Thread(){
-			  public void run(){
-					try {
-						player.play();
-					} catch (JavaLayerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			  }
-			}.start();
+		File file = new File(directory);
+		checkPrevious();
+		reset();
+		getInputStream(file);
+		start();
+		reverseisPlay();
 	}
-	private static String extensionConverter(String directory, String newExtension) {
-		int local[] = StringEditor.lastCharLocation(directory, '.', 1);
-		//local[1] give us location of . staring point
-		String newDirectory = directory.substring(0,local[1]) + newExtension;
-		Converter converter = new Converter();
+	public void playerclose() {
+		if(player == null) return;
+		player.close();
+	}
+	public void playerwait() {
+	    if (player == null) return;
+	    if(isPlay)runnable.stopPlayer();
+	    else runnable.continuePlayer();
+	    
+        reverseisPlay();
+	}
+	public void startAt(int time) {
 		try {
-			converter.convert(directory,newDirectory);
+			player.play(time);
 		} catch (JavaLayerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return newDirectory;
 	}
 	//show the file info 
 	public static void fileRead(String Directory) {
@@ -87,5 +64,41 @@ public class MusicPlayer {
 		System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
 		System.out.println("Has custom tag?: " + (mp3file.hasCustomTag() ? "YES" : "NO"));
 	}
+	private void getInputStream(File file) {
+		FileInputStream fis = null;
+		try {
+			 fis = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		try {
+			player = new Player(bis);
+		} catch (JavaLayerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void checkPrevious() {
+		if(player != null) playerclose();
+	}
+	private void start() {
+		runnable = new MusicplayerRunnable(player);
+		Thread thread = new Thread(runnable);
+		thread.start();
+	}
+
+	private void reset() {
+		isPlay = false;
+		//thread = null;
+	}
+	public boolean getisPlay() {
+		return isPlay;
+	}
+	public void reverseisPlay() {
+		this.isPlay = !isPlay;
+	}
+
 }
 
