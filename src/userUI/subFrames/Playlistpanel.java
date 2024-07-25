@@ -110,9 +110,7 @@ public class Playlistpanel extends JPanel {
 	//this method initiliaze menu list of Directories and Playlist
 	private void initiliazeList() {
 		musiclist[0] = new Musiclist(0, "Directories ", null); 
-		musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
 		musiclist[1] = new Musiclist(1, "Playlist       ", null); 
-		musiclist[1].addPlaylist("ahmetkaya");
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {

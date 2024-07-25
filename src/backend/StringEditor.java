@@ -1,5 +1,11 @@
 package backend;
 
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JTree;
+import javax.swing.tree.TreeSelectionModel;
+
 public class StringEditor {
 	//it found last iteratives of letter according to qualitive
 	public static int[] lastCharLocation(String text, char letter, int qualitive) {
@@ -45,4 +51,22 @@ public class StringEditor {
 
        return new String(result);
     }	
+	public static String selectFolder() {
+	    int result;
+        
+	    JFileChooser chooser = new JFileChooser(); 
+	    chooser.setCurrentDirectory(new java.io.File("."));
+	    chooser.setDialogTitle("please select a path");
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    //
+	    // disable the "All files" option.
+	    //
+	    chooser.setAcceptAllFileFilterUsed(false);
+	    result = chooser.showOpenDialog(chooser);
+	    //    
+	    String directory = (result == JFileChooser.APPROVE_OPTION) ? 
+	    		chooser.getSelectedFile().getAbsolutePath() :
+	    		null;	
+	    return directory;
+	}
 }

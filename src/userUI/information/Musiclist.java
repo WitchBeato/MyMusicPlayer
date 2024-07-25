@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Musiclist {
+	//this tell us which type of musiclist
+	public static int DIRECTORY = 0, PLAYLIST = 1;
 	private Integer id;
 	private Boolean nullIDExist;
 	private String name;
