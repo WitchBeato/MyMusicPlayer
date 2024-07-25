@@ -2,6 +2,7 @@ package userUI.subFrames;
 
 import javax.swing.JPanel;
 
+import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.mycomponents.ListMusicPanel;
@@ -35,18 +36,18 @@ public class Musicpanel extends JPanel {
 	private Playlist playlist = null;
 	private JLabel lbl_Text;
 	private int column, row;
-	private MusicPlayer player;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
-	public Musicpanel(String directory,MusicPlayer player) {
+	public Musicpanel(String directory,MainFrame player) {
 		this.directory = directory;
-		this.player = player;
+		this.frame = player;
 		init();
 		lbl_Text.setText(directory);
 	}
-	public Musicpanel(Playlist playlist,MusicPlayer player){
-		this.player = player;
+	public Musicpanel(Playlist playlist,MainFrame player){
+		this.frame = player;
 		this.playlist = playlist;
 		init();
 		lbl_Text.setText(playlist.getName());
@@ -103,7 +104,7 @@ public class Musicpanel extends JPanel {
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
 		
-		ListMusicPanel pnl_Musics = new ListMusicPanel(list,false,player);
+		ListMusicPanel pnl_Musics = new ListMusicPanel(list,false,frame);
 		pnl_Musics.setBackground(new Color(255, 255, 255));
 		pnl_South.add(pnl_Musics);
 		

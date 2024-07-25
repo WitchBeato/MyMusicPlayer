@@ -18,6 +18,14 @@ public class StringEditor {
 		}
 		return location;	
 	}
+	public static String giveTimeinSecond(int second) {
+		int hour = second / 36000;
+		int minute = second / 60  - (hour * 60);
+		second = second % 60;
+		String textHour = (hour != 0) ? hour + ":" : "";
+		String text = textHour + minute + ":" + second;
+		return text;
+	}
 	public static String giveStringforIterative(String text, char letter, int qualitive) {
 		int[] location = lastCharLocation(text, letter, qualitive);
 		String newText = (qualitive != 1) ?

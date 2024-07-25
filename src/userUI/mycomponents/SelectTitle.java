@@ -8,8 +8,11 @@ import javax.swing.SpringLayout;
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
+import backend.StringEditor;
 import directories.Imagedtr;
+import userUI.MainFrame;
 import userUI.information.Musicinfo;
+import userUI.information.Settings;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JButton;
@@ -26,10 +29,10 @@ public class SelectTitle extends JPanel {
 	private Boolean isDirectory;
 	private Mybutton btn_Play, btn_Property, btn_Delete;
 	private JLabel lbl_Title;
-	private MusicPlayer musicplayer;
-	public SelectTitle(Musicinfo info, Boolean isDirectory, MusicPlayer musicplayer) {
+	private MainFrame mainframe;
+	public SelectTitle(Musicinfo info, Boolean isDirectory, MainFrame mainframe) {
 		this.isDirectory = isDirectory;
-		this.musicplayer = musicplayer;
+		this.mainframe = mainframe;
 		init();
 		setTitle(info);
 	}
@@ -162,6 +165,9 @@ public class SelectTitle extends JPanel {
 		setButtonsVisible(true);
 	}
 	private void playMusic(String directory) {
-		musicplayer.play(title);
+		MusicPlayer player = mainframe.getPlayer();
+		player.play(title,0);
+		mainframe.setFullTime(MusicPlayer.giveLenght(directory));
+		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
 	}
 }

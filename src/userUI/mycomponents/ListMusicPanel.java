@@ -3,6 +3,7 @@ package userUI.mycomponents;
 import javax.swing.JPanel;
 
 import backend.MusicPlayer;
+import userUI.MainFrame;
 import userUI.information.Musicinfo;
 
 import java.awt.Dimension;
@@ -19,13 +20,13 @@ public class ListMusicPanel extends JPanel {
 	private int column, row = 1;
 	private ArrayList<Musicinfo> list = null;
 	private boolean isDirectory;
-	private MusicPlayer player;
+	private MainFrame frame;
 	
 	//this panel do when panel resized list music again to fit on size
-	public ListMusicPanel(ArrayList<Musicinfo> list, boolean isDirectory,MusicPlayer player) {
+	public ListMusicPanel(ArrayList<Musicinfo> list, boolean isDirectory,MainFrame mainFrame) {
 		this.list = list;
 		this.isDirectory = isDirectory;
-		this.player = player;
+		this.frame = mainFrame;
 		init();
 		addGlobalListeners();
 		adjustColumnRow(SelectTitle.SELECTSIZE);
@@ -66,7 +67,7 @@ public class ListMusicPanel extends JPanel {
 			for (int j = 0; j < column; j++) {
 				int id = column*i + j;
 				if(id>lastindex) break;
-				SelectTitle title = new SelectTitle(list.get(id),isDirectory,player);
+				SelectTitle title = new SelectTitle(list.get(id),isDirectory,frame);
 				title.setLocation(0, local);
 				me.add(title);
 			}

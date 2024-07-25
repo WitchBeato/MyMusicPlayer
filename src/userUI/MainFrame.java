@@ -3,14 +3,13 @@ package userUI;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import backend.MusicPlayer;
-import userUI.information.Musiclist;
 import userUI.information.Mycolors;
 import userUI.information.PlayerMessages;
-import userUI.subFrames.Musicpanel;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
@@ -24,6 +23,7 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, pnl_Songs;
 	private MusicPlayer player;
+	Playerpanel pnl_Player;
 	/**
 	 * Launch the application.
 	 */
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		JPanel pnl_Player = new Playerpanel(this.contentPane,player);
+		pnl_Player = new Playerpanel(this.contentPane,player);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
 		pnl_Player.setBackground(Mycolors.openGray);
@@ -93,5 +93,7 @@ public class MainFrame extends JFrame {
 	public void setPlayer(MusicPlayer player) {
 		this.player = player;
 	}
-
+	public void setFullTime(int second) {
+		pnl_Player.setFulltime(second);
+	}
 }

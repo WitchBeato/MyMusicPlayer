@@ -115,8 +115,8 @@ public class Submenu extends JPanel {
 	}
 	private void menuClicked() {
 		Musicpanel mscPanel = (directory == null) ? 
-				new Musicpanel(list,player) : 
-				new Musicpanel(directory,player);
+				new Musicpanel(list,greatparent) : 
+				new Musicpanel(directory,greatparent);
 			greatparent.panelChange(mscPanel);
 			mscPanel.revalidate();
 	}
