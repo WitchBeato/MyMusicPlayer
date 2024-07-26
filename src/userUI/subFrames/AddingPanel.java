@@ -21,6 +21,10 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddingPanel extends JFrame {
 
@@ -29,6 +33,7 @@ public class AddingPanel extends JFrame {
 	private JTextField txt_Directory;
 	private Mybutton btn_OK, btn_Cancel, btn_Directory;
 	private Musiclist list;
+	private JPanel Mother;
 	/**
 	 * Launch the application.
 	 */
@@ -48,24 +53,29 @@ public class AddingPanel extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddingPanel(Musiclist list) {
+	public AddingPanel(Musiclist list,JPanel mother) {
 		init();
 		this.list = list;
+		String text;
 		if(list.getId() == Musiclist.PLAYLIST) {
 			txt_Directory.setEnabled(true);
 			btn_Directory.setVisible(false);
+			text = "please enter Playlist name";
 		}
 		else {
 			txt_Directory.setEnabled(false);
 			btn_Directory.setVisible(true);
+			text = "please Choose the Directory";
 		}
+		this.Mother = mother;
+		setTitle(text);
 	}
 	public AddingPanel() {
 		init();
 	}
 	private void init() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 405, 131);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -82,7 +92,7 @@ public class AddingPanel extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_Directory = new JButton("");
+		btn_Directory = new Mybutton("");
 		btn_Directory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String directory = StringEditor.selectFolder();
@@ -109,6 +119,12 @@ public class AddingPanel extends JFrame {
 		contentPane.add(btn_OK);
 		
 		btn_Cancel = new Mybutton("Cancel");
+		btn_Cancel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				close();
+			}
+		});
 		sl_contentPane.putConstraint(SpringLayout.WEST, btn_Cancel, 0, SpringLayout.WEST, panel);
 		sl_contentPane.putConstraint(SpringLayout.EAST, btn_Cancel, 133, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, btn_Cancel, 0, SpringLayout.SOUTH, contentPane);
@@ -119,8 +135,9 @@ public class AddingPanel extends JFrame {
 	private void addName(String text) {
 		if(list == null) return;
 		AddtoMusiclist.addtoMusiclist(list, text);
-		this.getParent().repaint();
+		Mother.getParent().repaint();
 		close();
+
 	}
 	private void close() {
 		this.dispose();

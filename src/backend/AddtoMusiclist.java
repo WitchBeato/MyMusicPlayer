@@ -4,7 +4,7 @@ import userUI.information.Musiclist;
 
 public class AddtoMusiclist {
 	public static void addtoMusiclist(Musiclist musiclist, String text) {
-		if(musiclist.getDirectorylist() == null) addDirectory(musiclist,text);
+		if(musiclist.getId() == Musiclist.DIRECTORY) addDirectory(musiclist,text);
 		else addPlaylist(musiclist, text);
 	}
 	private static void addPlaylist(Musiclist musiclist, String text) {

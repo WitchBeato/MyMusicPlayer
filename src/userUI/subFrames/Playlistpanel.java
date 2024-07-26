@@ -109,15 +109,16 @@ public class Playlistpanel extends JPanel {
 	}
 	//this method initiliaze menu list of Directories and Playlist
 	private void initiliazeList() {
-		musiclist[0] = new Musiclist(0, "Directories ", null); 
-		musiclist[1] = new Musiclist(1, "Playlist       ", null); 
+		musiclist[0] = new Musiclist(0, "Directories", null); 
+		musiclist[1] = new Musiclist(1, "Playlist", null); 
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {
-		Dimension size = new Dimension(120,50);
+		Dimension size = new Dimension(130,70);
 		for (int i = 0; i < musiclist.length; i++) {
 			Mainmenu menu = new Mainmenu(musiclist[i],chosedID,this);
 			menu.setSize(size); 
+			menu.setPreferredSize(size); 
 			menu.setBackground(Mycolors.openGray);
 			panel.add(menu);
 			if(i == chosedID.get()) addSubItems(panel, musiclist,size);
@@ -128,7 +129,7 @@ public class Playlistpanel extends JPanel {
 		ArrayList<String> stringlist = list[chosedID.get()].getDirectorylist();
 		for (int i = 0; i < stringlist.size(); i++) {
 			Submenu menu = null;
-			if(chosedID.get() == 0) {
+			if(chosedID.get() == Musiclist.DIRECTORY) {
 				 menu = new Submenu(list[chosedID.get()].getDirectory(i),null,parent);
 			}
 			else {
@@ -138,6 +139,7 @@ public class Playlistpanel extends JPanel {
 			menu.setBackground(Mycolors.openGray);
 			panel.add(menu);
 		}
+		
 	}
 	@Override
 	public void repaint() {
@@ -156,6 +158,9 @@ public class Playlistpanel extends JPanel {
 		if(btn_Last == null) return;
 		btn_Last.setBackground(bg);
 		pnl_List.setBackground(bg);
+	}
+	public MainFrame getParent() {
+		return parent;
 	}
 
 }

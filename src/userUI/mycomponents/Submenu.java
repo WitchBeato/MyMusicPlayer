@@ -47,11 +47,11 @@ public class Submenu extends JPanel {
 		ImageIcon icon = null;
 		if(directory == null) {
 			name = list.toString();
-			icon = new ImageIcon(Imagedtr.folder);
+			icon = new ImageIcon(Imagedtr.playlist);
 		}
 		else {
 			name = directory;
-			icon = new ImageIcon(Imagedtr.playlist);
+			icon = new ImageIcon(Imagedtr.folder);
 		}
 		lbl_Image.setIcon(icon);
 		lbl_Text.setText(name);
