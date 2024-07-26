@@ -162,5 +162,9 @@ public class Playlistpanel extends JPanel {
 	public MainFrame getParent() {
 		return parent;
 	}
+	public Musiclist getMusiclist(int id) {
+		if(musiclist == null) return null;
+		return musiclist[id];
+	}
 
 }

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import backend.MusicPlayer;
+import userUI.information.Musiclist;
 import userUI.information.Mycolors;
 import userUI.information.PlayerMessages;
 import userUI.subFrames.PlayerError;
@@ -22,8 +23,9 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, pnl_Songs;
+	private Playlistpanel pnl_Selection;
 	private MusicPlayer player;
-	Playerpanel pnl_Player;
+	private Playerpanel pnl_Player;
 	/**
 	 * Launch the application.
 	 */
@@ -68,7 +70,7 @@ public class MainFrame extends JFrame {
 		JScrollPane spnl_Songs = new JScrollPane();
 		pnl_Center.add(spnl_Songs, BorderLayout.CENTER);
 		
-		JPanel pnl_Selection = new Playlistpanel(this);
+		pnl_Selection = new Playlistpanel(this);
 		pnl_Selection.setPreferredSize(new Dimension(133,0));
 		pnl_Selection.setBackground(Mycolors.openGray);
 		pnl_Center.add(pnl_Selection, BorderLayout.WEST);
@@ -95,5 +97,9 @@ public class MainFrame extends JFrame {
 	}
 	public void setFullTime(int second) {
 		pnl_Player.setFulltime(second);
+	}
+	public Musiclist getMusiclist(int id) {
+		if(pnl_Selection == null) return null;
+		return pnl_Selection.getMusiclist(id);
 	}
 }

@@ -3,18 +3,24 @@ package userUI.mycomponents;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import backend.AddtoMusiclist;
 import backend.MusicPlayer;
+import backend.Photoeditor;
 import backend.StringEditor;
 import directories.Imagedtr;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
+import userUI.information.Musiclist;
 import userUI.information.Mycolors;
 import userUI.information.Playlist;
 import userUI.subFrames.Musicpanel;
@@ -24,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
+import javax.swing.JButton;
 
 public class Submenu extends JPanel {
 
@@ -34,6 +41,7 @@ public class Submenu extends JPanel {
 	private String directory = null;
 	private MainFrame greatparent;
 	private MusicPlayer player;
+	private Mybutton btn_Delete;
 	/**
 	 * Create the panel.
 	 */
@@ -61,13 +69,15 @@ public class Submenu extends JPanel {
 		lbl_Text.setText(text);
 	}
 	public Submenu() {
+		setBorder(null);
+		setPreferredSize(new Dimension(131, 72));
 		init();
 	}
 	private void init() {
 		setLayout(new BorderLayout(0, 0));
 		
 		pnl_Image = new JPanel();
-		pnl_Image.setPreferredSize(new Dimension(60,40));
+		pnl_Image.setPreferredSize(new Dimension(40,40));
 		add(pnl_Image, BorderLayout.WEST);
 		pnl_Image.setLayout(new BorderLayout(0, 0));
 		
@@ -86,13 +96,15 @@ public class Submenu extends JPanel {
 			@Override
 			public void setText(String text) {
 				// TODO Auto-generated method stub
-				if(!text.equals("")) {
+				if(!text.equals("") && directory != null) {
 					text = text.replaceAll("\\\\", "/");
 					text = StringEditor.giveStringforIterative(text, '/', 1);
 				}
 				super.setText(text);
 			}
 		};
+		lbl_Text.setBounds(0, 0, 91, 72);
+		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Text.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -101,17 +113,39 @@ public class Submenu extends JPanel {
 		});
 		lbl_Text.setOpaque(true);
 		lbl_Text.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 9));
-		add(lbl_Text, BorderLayout.CENTER);
-		setBackground(Mycolors.openPurple);
+		setBackground(Mycolors.openGray);
+		
+		JLayeredPane pnl_Center = new JLayeredPane();
+		add(pnl_Center, BorderLayout.CENTER);
+		pnl_Center.setLayout(null);
+		pnl_Center.add(lbl_Text,JLayeredPane.DEFAULT_LAYER);
+		
+		btn_Delete = new Mybutton();
+		btn_Delete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				removeClicked();
+			}
+		});
+		btn_Delete.setBounds(62, 0, 33, 27);
+		btn_Delete.setIcon(Photoeditor.photoScaleImage(Imagedtr.remove
+				, btn_Delete.getPreferredSize().width
+				, btn_Delete.getPreferredSize().height+15));
+		pnl_Center.add(btn_Delete,JLayeredPane.DRAG_LAYER);
+		
+		Mybutton btn_Delete_1 = new Mybutton();
+		btn_Delete_1.setBounds(33, 0, 33, 27);
+		pnl_Center.add(btn_Delete_1, JLayeredPane.DRAG_LAYER);
 	}
 	@Override
 	public void setBackground(Color bg) {
 		// TODO Auto-generated method stub
-		if(lbl_Text == null || pnl_Image == null || lbl_Image == null) return;
 		super.setBackground(bg);
+		if(lbl_Text == null || pnl_Image == null || lbl_Image == null || btn_Delete == null) return;
 		lbl_Text.setBackground(bg);
 		pnl_Image.setBackground(bg);
 		lbl_Image.setBackground(bg);
+		btn_Delete.setBackground(bg);
 	}
 	private void menuClicked() {
 		Musicpanel mscPanel = (directory == null) ? 
@@ -119,6 +153,33 @@ public class Submenu extends JPanel {
 				new Musicpanel(directory,greatparent);
 			greatparent.panelChange(mscPanel);
 			mscPanel.revalidate();
+	}
+	private void removeClicked() {
+		if(greatparent == null) return;
+		if(!removeisSure()) return;
+		int ID = getID();
+		Musiclist musiclist = greatparent.getMusiclist(ID);
+		AddtoMusiclist.removefromMusiclist(musiclist, list);
+		removeInside();
+	}
+	private int getID() {
+		if(directory != null) return Musiclist.DIRECTORY;
+		else return Musiclist.PLAYLIST;
+	}
+	private void removeInside() {
+		Container panel = this.getParent();
+		panel.remove(panel);
+		panel.repaint();
+	}
+	private Boolean removeisSure() {
+		int choice = JOptionPane.showConfirmDialog(null, "Do you want to Delete it?", "Confirm", JOptionPane.YES_NO_OPTION);
+		switch (choice) {
+		case JOptionPane.OK_OPTION: {
+			return true;
+		}
+		default:
+			return false;
+		}
 	}
 }
 

@@ -79,4 +79,7 @@ public class Musiclist {
 		Playlist playlist = new Playlist(name, newID);
 		musiclist.add(playlist);
 	}
+	public void removePlaylist(Playlist playlist) {
+		musiclist.remove(playlist);
+	}
 }
