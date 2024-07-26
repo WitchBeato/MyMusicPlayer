@@ -127,15 +127,15 @@ public class Submenu extends JPanel {
 				removeClicked();
 			}
 		});
-		btn_Delete.setBounds(62, 0, 33, 27);
+		btn_Delete.setBounds(58, 0, 33, 27);
 		btn_Delete.setIcon(Photoeditor.photoScaleImage(Imagedtr.remove
 				, btn_Delete.getPreferredSize().width
 				, btn_Delete.getPreferredSize().height+15));
 		pnl_Center.add(btn_Delete,JLayeredPane.DRAG_LAYER);
 		
-		Mybutton btn_Delete_1 = new Mybutton();
-		btn_Delete_1.setBounds(33, 0, 33, 27);
-		pnl_Center.add(btn_Delete_1, JLayeredPane.DRAG_LAYER);
+		Mybutton btn_Add = new Mybutton();
+		btn_Add.setBounds(23, 0, 33, 27);
+		pnl_Center.add(btn_Add, JLayeredPane.DRAG_LAYER);
 	}
 	@Override
 	public void setBackground(Color bg) {

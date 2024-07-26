@@ -8,7 +8,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import backend.AddtoMusiclist;
+import backend.Photoeditor;
 import backend.StringEditor;
+import directories.Imagedtr;
 import userUI.information.Musiclist;
 import userUI.mycomponents.Mybutton;
 
@@ -100,6 +102,9 @@ public class AddingPanel extends JFrame {
 			}
 		});
 		btn_Directory.setPreferredSize(new Dimension(20,30));
+		btn_Directory.setIcon(Photoeditor.photoScaleImage(Imagedtr.folder
+				, btn_Directory.getPreferredSize().width
+				, btn_Directory.getPreferredSize().height));
 		panel.add(btn_Directory, BorderLayout.EAST);
 		
 		txt_Directory = new JTextField();
