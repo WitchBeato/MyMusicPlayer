@@ -9,10 +9,10 @@ import javax.swing.SpringLayout;
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
+import staticinfo.Settings;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
-import userUI.information.Settings;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JButton;

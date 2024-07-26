@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
 import userUI.MainFrame;
 import userUI.mycomponents.PlayerTime;
 

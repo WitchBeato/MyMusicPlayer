@@ -17,11 +17,11 @@ import backend.AddtoMusiclist;
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
+import staticinfo.Mycolors;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
-import userUI.information.Mycolors;
 import userUI.information.Playlist;
 import userUI.subFrames.Musicpanel;
 

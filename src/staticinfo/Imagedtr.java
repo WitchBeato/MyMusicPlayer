@@ -1,4 +1,4 @@
-package directories;
+package staticinfo;
 
 import java.io.File;
 

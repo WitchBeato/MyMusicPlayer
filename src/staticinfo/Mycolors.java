@@ -1,4 +1,4 @@
-package userUI.information;
+package staticinfo;
 
 import java.awt.Color;
 

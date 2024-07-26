@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import backend.MusicPlayer;
+import staticinfo.Mycolors;
+import staticinfo.PlayerMessages;
 import userUI.information.Musiclist;
-import userUI.information.Mycolors;
-import userUI.information.PlayerMessages;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;

@@ -14,9 +14,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
-import directories.Imagedtr;
 import userUI.information.Musiclist;
-import userUI.information.Mycolors;
 import userUI.subFrames.AddingPanel;
 import userUI.subFrames.Playlistpanel;
 
@@ -26,6 +24,9 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
+import staticinfo.Imagedtr;
+import staticinfo.Mycolors;
+
 import javax.swing.SpringLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

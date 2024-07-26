@@ -13,7 +13,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.SpringLayout;
 
 import backend.Photoeditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
 
 import javax.swing.JSeparator;
 import javax.swing.JSlider;

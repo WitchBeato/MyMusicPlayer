@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
-import userUI.information.Mycolors;
 import userUI.mycomponents.Mainmenu;
 import userUI.mycomponents.Submenu;
 
@@ -16,7 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
+import staticinfo.Mycolors;
 
 import java.awt.Font;
 import java.util.ArrayList;

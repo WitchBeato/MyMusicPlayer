@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import backend.AddtoMusiclist;
 import backend.Photoeditor;
 import backend.StringEditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
 import userUI.information.Musiclist;
 import userUI.mycomponents.Mybutton;
 

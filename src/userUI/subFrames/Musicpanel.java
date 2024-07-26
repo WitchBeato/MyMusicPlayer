@@ -23,7 +23,7 @@ import javax.swing.SpringLayout;
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
-import directories.Imagedtr;
+import staticinfo.Imagedtr;
 
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
