@@ -9,6 +9,7 @@ public class Playlist {
 	public Playlist(String name, int id) {
 		this.id = id;
 		this.name = name;
+		list = new ArrayList<>();
 	}
 	@Override
 	public String toString() {

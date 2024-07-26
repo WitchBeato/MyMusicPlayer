@@ -4,21 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import backend.StringEditor;
+import staticinfo.SupportedTypes;
 
 public class Musicinfo implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	//if id is null that will mean i wont added to playlist.
+	private Integer id = null;
 	private String directory;
 	private String name;
 	private String singer;
 	private String date;
 	private int time;
 	public Musicinfo(int id, String directory){
-		String substring = directory.length() > 4 ? directory.substring(directory.length() - 4) : directory;
-		//if(!substring.equals(".mp3")) return;
+		String extension = directory.length() > 4 ? directory.substring(directory.length() - 4) : directory;
+		if(!SupportedTypes.checkType(SupportedTypes.audioExt, extension)) return;
 		this.id = id;
 		setDirectory(directory);
 	}
@@ -32,6 +34,9 @@ public class Musicinfo implements Serializable{
 		
 	}
 	public int getId() {
+		return id;
+	}
+	public Integer getIdInteger() {
 		return id;
 	}
 	public void setId(int id) {

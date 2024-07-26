@@ -23,7 +23,9 @@ import javax.swing.SpringLayout;
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
+import backend.Playlistbackend;
 import staticinfo.Imagedtr;
+import staticinfo.PlayerMessages;
 
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
@@ -58,13 +60,11 @@ public class Musicpanel extends JPanel {
 	private void init() {
 		this.setBounds(0, 0, 667, 469);
 		ArrayList<Musicinfo> list = new ArrayList<>();
-		Musicinfo info1 = new Musicinfo(0,
-				"C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics\\goldenslaughterer.mp3");
-		Musicinfo info2 = new Musicinfo(1,
-				"C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics\\Final.mp3");
-		list.add(info1);
-		list.add(info2);
-		
+		if(directory != null) list = Playlistbackend.Directorytoplaylist(directory).getList(); 
+		else list = playlist.getList();
+		if(list.size() == 0) {
+			frame.panelChange(new PlayerError(PlayerMessages.directoryNoFile));
+		}
 		
 		setLayout(new BorderLayout(0, 0));
 		
