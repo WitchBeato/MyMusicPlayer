@@ -167,9 +167,7 @@ public class Submenu extends JPanel {
 		else return Musiclist.PLAYLIST;
 	}
 	private void removeInside() {
-		Container panel = this.getParent();
-		panel.remove(panel);
-		panel.repaint();
+	     greatparent.playlistRepaint();
 	}
 	private Boolean removeisSure() {
 		int choice = JOptionPane.showConfirmDialog(null, "Do you want to Delete it?", "Confirm", JOptionPane.YES_NO_OPTION);

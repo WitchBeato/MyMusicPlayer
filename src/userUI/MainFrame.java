@@ -98,6 +98,9 @@ public class MainFrame extends JFrame {
 	public void setFullTime(int second) {
 		pnl_Player.setFulltime(second);
 	}
+	public void playlistRepaint() {
+		pnl_Selection.repaint();
+	}
 	public Musiclist getMusiclist(int id) {
 		if(pnl_Selection == null) return null;
 		return pnl_Selection.getMusiclist(id);

@@ -18,6 +18,7 @@ import directories.Imagedtr;
 import userUI.information.Musiclist;
 import userUI.information.Mycolors;
 import userUI.subFrames.AddingPanel;
+import userUI.subFrames.Playlistpanel;
 
 import javax.swing.JSeparator;
 import java.awt.Color;
@@ -39,11 +40,11 @@ public class Mainmenu extends JPanel {
 	private Mybutton btn_Add;
 	private Boolean expand;
 	private Musiclist list;
-	private JPanel mother;
+	private Playlistpanel mother;
 	/**
 	 * Create the panel.
 	 */
-	public Mainmenu(Musiclist list,AtomicInteger ID,JPanel mother) {
+	public Mainmenu(Musiclist list,AtomicInteger ID,Playlistpanel mother) {
 		init();
 		lbl_Text.setText(list.getName());
 		this.list = list;
@@ -148,9 +149,8 @@ public class Mainmenu extends JPanel {
 	}
 	private void btnClicked() {
 		if(ID.get() == list.getId()) ID.set(-1);
-		else ID.set(list.getId());
+		else ID.set(list.getId());;
 		mother.repaint();
-		repaint();
 	}
 	private void addToMenu(){
 		AddingPanel frame = new AddingPanel(list,mother);

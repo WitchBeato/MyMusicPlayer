@@ -140,7 +140,7 @@ public class AddingPanel extends JFrame {
 	private void addName(String text) {
 		if(list == null) return;
 		AddtoMusiclist.addtoMusiclist(list, text);
-		Mother.getParent().repaint();
+		Mother.repaint();
 		close();
 
 	}
