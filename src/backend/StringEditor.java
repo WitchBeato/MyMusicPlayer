@@ -36,7 +36,7 @@ public class StringEditor {
 		int[] location = lastCharLocation(text, letter, qualitive);
 		String newText = (qualitive != 1) ?
 				text.substring(location[1], location[0]) : 
-				text.substring(location[0], text.length()-1);
+				text.substring(location[0], text.length());
 		return newText;
 		
 	}
