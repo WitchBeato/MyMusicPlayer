@@ -1,4 +1,4 @@
-package userUI.subFrames;
+package userUI;
 
 import java.awt.EventQueue;
 
@@ -12,6 +12,7 @@ import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
 import userUI.information.Musiclist;
+import userUI.mycomponents.JTextwithFolder;
 import userUI.mycomponents.Mybutton;
 
 import javax.swing.SpringLayout;
@@ -32,8 +33,8 @@ public class AddingPanel extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txt_Directory;
-	private Mybutton btn_OK, btn_Cancel, btn_Directory;
+	private JTextwithFolder txt_Folder;
+	private Mybutton btn_OK, btn_Cancel;
 	private Musiclist list;
 	private JPanel Mother;
 	/**
@@ -56,23 +57,17 @@ public class AddingPanel extends JFrame {
 	 * Create the frame.
 	 */
 	public AddingPanel(Musiclist list,JPanel mother) {
-		init();
+		txt_Folder = new JTextwithFolder(list.getId(),JTextwithFolder.FOLDERMODE);
 		this.list = list;
-		String text;
-		if(list.getId() == Musiclist.PLAYLIST) {
-			txt_Directory.setEnabled(true);
-			btn_Directory.setVisible(false);
-			text = "please enter Playlist name";
-		}
-		else {
-			txt_Directory.setEnabled(false);
-			btn_Directory.setVisible(true);
-			text = "please Choose the Directory";
-		}
 		this.Mother = mother;
+		init();
+		String text = (list.getId() == Musiclist.PLAYLIST) ? 
+				"please enter Playlist name" :
+				"please Choose the Directory";
 		setTitle(text);
 	}
 	public AddingPanel() {
+		txt_Folder = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FOLDERMODE);
 		init();
 	}
 	private void init() {
@@ -83,59 +78,35 @@ public class AddingPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		SpringLayout sl_contentPane = new SpringLayout();
-		contentPane.setLayout(sl_contentPane);
 		
-		JPanel panel = new JPanel();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, panel, 20, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, panel, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, 50, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, panel, 371, SpringLayout.WEST, contentPane);
-		contentPane.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
 		
-		btn_Directory = new Mybutton("");
-		btn_Directory.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String directory = StringEditor.selectFolder();
-				txt_Directory.setText(directory);
-			}
-		});
-		btn_Directory.setPreferredSize(new Dimension(20,30));
-		btn_Directory.setIcon(Photoeditor.photoScaleImage(Imagedtr.folder
-				, btn_Directory.getPreferredSize().width
-				, btn_Directory.getPreferredSize().height));
-		panel.add(btn_Directory, BorderLayout.EAST);
-		
-		txt_Directory = new JTextField();
-		panel.add(txt_Directory, BorderLayout.CENTER);
-		txt_Directory.setColumns(10);
+
 		
 		btn_OK = new Mybutton("Okay");
+		btn_OK.setBounds(264, 61, 122, 27);
 		btn_OK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addName(txt_Directory.getText());
+				addName(txt_Folder.getText());
 			}
 		});
-		sl_contentPane.putConstraint(SpringLayout.WEST, btn_OK, -122, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, btn_OK, -1, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, btn_OK, 0, SpringLayout.EAST, panel);
+		contentPane.setLayout(null);
 		btn_OK.setFont(new Font("Tahoma", Font.BOLD, 15));
 		contentPane.add(btn_OK);
 		
 		btn_Cancel = new Mybutton("Cancel");
+		btn_Cancel.setBounds(5, 59, 133, 30);
 		btn_Cancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				close();
 			}
 		});
-		sl_contentPane.putConstraint(SpringLayout.WEST, btn_Cancel, 0, SpringLayout.WEST, panel);
-		sl_contentPane.putConstraint(SpringLayout.EAST, btn_Cancel, 133, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, btn_Cancel, 0, SpringLayout.SOUTH, contentPane);
 		btn_Cancel.setPreferredSize(new Dimension(120,30));
 		btn_Cancel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		contentPane.add(btn_Cancel);
+		
+		txt_Folder.setBounds(10, 10, 371, 41);
+		contentPane.add(txt_Folder);
 	}
 	private void addName(String text) {
 		if(list == null) return;

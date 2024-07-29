@@ -110,18 +110,20 @@ public class Playlistpanel extends JPanel {
 	//this method initiliaze menu list of Directories and Playlist
 	private void initiliazeList() {
 		musiclist[0] = new Musiclist(0, "Directories", null); 
+		musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
 		musiclist[1] = new Musiclist(1, "Playlist", null); 
+		musiclist[1].addPlaylist("deneme");
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {
-		Dimension size = new Dimension(130,70);
+		Dimension sizeMain = new Dimension(130,70);
+		Dimension sizeSub = new Dimension(130,50);
 		for (int i = 0; i < musiclist.length; i++) {
 			Mainmenu menu = new Mainmenu(musiclist[i],chosedID,this);
-			menu.setSize(size); 
-			menu.setPreferredSize(size); 
+			menu.setPreferredSize(sizeMain); 
 			menu.setBackground(Mycolors.openGray);
 			panel.add(menu);
-			if(i == chosedID.get()) addSubItems(panel, musiclist,size);
+			if(i == chosedID.get()) addSubItems(panel, musiclist,sizeSub);
 		}
 	}
 	//it add subitems for drop down menu

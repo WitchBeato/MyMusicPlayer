@@ -31,6 +31,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Submenu extends JPanel {
 
@@ -127,15 +129,22 @@ public class Submenu extends JPanel {
 				removeClicked();
 			}
 		});
-		btn_Delete.setBounds(58, 0, 33, 27);
+		btn_Delete.setBounds(66, 0, 25, 27);
 		btn_Delete.setIcon(Photoeditor.photoScaleImage(Imagedtr.remove
 				, btn_Delete.getPreferredSize().width
 				, btn_Delete.getPreferredSize().height+15));
 		pnl_Center.add(btn_Delete,JLayeredPane.DRAG_LAYER);
 		
 		Mybutton btn_Add = new Mybutton();
-		btn_Add.setBounds(23, 0, 33, 27);
+		btn_Add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btn_Add.setBounds(40, 0, 25, 27);
 		pnl_Center.add(btn_Add, JLayeredPane.DRAG_LAYER);
+		btn_Add.setIcon(Photoeditor.photoScaleImage(Imagedtr.add
+				, btn_Add.getPreferredSize().width
+				, btn_Add.getPreferredSize().height+15));
 	}
 	@Override
 	public void setBackground(Color bg) {

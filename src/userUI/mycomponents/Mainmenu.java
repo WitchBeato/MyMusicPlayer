@@ -14,8 +14,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
+import userUI.AddingPanel;
 import userUI.information.Musiclist;
-import userUI.subFrames.AddingPanel;
 import userUI.subFrames.Playlistpanel;
 
 import javax.swing.JSeparator;

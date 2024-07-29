@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
 	public void panelChange(JPanel panel) {
 		pnl_Songs.removeAll();
 		pnl_Songs.add(panel,BorderLayout.CENTER);
-
+		this.revalidate();
 	}
 
 	public MusicPlayer getPlayer() {

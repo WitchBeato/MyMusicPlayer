@@ -3,6 +3,7 @@ package userUI.subFrames;
 import javax.swing.JPanel;
 
 import userUI.MainFrame;
+import userUI.information.MessageData;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.mycomponents.ListMusicPanel;
@@ -60,10 +61,14 @@ public class Musicpanel extends JPanel {
 	private void init() {
 		this.setBounds(0, 0, 667, 469);
 		ArrayList<Musicinfo> list = new ArrayList<>();
-		if(directory != null) list = Playlistbackend.Directorytoplaylist(directory).getList(); 
-		else list = playlist.getList();
-		if(list.size() == 0) {
-			frame.panelChange(new PlayerError(PlayerMessages.directoryNoFile));
+		MessageData messagedata = null;
+		if(directory != null) {
+			list = Playlistbackend.Directorytoplaylist(directory).getList(); 
+			messagedata = PlayerMessages.directoryNoFile;
+		}
+		else {
+			list = playlist.getList();
+			messagedata = PlayerMessages.playlistNoFile;
 		}
 		
 		setLayout(new BorderLayout(0, 0));
@@ -126,5 +131,8 @@ public class Musicpanel extends JPanel {
 				revalidate();
 			}
 		});
+		if(list.size() == 0) {
+			frame.panelChange(new PlayerError(messagedata));
+		}
 	}
 }
