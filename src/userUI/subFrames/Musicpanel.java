@@ -1,6 +1,7 @@
 package userUI.subFrames;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import userUI.MainFrame;
 import userUI.information.MessageData;
@@ -16,21 +17,27 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.Playlistbackend;
 import staticinfo.Imagedtr;
+import staticinfo.MenuItemlist;
 import staticinfo.PlayerMessages;
 
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Musicpanel extends JPanel {
 
@@ -39,7 +46,9 @@ public class Musicpanel extends JPanel {
 	private Playlist playlist = null;
 	private JLabel lbl_Text;
 	private int column, row;
+	private Musicpanel me = this;
 	private MainFrame frame;
+	private ListMusicPanel pnl_Musics;
 	/**
 	 * Create the panel.
 	 */
@@ -79,6 +88,12 @@ public class Musicpanel extends JPanel {
 		pnl_North.setLayout(new BorderLayout(0, 0));
 		
 		Mybutton btn_Settings = new Mybutton();
+		btn_Settings.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rightClick(e);
+			}
+		});
 		btn_Settings.setPreferredSize(new Dimension(60,0));
 		pnl_North.add(btn_Settings, BorderLayout.EAST);
 		btn_Settings.setIcon(Photoeditor.photoScaleImage(Imagedtr.threeDot,
@@ -102,6 +117,12 @@ public class Musicpanel extends JPanel {
 				super.setText(text);
 			}
 		};
+		lbl_Text.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rightClick(e);
+			}
+		});
 		lbl_Text.setFont(PlayerError.universal);
 		pnl_North.add(lbl_Text, BorderLayout.CENTER);
 		
@@ -109,15 +130,33 @@ public class Musicpanel extends JPanel {
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
 		
-		ListMusicPanel pnl_Musics = new ListMusicPanel(list,false,frame);
+		pnl_Musics = new ListMusicPanel(list,false,frame);
+		pnl_Musics.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rightClick(e);
+			}
+		});
 		pnl_Musics.setBackground(new Color(255, 255, 255));
 		pnl_South.add(pnl_Musics);
 		
 		JPanel panel1 = new JPanel();
+		panel1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rightClick(e);
+			}
+		});
 		panel1.setPreferredSize(new Dimension(20,0));
 		pnl_South.add(panel1, BorderLayout.WEST);
 		
 		JPanel pnl_Resize = new JPanel();
+		pnl_Resize.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rightClick(e);
+			}
+		});
 		pnl_Resize.setPreferredSize(new Dimension(16,0));
 		pnl_South.add(pnl_Resize, BorderLayout.EAST);
 		Dimension firstSize = pnl_Resize.getPreferredSize();
@@ -134,5 +173,17 @@ public class Musicpanel extends JPanel {
 		if(list.size() == 0) {
 			frame.panelChange(new PlayerError(messagedata));
 		}
+	}
+	private void rightClick(MouseEvent e) {
+		if(!SwingUtilities.isRightMouseButton(e)) return;
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem refresh = MenuItemlist.refresh;
+		refresh.addActionListener(ae -> repaintMusiclist());
+		menu.add(refresh);
+		menu.show(e.getComponent(), e.getX(), e.getY());
+	}
+	public void repaintMusiclist() {
+		pnl_Musics.sortItems();
+		pnl_Musics.revalidate();
 	}
 }

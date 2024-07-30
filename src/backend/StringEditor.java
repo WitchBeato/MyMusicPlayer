@@ -1,10 +1,14 @@
 package backend;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeSelectionModel;
+
+import staticinfo.SupportedTypes;
 
 public class StringEditor {
 	//it found last iteratives of letter according to qualitive
@@ -40,6 +44,10 @@ public class StringEditor {
 		return newText;
 		
 	}
+	public static String giveExtension(String text) {
+		return giveStringforIterative(text, '.', 1);
+	}
+
 	//give me reverse of the string
 	public static String reverseString(String input){
         byte[] strAsByteArray = input.getBytes();
@@ -68,5 +76,19 @@ public class StringEditor {
 	    		chooser.getSelectedFile().getAbsolutePath() :
 	    		null;	
 	    return directory;
+	}
+	public static String selectFile(SupportedTypes type) {
+		int result;
+		FileNameExtensionFilter extFilter = new FileNameExtensionFilter(
+				type.getExplanationwithExtension(), 
+				type.getExtensions());
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(extFilter);
+		result = chooser.showOpenDialog(null);
+		if(result == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().getAbsolutePath();
+		}
+		return null;
+		
 	}
 }

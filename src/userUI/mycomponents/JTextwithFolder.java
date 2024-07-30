@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
+import staticinfo.SupportedTypes;
 import userUI.information.Musiclist;
 
 public class JTextwithFolder extends JPanel {
@@ -56,14 +57,14 @@ public class JTextwithFolder extends JPanel {
 					directory = StringEditor.selectFolder();
 					break;
 				case JTextwithFolder.FILEMODE:
-					
+					directory = StringEditor.selectFile(SupportedTypes.audioExt);
 					break;
 				default:
 					System.out.println("unknown searchmode");
 					break;
 				}
 
-				txt_Directory.setText(directory);
+				setText(directory);
 			}
 		});
 		btn_Directory.setPreferredSize(new Dimension(20,30));
@@ -75,10 +76,17 @@ public class JTextwithFolder extends JPanel {
 		txt_Directory = new JTextField();
 		this.add(txt_Directory, BorderLayout.CENTER);
 		txt_Directory.setColumns(10);
-		
+
 	}
 	public String getText() {
 		return txt_Directory.getText();
 	}
+	public JTextField gettxt_Directory() {
+		return txt_Directory;
+	}
+	public void setText(String text) {
+		txt_Directory.setText(text);
+	}
+	
 
 }

@@ -118,4 +118,5 @@ public class AddingPanel extends JFrame {
 	private void close() {
 		this.dispose();
 	}
+
 }

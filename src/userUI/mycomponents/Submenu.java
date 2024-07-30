@@ -19,6 +19,8 @@ import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
 import staticinfo.Mycolors;
+import userUI.AddMusic;
+import userUI.AddingPanel;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
@@ -43,7 +45,7 @@ public class Submenu extends JPanel {
 	private String directory = null;
 	private MainFrame greatparent;
 	private MusicPlayer player;
-	private Mybutton btn_Delete;
+	private Mybutton btn_Delete,btn_Add;
 	/**
 	 * Create the panel.
 	 */
@@ -58,10 +60,12 @@ public class Submenu extends JPanel {
 		if(directory == null) {
 			name = list.toString();
 			icon = new ImageIcon(Imagedtr.playlist);
+			btn_Add.setVisible(true);
 		}
 		else {
 			name = directory;
 			icon = new ImageIcon(Imagedtr.folder);
+			btn_Add.setVisible(false);
 		}
 		lbl_Image.setIcon(icon);
 		lbl_Text.setText(name);
@@ -135,9 +139,11 @@ public class Submenu extends JPanel {
 				, btn_Delete.getPreferredSize().height+15));
 		pnl_Center.add(btn_Delete,JLayeredPane.DRAG_LAYER);
 		
-		Mybutton btn_Add = new Mybutton();
-		btn_Add.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btn_Add = new Mybutton();
+		btn_Add.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clickedAdd();
 			}
 		});
 		btn_Add.setBounds(40, 0, 25, 27);
@@ -188,5 +194,17 @@ public class Submenu extends JPanel {
 			return false;
 		}
 	}
+	private void clickedAdd() {
+		AddMusic addMusic = greatparent.getAddpanel();
+		if(addMusic == null) {
+			greatparent.setAddpanel(new AddMusic(list,greatparent));
+			addMusic = greatparent.getAddpanel();
+		}
+		else {
+			addMusic.setPlaylist(list);
+		}
+		addMusic.setVisible(true);
+	}
+
 }
 

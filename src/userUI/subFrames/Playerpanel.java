@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -21,12 +23,15 @@ import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
+import staticinfo.MenuItemlist;
 import userUI.MainFrame;
 import userUI.mycomponents.PlayerTime;
 
 import javax.swing.JProgressBar;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
@@ -43,6 +48,7 @@ import javax.swing.UIManager;
 
 public class Playerpanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private Playerpanel me = this;
 	private JPanel pnl_Buttons, pnl_Time, pnl_Soundicon;
 	private PlayerTime pb_Time;
 	private JButton btn_Soundicon;

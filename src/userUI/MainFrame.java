@@ -11,6 +11,7 @@ import backend.MusicPlayer;
 import staticinfo.Mycolors;
 import staticinfo.PlayerMessages;
 import userUI.information.Musiclist;
+import userUI.information.Playlist;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
@@ -26,6 +27,7 @@ public class MainFrame extends JFrame {
 	private Playlistpanel pnl_Selection;
 	private MusicPlayer player;
 	private Playerpanel pnl_Player;
+	private AddMusic addpanel;
 	/**
 	 * Launch the application.
 	 */
@@ -104,5 +106,15 @@ public class MainFrame extends JFrame {
 	public Musiclist getMusiclist(int id) {
 		if(pnl_Selection == null) return null;
 		return pnl_Selection.getMusiclist(id);
+	}
+
+	public AddMusic getAddpanel() {
+		return this.addpanel;
+	}
+	public void setAddpanel(AddMusic addmusic) {
+		addpanel = addmusic;
+	}
+	public void musiclistRepaint() {
+		pnl_Songs.repaint();
 	}
 }

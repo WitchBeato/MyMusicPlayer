@@ -29,8 +29,7 @@ public class ListMusicPanel extends JPanel {
 		this.frame = mainFrame;
 		init();
 		addGlobalListeners();
-		adjustColumnRow(SelectTitle.SELECTSIZE);
-		addMusics();
+		sortItems();
 	}
 	public ListMusicPanel() {
 		init();
@@ -47,11 +46,15 @@ public class ListMusicPanel extends JPanel {
 				
 				Dimension titlesize = SelectTitle.SELECTSIZE;
 				if(me.getWidth() % (titlesize.width+20) == 0) { 
-				adjustColumnRow(titlesize);
-				addMusics();
+					sortItems();
 				}
 			}
 		});
+	}
+	public void sortItems() {
+		Dimension titlesize = SelectTitle.SELECTSIZE;
+		adjustColumnRow(titlesize);
+		addMusics();
 	}
 	private void adjustColumnRow(Dimension titlesize) {
 		if(titlesize.width == 0) return;
@@ -74,5 +77,9 @@ public class ListMusicPanel extends JPanel {
 			
 		}
 	}
+	public void setlist(ArrayList<Musicinfo> list) {
+		this.list = list;
+	}
+
 
 }

@@ -111,6 +111,7 @@ public class Playlistpanel extends JPanel {
 	private void initiliazeList() {
 		musiclist[0] = new Musiclist(0, "Directories", null); 
 		musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
+		musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
 		musiclist[1] = new Musiclist(1, "Playlist", null); 
 		musiclist[1].addPlaylist("deneme");
 	}

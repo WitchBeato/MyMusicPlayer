@@ -1,6 +1,15 @@
 package backend;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import javax.imageio.ImageIO;
 
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
@@ -18,6 +27,25 @@ public class Playlistbackend {
 		}
 		return fakeplaylist;
 		
+		
+	}
+	public static Color getColorSub(Color color,float CLRRATION) {
+		Color color_Sub = new Color(Math.round((float)(color.getRed())*CLRRATION),Math.round((float)(color.getGreen())*CLRRATION)
+				,Math.round((float)(color.getBlue())*CLRRATION));
+		return color_Sub;
+	}
+	public static Image bytestoImage(byte[] data) {
+		if(data == null) return null;
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(bais);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Image image = img;
+		return image;
 		
 	}
 }
