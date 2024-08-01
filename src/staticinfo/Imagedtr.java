@@ -15,4 +15,5 @@ public class Imagedtr {
 	static public String cancel = local+"cancel.png", musicIcon = local+"Musicicon.png",
 			threeDot = local+"threedot.png", playbutton = local+"play-button.png";
 	static public String add = local+"add.png", remove = local+"remove.png";
+	static public String question = local+"question.png";
 }

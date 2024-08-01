@@ -14,7 +14,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
-import userUI.AddingPanel;
+import userUI.AddDirectory;
 import userUI.information.Musiclist;
 import userUI.subFrames.Playlistpanel;
 
@@ -154,7 +154,7 @@ public class Mainmenu extends JPanel {
 		mother.repaint();
 	}
 	private void addToMenu(){
-		AddingPanel frame = new AddingPanel(list,mother);
+		AddDirectory frame = new AddDirectory(list,mother);
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 	}

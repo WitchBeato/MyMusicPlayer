@@ -28,6 +28,7 @@ public class Musicinfo implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	//if id is null that will mean i wont added to playlist.
+	
 	private Integer id = null;
 	private String directory;
 	private String name,singer;
@@ -49,7 +50,7 @@ public class Musicinfo implements Serializable{
 	public void setDirectory(String directory) {
 		this.directory = directory;
 		String preName = StringEditor.giveStringforIterative(directory, '\\', 1);
-		setName(preName);
+		setNamewithDirectory(preName);
 		
 	}
 	public int getId() {
@@ -65,11 +66,15 @@ public class Musicinfo implements Serializable{
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setNamewithDirectory(String name) {
 		if(name == null) return;
 		String extension =  StringEditor.giveStringforIterative(name, '.', 1);
 		int size = extension.length();
-		name = name.substring(1, name.length()-size-1);
+		name = name.substring(1, name.length()-size);
+		this.name = name;
+	}
+	public void setName(String name) {
+		if(name == null) return;
 		this.name = name;
 	}
 	public String getSinger() {

@@ -87,6 +87,16 @@ public class JTextwithFolder extends JPanel {
 	public void setText(String text) {
 		txt_Directory.setText(text);
 	}
-	
+	@Override
+	public void setEnabled(boolean enabled) {
+		// TODO Auto-generated method stub
+		super.setEnabled(enabled);
+		if(txt_Directory == null) return;
+		txt_Directory.setEnabled(enabled);
+		btn_Directory.setVisible(enabled);
+	}
+	public void isTextInputLegal(boolean islegal) {
+		txt_Directory.setEnabled(islegal);
+	}
 
 }

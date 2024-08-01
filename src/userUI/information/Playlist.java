@@ -2,6 +2,8 @@ package userUI.information;
 
 import java.util.ArrayList;
 
+
+
 public class Playlist {
 	private int id;
 	private String name;
@@ -36,5 +38,8 @@ public class Playlist {
 	}
 	public int getId() {
 		return id;
+	}
+	public void mergePlaylist(Playlist another) {
+		list.addAll(another.getList());
 	}
 }

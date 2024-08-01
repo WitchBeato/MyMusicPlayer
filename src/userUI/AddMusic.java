@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import staticinfo.Dtr;
 import staticinfo.Mycolors;
 import staticinfo.SupportedTypes;
 import userUI.information.Musicinfo;
@@ -24,7 +25,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -37,6 +37,8 @@ import javax.swing.border.TitledBorder;
 import com.github.lgooddatepicker.components.CalendarPanel;
 
 import backend.AddtoMusiclist;
+import backend.Photoeditor;
+import backend.Playlistbackend;
 import backend.StringEditor;
 
 import javax.swing.SwingConstants;
@@ -44,16 +46,22 @@ import javax.swing.JButton;
 import java.awt.Color;
 
 public class AddMusic extends JFrame {
-	
+	//these value will show which mode are we in
+	public static final int ADDMODE = 0, UPDATEMODE = 1;
+
 	private static final Boolean designmode = false;
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainframe;
 	private Boolean isActiveInput;
 	private JPanel contentPane;
+	private Mybutton btn_Ok;
+	private JLabel lbl_addFolder;
 	private JTextField txt_Singer,txt_Name,txt_Date, txt_Time;
 	private JButton btn_SetDate;
 	private Playlist playlist;
 	private Musicinfo info;
+	private Boolean firstinitiliaze = true; 
+	private int mode;
 	private JTextwithFolder txt_Directory;
 	/**
 	 * Launch the application.
@@ -75,13 +83,16 @@ public class AddMusic extends JFrame {
 	 * Create the frame.
 	 * @param mainframe 
 	 */
-	public AddMusic(Playlist playlist, MainFrame mainframe) {
+	public AddMusic(Playlist playlist, MainFrame mainframe, int mode) {
 		this.playlist = playlist;
 		this.mainframe = mainframe;
 		init();
+		setMode(mode);
+		firstinitiliaze= false;
 	}
 	public AddMusic() {
 		init();
+		firstinitiliaze = false;
 	}
 	private void init() {
 		setResizable(false);
@@ -112,6 +123,7 @@ public class AddMusic extends JFrame {
 				public void setText(String text) {
 					// TODO Auto-generated method stub
 					super.setText(text);
+					if(text == null) return;
 					getInfoDirectory(txt_Directory);
 				}
 			};
@@ -121,7 +133,17 @@ public class AddMusic extends JFrame {
 		txt_Directory.setBounds(10, 29, 352, 39);
 		pnl_Directory.add(txt_Directory);
 		
-		JLabel lbl_addFolder = new JLabelClickable("I want to add whole folder");
+		lbl_addFolder = new JLabelClickable("I want to add whole folder");
+		lbl_addFolder.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String directory = StringEditor.selectFolder();
+				if(directory == null) return;
+				Playlist tempplaylist = Playlistbackend.Directorytoplaylist(directory);
+				playlist.mergePlaylist(tempplaylist);
+				close();
+			}
+		});
 		lbl_addFolder.setForeground(new Color(0, 0, 255));
 		lbl_addFolder.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbl_addFolder.setBounds(136, 67, 214, 24);
@@ -223,13 +245,28 @@ public class AddMusic extends JFrame {
 		btn_SetDate = new JButton("");
 		btn_SetDate.setPreferredSize(new Dimension(20,20));
 		pnl_Date.add(btn_SetDate, BorderLayout.EAST);
+		btn_SetDate.setIcon(Photoeditor.photoScaleImage(
+				Dtr.getImage("calendarico.png"),
+				btn_SetDate.getPreferredSize().width,
+				btn_SetDate.getPreferredSize().height)
+				);
 		
-		Mybutton btn_Add = new Mybutton("Add");
-		btn_Add.addMouseListener(new MouseAdapter() {
+		btn_Ok = new Mybutton("Add");
+		btn_Ok.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(playlist == null) return;
-				clickedOK();
+				switch (mode) {
+				case ADDMODE:
+					clickedAdd();
+					break;
+		        case UPDATEMODE:
+					clickedUpdate();
+					break;
+
+				default:
+					break;
+				}
 			}
 		});
 
@@ -240,7 +277,7 @@ public class AddMusic extends JFrame {
 		gbc_btn_Add.insets = new Insets(0, 0, 0, 5);
 		gbc_btn_Add.gridx = 1;
 		gbc_btn_Add.gridy = 4;
-		pnl_Info.add(btn_Add, gbc_btn_Add);
+		pnl_Info.add(btn_Ok, gbc_btn_Add);
 		setIsActiveInput(false);
 	}
 	private void close() {
@@ -249,9 +286,9 @@ public class AddMusic extends JFrame {
 	private void resetInput() {
 		txt_Name.setText(null);
 		txt_Singer.setText(null);
-		txt_Date.setText(LocalDateTime.now().toString());
+		txt_Date.setText(null);
 		txt_Time.setText(null);
-		setEnabled(false);
+		//setEnabled(false);
 	}
 	private void setMusicInfo(Musicinfo info){
 		if(info == null) return;
@@ -262,6 +299,7 @@ public class AddMusic extends JFrame {
 		txt_Time.setText(Integer.toString(time));
 	}
 	private void getInfoDirectory(JTextwithFolder txt_Directory) {
+		if(txt_Directory == null) return;
 		String directory = txt_Directory.getText();
 		File file = new File(directory);
 		if(file.exists()) {
@@ -299,11 +337,52 @@ public class AddMusic extends JFrame {
 	public void setPlaylist(Playlist playlist) {
 		this.playlist = playlist;
 	}
-	private void clickedOK() {
+	public void setMode(int mode) {
+		this.mode = mode;
+		Boolean isAdd = null;
+		if(mode == ADDMODE) {
+			btn_Ok.setText("Add");
+			txt_Directory.setText(null);
+			isAdd = true; 
+			
+		}
+		else if(mode == UPDATEMODE) {
+			btn_Ok.setText("Update");
+			isAdd = false;
+		}
+		if(!firstinitiliaze) {
+			resetInput();
+		}
+		isAddEnabled(isAdd);
+		txt_Directory.isTextInputLegal(false);
+	}
+    public int getMode() {
+		return mode;
+	}
+	private void clickedAdd() {
 		AddtoMusiclist.addMusicwithInfo(playlist, info);
 		close();
 		if (mainframe != null) {
 			mainframe.musiclistRepaint();
 		}
+	}
+	private void clickedUpdate() {
+		if(info == null) return;
+		getMusicInfo();
+		close();
+		
+	}
+	private void getMusicInfo() {
+		info.setDate(txt_Date.getText());
+		info.setName(txt_Name.getText());
+		info.setSinger(txt_Singer.getText());
+		info.setTime(Integer.parseInt(txt_Time.getText()));
+		info.setCover(null);
+
+	}
+	//true mean we are on add mode false mean musicinfo will be updated
+	private void isAddEnabled(Boolean isAdd){
+		txt_Directory.setEnabled(isAdd);
+		lbl_addFolder.setVisible(isAdd);
 	}
 }

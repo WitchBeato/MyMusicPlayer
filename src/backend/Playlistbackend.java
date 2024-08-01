@@ -2,14 +2,17 @@ package backend;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
@@ -48,4 +51,4 @@ public class Playlistbackend {
 		return image;
 		
 	}
-}
+}	

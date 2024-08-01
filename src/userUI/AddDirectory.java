@@ -29,7 +29,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AddingPanel extends JFrame {
+public class AddDirectory extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -44,7 +44,7 @@ public class AddingPanel extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddingPanel frame = new AddingPanel();
+					AddDirectory frame = new AddDirectory();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +56,7 @@ public class AddingPanel extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddingPanel(Musiclist list,JPanel mother) {
+	public AddDirectory(Musiclist list,JPanel mother) {
 		txt_Folder = new JTextwithFolder(list.getId(),JTextwithFolder.FOLDERMODE);
 		this.list = list;
 		this.Mother = mother;
@@ -66,7 +66,7 @@ public class AddingPanel extends JFrame {
 				"please Choose the Directory";
 		setTitle(text);
 	}
-	public AddingPanel() {
+	public AddDirectory() {
 		txt_Folder = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FOLDERMODE);
 		init();
 	}

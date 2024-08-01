@@ -69,15 +69,18 @@ public class Musicpanel extends JPanel {
 	}
 	private void init() {
 		this.setBounds(0, 0, 667, 469);
+		Boolean isDirectory = null;
 		ArrayList<Musicinfo> list = new ArrayList<>();
 		MessageData messagedata = null;
 		if(directory != null) {
 			list = Playlistbackend.Directorytoplaylist(directory).getList(); 
 			messagedata = PlayerMessages.directoryNoFile;
+			isDirectory = true;
 		}
 		else {
 			list = playlist.getList();
 			messagedata = PlayerMessages.playlistNoFile;
+			isDirectory = false;
 		}
 		
 		setLayout(new BorderLayout(0, 0));
@@ -130,7 +133,7 @@ public class Musicpanel extends JPanel {
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
 		
-		pnl_Musics = new ListMusicPanel(list,false,frame);
+		pnl_Musics = new ListMusicPanel(list,isDirectory,frame);
 		pnl_Musics.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -172,6 +175,7 @@ public class Musicpanel extends JPanel {
 		});
 		if(list.size() == 0) {
 			frame.panelChange(new PlayerError(messagedata));
+
 		}
 	}
 	private void rightClick(MouseEvent e) {
@@ -181,6 +185,7 @@ public class Musicpanel extends JPanel {
 		refresh.addActionListener(ae -> repaintMusiclist());
 		menu.add(refresh);
 		menu.show(e.getComponent(), e.getX(), e.getY());
+		
 	}
 	public void repaintMusiclist() {
 		pnl_Musics.sortItems();

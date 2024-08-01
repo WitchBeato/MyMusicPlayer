@@ -1,26 +1,32 @@
 package userUI.mycomponents;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import backend.AddtoMusiclist;
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
+import staticinfo.MenuItemlist;
 import staticinfo.Mycolors;
 import userUI.AddMusic;
-import userUI.AddingPanel;
+import userUI.AddDirectory;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
@@ -91,7 +97,7 @@ public class Submenu extends JPanel {
 		lbl_Image.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				menuClicked();
+				menuClicked(e);
 			}
 		});
 		lbl_Image.setOpaque(true);
@@ -114,7 +120,7 @@ public class Submenu extends JPanel {
 		lbl_Text.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				menuClicked();
+				menuClicked(e);
 			}
 		});
 		lbl_Text.setOpaque(true);
@@ -151,6 +157,7 @@ public class Submenu extends JPanel {
 		btn_Add.setIcon(Photoeditor.photoScaleImage(Imagedtr.add
 				, btn_Add.getPreferredSize().width
 				, btn_Add.getPreferredSize().height+15));
+		addGlobalEvents();
 	}
 	@Override
 	public void setBackground(Color bg) {
@@ -162,7 +169,20 @@ public class Submenu extends JPanel {
 		lbl_Image.setBackground(bg);
 		btn_Delete.setBackground(bg);
 	}
-	private void menuClicked() {
+	private void addGlobalEvents() {
+		for (Component component : this.getComponents()) {
+			component.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+					super.mouseClicked(e);
+					menuClicked(e);
+				}
+			});
+		}
+	}
+	private void menuClicked(MouseEvent e) {
+		if(!SwingUtilities.isLeftMouseButton(e)) return;
 		Musicpanel mscPanel = (directory == null) ? 
 				new Musicpanel(list,greatparent) : 
 				new Musicpanel(directory,greatparent);
@@ -197,14 +217,14 @@ public class Submenu extends JPanel {
 	private void clickedAdd() {
 		AddMusic addMusic = greatparent.getAddpanel();
 		if(addMusic == null) {
-			greatparent.setAddpanel(new AddMusic(list,greatparent));
+			greatparent.setAddpanel(new AddMusic(list,greatparent,AddMusic.ADDMODE));
 			addMusic = greatparent.getAddpanel();
 		}
 		else {
+			if(addMusic.getMode() != AddMusic.ADDMODE)addMusic.setMode(AddMusic.ADDMODE);
 			addMusic.setPlaylist(list);
 		}
 		addMusic.setVisible(true);
 	}
-
 }
 
