@@ -105,6 +105,9 @@ public class MainFrame extends JFrame {
 	public MusicPlayer getPlayer() {
 		return player;
 	}
+	public Settings getSettings() {
+		return setting;
+	}
 
 	public void setPlayer(MusicPlayer player) {
 		this.player = player;
@@ -129,4 +132,5 @@ public class MainFrame extends JFrame {
 	public void musiclistRepaint() {
 		pnl_Songs.repaint();
 	}
+	
 }

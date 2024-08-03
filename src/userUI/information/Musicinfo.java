@@ -34,6 +34,7 @@ public class Musicinfo implements Serializable{
 	//if id is null that will mean i wont added to playlist.
 	
 	private Integer id = null;
+	private String directoryFamily;
 	private String directory;
 	private String name,singer;
 	private String date;
@@ -56,6 +57,7 @@ public class Musicinfo implements Serializable{
 		this.directory = directory;
 		String preName = StringEditor.giveStringforIterative(directory, '\\', 1);
 		setNamewithDirectory(preName);
+		setDirectoryFamily(directory);
 		
 	}
 	public int getId() {
@@ -148,6 +150,13 @@ public class Musicinfo implements Serializable{
 	}
 	public byte[] getCover_Byte() {
 		return cover_Byte;
+	}
+	public String getDirectoryFamily() {
+		return directoryFamily;
+	}
+	private void setDirectoryFamily(String directory) {
+		String directoryFamily = StringEditor.giveStringforIterative(directory, '\\', 2).substring(1);;
+		this.directoryFamily = directoryFamily;
 	}
 
 }

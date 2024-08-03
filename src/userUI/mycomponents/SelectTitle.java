@@ -16,6 +16,7 @@ import staticinfo.MenuItemlist;
 import userUI.AddMusic;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
+import userUI.information.Playlist;
 import userUI.information.Settings;
 
 import javax.swing.JLayeredPane;
@@ -193,6 +194,7 @@ public class SelectTitle extends JPanel {
 		MusicPlayer player = mainframe.getPlayer();
 		player.play(title,0);
 		mainframe.setFullTime(MusicPlayer.giveLenght(directory));
+		addLastListened();
 		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
 	}
 	private void ClickedRight(MouseEvent e) {
@@ -211,4 +213,8 @@ public class SelectTitle extends JPanel {
 		addmusic.setInfo(title);
 		addmusic.setVisible(true);
 	}
+    private void addLastListened() {
+    	Playlist lastlistened = mainframe.getSettings().getLastListened();
+    	lastlistened.addtoList(title);
+    }
 }

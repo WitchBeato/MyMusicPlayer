@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
+import userUI.information.Playlist;
 import userUI.information.Settings;
 import userUI.mycomponents.Mainmenu;
 import userUI.mycomponents.Submenu;
@@ -36,6 +37,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import java.awt.FlowLayout;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Playlistpanel extends JPanel {
 
@@ -95,6 +98,12 @@ public class Playlistpanel extends JPanel {
 		pnl_Lastlisten.add(spt_1_1, BorderLayout.SOUTH);
 		
 		btn_Last = new JButton("Last listened");
+		btn_Last.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				openLastListened();
+			}
+		});
 		btn_Last.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		pnl_Lastlisten.add(btn_Last, BorderLayout.CENTER);
 		btn_Last.setBorderPainted(false);
@@ -129,6 +138,12 @@ public class Playlistpanel extends JPanel {
 			setting.saveMusiclist();
 		}
 
+	}
+	private void openLastListened() {
+		Playlist playlist = setting.getLastListened();
+		Musicpanel musicpanel = new Musicpanel(playlist, parent);
+		parent.panelChange(musicpanel);
+		
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {

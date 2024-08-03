@@ -8,12 +8,21 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import net.miginfocom.layout.PlatformDefaults;
 import staticinfo.Dtr;
 import staticinfo.StaticNames;
 
 public class Settings {
 	public static Boolean DEBUG_MODE = true;
 	private Musiclist musiclist[] = new Musiclist[2];
+	private Playlist lastListened = new Playlist("Last listened", -1) {
+		@Override
+		public void addtoList(Musicinfo info) {
+			if(this.getList().size()>20)return;
+			super.addtoList(info);
+			
+		};
+	};
 	public void saveAll() {
 		saveMusiclist();
 	}
@@ -43,6 +52,27 @@ public class Settings {
 	public void openMusiclist() {
 		String MusicDirectory = Dtr.getDataDirectory() + StaticNames.musiclistName;
 		musiclist = (Musiclist[]) openObject(MusicDirectory);
+	}
+	public Playlist getLastListened() {
+		return lastListened;
+	}
+	public void setLastListened(Playlist lastListened) {
+		this.lastListened = lastListened;
+	}
+	public Boolean saveLastlistened() {
+		String lastListened = Dtr.getDataDirectory() + StaticNames.lastListenedName;
+		try {
+			saveObject(lastListened, musiclist);
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public void openPlaylist() {
+		String lastListeneddtr = Dtr.getDataDirectory() + StaticNames.lastListenedName;
+		lastListened = (Playlist) openObject(lastListeneddtr);
 	}
 	private void saveObject(String directory, Object data) throws FileNotFoundException {
 	    ObjectOutputStream oos = null;
@@ -84,5 +114,6 @@ public class Settings {
 		}
 		return object;
 	}
+
 	
 }
