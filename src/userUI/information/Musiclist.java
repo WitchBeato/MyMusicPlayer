@@ -1,9 +1,14 @@
 package userUI.information;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Musiclist {
+public class Musiclist implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1530676910997852633L;
 	//this tell us which type of musiclist
 	public static int DIRECTORY = 0, PLAYLIST = 1;
 	private Integer id;

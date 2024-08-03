@@ -37,7 +37,7 @@ public class Playlistbackend {
 				,Math.round((float)(color.getBlue())*CLRRATION));
 		return color_Sub;
 	}
-	public static Image bytestoImage(byte[] data) {
+	public static BufferedImage bytestoImage(byte[] data) {
 		if(data == null) return null;
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		BufferedImage img = null;
@@ -47,8 +47,7 @@ public class Playlistbackend {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Image image = img;
-		return image;
+		return img;
 		
 	}
 }	

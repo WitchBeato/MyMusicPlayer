@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 
 import staticinfo.Dtr;
@@ -12,6 +13,7 @@ import staticinfo.SupportedTypes;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
 import userUI.information.Playlist;
+import userUI.mycomponents.ChangeableImage;
 import userUI.mycomponents.JLabelClickable;
 import userUI.mycomponents.JTextwithFolder;
 import userUI.mycomponents.Mybutton;
@@ -19,22 +21,39 @@ import userUI.mycomponents.Mybutton;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.AccessFlag.Location;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 
 import backend.AddtoMusiclist;
 import backend.Photoeditor;
@@ -42,8 +61,11 @@ import backend.Playlistbackend;
 import backend.StringEditor;
 
 import javax.swing.SwingConstants;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Component;
+import javax.swing.UIManager;
 
 public class AddMusic extends JFrame {
 	//these value will show which mode are we in
@@ -60,9 +82,9 @@ public class AddMusic extends JFrame {
 	private JButton btn_SetDate;
 	private Playlist playlist;
 	private Musicinfo info;
-	private Boolean firstinitiliaze = true; 
 	private int mode;
 	private JTextwithFolder txt_Directory;
+	private ChangeableImage lbl_Image;
 	/**
 	 * Launch the application.
 	 */
@@ -88,11 +110,14 @@ public class AddMusic extends JFrame {
 		this.mainframe = mainframe;
 		init();
 		setMode(mode);
-		firstinitiliaze= false;
+	}
+	public AddMusic(int mode) {
+		this.mode = mode;
+		init();
+		setMode(mode);
 	}
 	public AddMusic() {
 		init();
-		firstinitiliaze = false;
 	}
 	private void init() {
 		setResizable(false);
@@ -112,7 +137,7 @@ public class AddMusic extends JFrame {
 		pnl_Directory.setBackground(Mycolors.openGray);
 		pnl_Directory.setLayout(null);
 		 
-		if(designmode) txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE);
+		if(mode != ADDMODE) txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE);
 		else {
 			txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE) {
 				/**
@@ -197,6 +222,41 @@ public class AddMusic extends JFrame {
 		gbc_txt_Singer.gridy = 1;
 		pnl_Info.add(txt_Singer, gbc_txt_Singer);
 		txt_Singer.setColumns(10);
+		if(mode != ADDMODE) lbl_Image = new ChangeableImage();
+		else {
+			lbl_Image = new ChangeableImage() {
+				@Override
+				public void setImageCurrent(String directory) {
+					// TODO Auto-generated method stub
+					super.setImageCurrent(directory);
+					if(info == null || designmode) return;
+					else {
+						File file = new File(directory);
+						BufferedImage image = null;
+						try {
+							image = ImageIO.read(file);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						info.setCover(image);
+					}
+					
+				}
+			};
+		}
+		if(info != null)lbl_Image.setImageCurrentwithImage(info.getCover());
+		lbl_Image.setPreferredSize(new Dimension(100,120));
+		GridBagConstraints gbc_lbl_Image = new GridBagConstraints();
+		gbc_lbl_Image.weighty = 1.0;
+		gbc_lbl_Image.weightx = 1.0;
+		gbc_lbl_Image.fill = GridBagConstraints.BOTH;
+		gbc_lbl_Image.gridwidth = 4;
+		gbc_lbl_Image.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_Image.gridx = 2;
+		gbc_lbl_Image.gridy = 1;
+		pnl_Info.add(lbl_Image, gbc_lbl_Image);
+		lbl_Image.setVisible(true);
 		
 		JLabel lbl_Time = new JLabel("Time");
 		lbl_Time.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -229,8 +289,8 @@ public class AddMusic extends JFrame {
 		
 		JPanel pnl_Date = new JPanel();
 		GridBagConstraints gbc_pnl_Date = new GridBagConstraints();
-		gbc_pnl_Date.insets = new Insets(0, 0, 5, 5);
 		gbc_pnl_Date.fill = GridBagConstraints.HORIZONTAL;
+		gbc_pnl_Date.insets = new Insets(0, 0, 5, 5);
 		gbc_pnl_Date.gridx = 1;
 		gbc_pnl_Date.gridy = 3;
 		pnl_Info.add(pnl_Date, gbc_pnl_Date);
@@ -243,6 +303,12 @@ public class AddMusic extends JFrame {
 		pnl_Date.add(txt_Date, BorderLayout.CENTER);
 		
 		btn_SetDate = new JButton("");
+		btn_SetDate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showCalendar(btn_SetDate,txt_Date);
+			}
+		});
 		btn_SetDate.setPreferredSize(new Dimension(20,20));
 		pnl_Date.add(btn_SetDate, BorderLayout.EAST);
 		btn_SetDate.setIcon(Photoeditor.photoScaleImage(
@@ -255,9 +321,10 @@ public class AddMusic extends JFrame {
 		btn_Ok.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(playlist == null) return;
+				
 				switch (mode) {
 				case ADDMODE:
+					if(playlist == null) return;
 					clickedAdd();
 					break;
 		        case UPDATEMODE:
@@ -288,15 +355,16 @@ public class AddMusic extends JFrame {
 		txt_Singer.setText(null);
 		txt_Date.setText(null);
 		txt_Time.setText(null);
-		//setEnabled(false);
 	}
 	private void setMusicInfo(Musicinfo info){
 		if(info == null) return;
+		if(mode == UPDATEMODE)txt_Directory.setText(info.getDirectory());
 		txt_Name.setText(info.getName());
 		txt_Singer.setText(info.getSinger());
 		txt_Date.setText(info.getDate());
 		int time = info.getTime();
 		txt_Time.setText(Integer.toString(time));
+		lbl_Image.setImageCurrentwithImage(info.getCover());
 	}
 	private void getInfoDirectory(JTextwithFolder txt_Directory) {
 		if(txt_Directory == null) return;
@@ -322,7 +390,7 @@ public class AddMusic extends JFrame {
 		this.isActiveInput = isActiveInput;
 		txt_Name.setEnabled(isActiveInput);
 		txt_Singer.setEnabled(isActiveInput);
-		txt_Date.setEnabled(isActiveInput);
+		txt_Date.setEnabled(false);
 		btn_SetDate.setEnabled(isActiveInput);
 	}
 
@@ -349,9 +417,7 @@ public class AddMusic extends JFrame {
 		else if(mode == UPDATEMODE) {
 			btn_Ok.setText("Update");
 			isAdd = false;
-		}
-		if(!firstinitiliaze) {
-			resetInput();
+			setIsActiveInput(true);
 		}
 		isAddEnabled(isAdd);
 		txt_Directory.isTextInputLegal(false);
@@ -360,6 +426,7 @@ public class AddMusic extends JFrame {
 		return mode;
 	}
 	private void clickedAdd() {
+		getMusicInfo();
 		AddtoMusiclist.addMusicwithInfo(playlist, info);
 		close();
 		if (mainframe != null) {
@@ -377,12 +444,41 @@ public class AddMusic extends JFrame {
 		info.setName(txt_Name.getText());
 		info.setSinger(txt_Singer.getText());
 		info.setTime(Integer.parseInt(txt_Time.getText()));
-		info.setCover(null);
+		BufferedImage image = lbl_Image.getCurrentImage();
+		info.setCover(image);
 
 	}
 	//true mean we are on add mode false mean musicinfo will be updated
 	private void isAddEnabled(Boolean isAdd){
 		txt_Directory.setEnabled(isAdd);
 		lbl_addFolder.setVisible(isAdd);
+	}
+	private void showCalendar(Component boss,JTextField txt_Changed) {
+		JPopupMenu popup = new JPopupMenu();
+		JPanel panel = new JPanel();
+		CalendarPanel calendarpanel = new CalendarPanel();
+		calendarpanel.setSize(new Dimension(200,200));
+		panel.setSize(calendarpanel.getSize());
+		popup.setSize(calendarpanel.getSize());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		calendarpanel.addCalendarListener(new CalendarListener() {
+			
+			@Override
+			public void yearMonthChanged(YearMonthChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void selectedDateChanged(CalendarSelectionEvent event) {
+				// TODO Auto-generated method stub
+				LocalDate date = calendarpanel.getSelectedDate();
+				String dateString = date.format(formatter);
+				txt_Changed.setText(dateString);
+			}
+		});
+		panel.add(calendarpanel);	
+		popup.add(panel);
+		popup.show(boss,0,-calendarpanel.getHeight());
 	}
 }

@@ -13,29 +13,34 @@ import backend.Photoeditor;
 import backend.StringEditor;
 import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
-import staticinfo.Settings;
 import userUI.AddMusic;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
+import userUI.information.Settings;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JMenuItem;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class SelectTitle extends JPanel {
 
 	public static Dimension SELECTSIZE = new Dimension(127,123);
 	private static final long serialVersionUID = 1L;
+	private SelectTitle me = this;
 	private Musicinfo title;
 	private Boolean isDirectory;
 	private Mybutton btn_Play, btn_Property, btn_Delete;
-	private JLabel lbl_Title;
+	private JLabel lbl_Title, lbl_Photo;
 	private MainFrame mainframe;
 	public SelectTitle(Musicinfo info, Boolean isDirectory, MainFrame mainframe) {
 		this.isDirectory = isDirectory;
@@ -59,7 +64,7 @@ public class SelectTitle extends JPanel {
 		pnl_Photo.add(lpnl_Photo, BorderLayout.CENTER);
 		lpnl_Photo.setLayout(null);
 		
-		JLabel lbl_Photo = new JLabel("");
+		lbl_Photo = new JLabel("");
 		lbl_Photo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -157,7 +162,14 @@ public class SelectTitle extends JPanel {
 		});
 		setButtonsVisible(false);
 	}
-
+	@Override
+	public void repaint() {
+		// TODO Auto-generated method stub
+		super.repaint();
+		if(lbl_Photo == null) return;
+		Image image = title.getCover();
+		if(image != null) lbl_Photo.setIcon(new ImageIcon(title.getCover()));
+	}
 	public Musicinfo getTitle() {
 		return title;
 	}
@@ -193,13 +205,9 @@ public class SelectTitle extends JPanel {
    }
     private void openFeature() {
 		AddMusic addmusic = mainframe.getAddpanel();
-		if(addmusic == null) {
-			mainframe.setAddpanel(new AddMusic());
-			addmusic = mainframe.getAddpanel();
-		}
-		if(addmusic.getMode() != AddMusic.UPDATEMODE) {
-			addmusic.setMode(AddMusic.UPDATEMODE);
-		}
+		if(addmusic != null) addmusic.dispose();
+		mainframe.setAddpanel(new AddMusic(AddMusic.UPDATEMODE));
+		addmusic = mainframe.getAddpanel();
 		addmusic.setInfo(title);
 		addmusic.setVisible(true);
 	}

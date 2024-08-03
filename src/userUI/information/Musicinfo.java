@@ -1,6 +1,7 @@
 package userUI.information;
 
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v1Tag;
@@ -18,6 +21,7 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import backend.Photoeditor;
 import backend.Playlistbackend;
 import backend.StringEditor;
 import staticinfo.SupportedTypes;
@@ -33,7 +37,8 @@ public class Musicinfo implements Serializable{
 	private String directory;
 	private String name,singer;
 	private String date;
-	private Image cover;
+	private byte[] cover_Byte;
+	private transient BufferedImage cover;
 	private int time;
 
 	public Musicinfo(int id, String directory){
@@ -132,9 +137,17 @@ public class Musicinfo implements Serializable{
 		setCover(null);
 	}
 	public Image getCover() {
+		if(cover == null && cover_Byte != null) {
+			cover = Photoeditor.bytetoImage(cover_Byte);
+		}
 		return cover;
 	}
-	public void setCover(Image cover) {
+	public void setCover(BufferedImage cover) {
 		this.cover = cover;
+		this.cover_Byte = Photoeditor.imagetoByte(cover);
 	}
+	public byte[] getCover_Byte() {
+		return cover_Byte;
+	}
+
 }

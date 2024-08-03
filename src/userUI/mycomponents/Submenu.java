@@ -216,14 +216,10 @@ public class Submenu extends JPanel {
 	}
 	private void clickedAdd() {
 		AddMusic addMusic = greatparent.getAddpanel();
-		if(addMusic == null) {
-			greatparent.setAddpanel(new AddMusic(list,greatparent,AddMusic.ADDMODE));
-			addMusic = greatparent.getAddpanel();
-		}
-		else {
-			if(addMusic.getMode() != AddMusic.ADDMODE)addMusic.setMode(AddMusic.ADDMODE);
-			addMusic.setPlaylist(list);
-		}
+		if(addMusic != null) addMusic.dispose();
+		greatparent.setAddpanel(new AddMusic(list,greatparent,AddMusic.ADDMODE));
+		addMusic = greatparent.getAddpanel();
+		addMusic.setPlaylist(list);
 		addMusic.setVisible(true);
 	}
 }

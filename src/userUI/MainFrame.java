@@ -12,6 +12,7 @@ import staticinfo.Mycolors;
 import staticinfo.PlayerMessages;
 import userUI.information.Musiclist;
 import userUI.information.Playlist;
+import userUI.information.Settings;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
@@ -19,12 +20,15 @@ import userUI.subFrames.Playlistpanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, pnl_Songs;
 	private Playlistpanel pnl_Selection;
+	private Settings setting = new Settings();
 	private MusicPlayer player;
 	private Playerpanel pnl_Player;
 	private AddMusic addpanel;
@@ -48,6 +52,14 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				super.windowClosing(e);
+				setting.saveAll();
+			}
+		});
 		setPlayer(new MusicPlayer());
 		setTitle("MymusicPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +84,7 @@ public class MainFrame extends JFrame {
 		JScrollPane spnl_Songs = new JScrollPane();
 		pnl_Center.add(spnl_Songs, BorderLayout.CENTER);
 		
-		pnl_Selection = new Playlistpanel(this);
+		pnl_Selection = new Playlistpanel(this,setting);
 		pnl_Selection.setPreferredSize(new Dimension(133,0));
 		pnl_Selection.setBackground(Mycolors.openGray);
 		pnl_Center.add(pnl_Selection, BorderLayout.WEST);

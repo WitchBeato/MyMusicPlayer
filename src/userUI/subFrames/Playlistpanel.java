@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
+import userUI.information.Settings;
 import userUI.mycomponents.Mainmenu;
 import userUI.mycomponents.Submenu;
 
@@ -15,10 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
+import staticinfo.Dtr;
 import staticinfo.Imagedtr;
 import staticinfo.Mycolors;
+import staticinfo.StaticNames;
 
 import java.awt.Font;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,15 +41,16 @@ public class Playlistpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame parent = null;
-	private Musiclist[] musiclist = new Musiclist[2];
+	private Settings setting;
 	private AtomicInteger  chosedID = new AtomicInteger();
 	private JPanel pnl_List;
 	private JButton btn_Last;
 	/**
 	 * Create the panel.
 	 */
-	public Playlistpanel(MainFrame parent) {
+	public Playlistpanel(MainFrame parent,Settings setting) {
 		this.parent = parent;
+		this.setting = setting;
 		init();
 	}
 	public Playlistpanel() {
@@ -109,14 +114,25 @@ public class Playlistpanel extends JPanel {
 	}
 	//this method initiliaze menu list of Directories and Playlist
 	private void initiliazeList() {
-		musiclist[0] = new Musiclist(0, "Directories", null); 
-		musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
-		musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
-		musiclist[1] = new Musiclist(1, "Playlist", null); 
-		musiclist[1].addPlaylist("deneme");
+		Musiclist musiclist[] = setting.getMusiclistArray();
+		File file = new File(Dtr.getDataDirectory()+StaticNames.musiclistName);
+		if(file.exists()) {
+			setting.openMusiclist();
+		}
+		else {
+			musiclist[0] = new Musiclist(0, "Directories", null); 
+			musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
+			musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
+			musiclist[1] = new Musiclist(1, "Playlist", null); 
+			musiclist[1].addPlaylist("deneme");
+			setting.setMusiclist(musiclist);
+			setting.saveMusiclist();
+		}
+
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {
+		Musiclist musiclist[] = setting.getMusiclistArray();
 		Dimension sizeMain = new Dimension(130,70);
 		Dimension sizeSub = new Dimension(130,50);
 		for (int i = 0; i < musiclist.length; i++) {
@@ -166,8 +182,7 @@ public class Playlistpanel extends JPanel {
 		return parent;
 	}
 	public Musiclist getMusiclist(int id) {
-		if(musiclist == null) return null;
-		return musiclist[id];
+		return setting.getMusiclist(id);
 	}
 
 
