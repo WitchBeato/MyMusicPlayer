@@ -16,6 +16,7 @@ import userUI.information.Playlist;
 import userUI.mycomponents.ChangeableImage;
 import userUI.mycomponents.JLabelClickable;
 import userUI.mycomponents.JTextwithFolder;
+import userUI.mycomponents.MyPopUp;
 import userUI.mycomponents.Mybutton;
 
 import java.awt.BorderLayout;
@@ -51,6 +52,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
@@ -83,6 +85,7 @@ public class AddMusic extends JFrame {
 	private Playlist playlist;
 	private Musicinfo info;
 	private int mode;
+	private MyPopUp popup;
 	private JTextwithFolder txt_Directory;
 	private ChangeableImage lbl_Image;
 	/**
@@ -306,7 +309,11 @@ public class AddMusic extends JFrame {
 		btn_SetDate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showCalendar(btn_SetDate,txt_Date);
+				if(popup == null)showCalendar(btn_SetDate,txt_Date);
+				else {
+					popup.closePopup();
+					popup = null;
+				}
 			}
 		});
 		btn_SetDate.setPreferredSize(new Dimension(20,20));
@@ -454,9 +461,12 @@ public class AddMusic extends JFrame {
 		lbl_addFolder.setVisible(isAdd);
 	}
 	private void showCalendar(Component boss,JTextField txt_Changed) {
-		JPopupMenu popup = new JPopupMenu();
+		popup = new MyPopUp();
+		DatePickerSettings dateSetting = new DatePickerSettings();
 		JPanel panel = new JPanel();
-		CalendarPanel calendarpanel = new CalendarPanel();
+		CalendarPanel calendarpanel = new CalendarPanel(dateSetting);
+		dateSetting.setDateRangeLimits(null, LocalDate.now());
+		dateSetting.setAllowKeyboardEditing(true);
 		calendarpanel.setSize(new Dimension(200,200));
 		panel.setSize(calendarpanel.getSize());
 		popup.setSize(calendarpanel.getSize());
@@ -479,6 +489,9 @@ public class AddMusic extends JFrame {
 		});
 		panel.add(calendarpanel);	
 		popup.add(panel);
-		popup.show(boss,0,-calendarpanel.getHeight());
+		popup.show(
+				boss,
+				0,
+				-calendarpanel.getHeight()-boss.getPreferredSize().height);
 	}
 }

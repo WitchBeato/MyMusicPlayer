@@ -86,7 +86,7 @@ public class SelectTitle extends JPanel {
 			}
 		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_Photo.setBounds(0, 0, 133,95);
+		lbl_Photo.setBounds(25, 0, 73,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
 		
 		btn_Delete = new Mybutton();
@@ -147,11 +147,21 @@ public class SelectTitle extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				playMusic(title.getDirectory());
 			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				mouseLeaveGlob();
+			}
 		});
 		btn_Delete.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				mouseEnterGlob();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				mouseLeaveGlob();
 			}
 		});
 		btn_Delete.setVisible(false);
@@ -159,6 +169,11 @@ public class SelectTitle extends JPanel {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				mouseEnterGlob();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				mouseLeaveGlob();
 			}
 		});
 		setButtonsVisible(false);
