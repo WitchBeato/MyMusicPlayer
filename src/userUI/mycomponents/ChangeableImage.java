@@ -96,7 +96,7 @@ public class ChangeableImage extends JPanel {
 				lbl_Image.getPreferredSize().height, 
 				lbl_Image.getPreferredSize().width);
 		lbl_Image.setIcon(icon);
-		if (directory != Imagedtr.question) currentImage = null;
+		if (directory == Imagedtr.question) currentImage = null;
 		else currentImage = Photoeditor.iconToBufferedImage(icon);
 	}
 	public void setImageCurrentwithImage(Image image) {
