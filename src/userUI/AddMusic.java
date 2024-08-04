@@ -122,11 +122,16 @@ public class AddMusic extends JFrame {
 	public AddMusic() {
 		init();
 	}
+	public void thisDirectoryfile() {
+		setIsActiveInput(false);
+		btn_Ok.setVisible(false);
+		this.setSize(new Dimension(this.getWidth(),this.getHeight()-100));
+	}
 	private void init() {
 		setResizable(false);
 		Font font = new Font("Verdana", Font.BOLD, 16);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 480, 600);
+		setBounds(100, 100, 380, 600);
 		setPreferredSize(new Dimension(410, 600));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,9 +144,8 @@ public class AddMusic extends JFrame {
 		pnl_Directory.setPreferredSize(new Dimension(this.getWidth(),120));
 		pnl_Directory.setBackground(Mycolors.openGray);
 		pnl_Directory.setLayout(null);
-		 
-		if(mode != ADDMODE) txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE);
-		else {
+		txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE); 
+		if(mode == ADDMODE) {
 			txt_Directory = new JTextwithFolder(Musiclist.DIRECTORY,JTextwithFolder.FILEMODE) {
 				/**
 				 * 
@@ -158,7 +162,7 @@ public class AddMusic extends JFrame {
 		}
 		
 
-		txt_Directory.setBounds(10, 29, 352, 39);
+		txt_Directory.setBounds(38, 33, 304, 39);
 		pnl_Directory.add(txt_Directory);
 		
 		lbl_addFolder = new JLabelClickable("I want to add whole folder");
@@ -174,59 +178,38 @@ public class AddMusic extends JFrame {
 		});
 		lbl_addFolder.setForeground(new Color(0, 0, 255));
 		lbl_addFolder.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_addFolder.setBounds(136, 67, 214, 24);
+		lbl_addFolder.setBounds(73, 69, 214, 24);
 		pnl_Directory.add(lbl_addFolder);
 		
 		JPanel pnl_Info = new JPanel();
 		contentPane.add(pnl_Info, BorderLayout.CENTER);
-		GridBagLayout gbl_pnl_Info = new GridBagLayout();
-		gbl_pnl_Info.columnWidths = new int[] {0, 0, 0, 10, 30, 0};
-		gbl_pnl_Info.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_pnl_Info.columnWeights = new double[]{0.5, 0.0, 0.0, 0.0, 0.0};
-		gbl_pnl_Info.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		pnl_Info.setLayout(gbl_pnl_Info);
+		pnl_Info.setLayout(null);
 		
 		JLabel lbl_Name = new JLabel("Name");
+		lbl_Name.setBounds(21, 36, 51, 21);
 		lbl_Name.setFont(new Font("Verdana", Font.BOLD, 16));
-		GridBagConstraints gbc_lbl_Name = new GridBagConstraints();
-		gbc_lbl_Name.insets = new Insets(0, 0, 5, 5);
-		gbc_lbl_Name.gridx = 0;
-		gbc_lbl_Name.gridy = 0;
-		pnl_Info.add(lbl_Name, gbc_lbl_Name);
+		pnl_Info.add(lbl_Name);
 		
 		txt_Name = new JTextField();
+		txt_Name.setBounds(95, 34, 194, 25);
 		txt_Name.setFont(new Font("Verdana", Font.BOLD, 16));
 		txt_Name.setColumns(10);
 		txt_Name.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_txt_Name = new GridBagConstraints();
-		gbc_txt_Name.insets = new Insets(0, 0, 5, 5);
-		gbc_txt_Name.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txt_Name.gridx = 1;
-		gbc_txt_Name.gridy = 0;
-		pnl_Info.add(txt_Name, gbc_txt_Name);
+		pnl_Info.add(txt_Name);
 		
 		JLabel lbl_Singer = new JLabel("Singer");
+		lbl_Singer.setBounds(21, 85, 58, 41);
 		lbl_Singer.setFont(font);
-		GridBagConstraints gbc_lbl_Singer = new GridBagConstraints();
-		gbc_lbl_Singer.insets = new Insets(0, 0, 5, 5);
-		gbc_lbl_Singer.anchor = GridBagConstraints.NORTH;
-		gbc_lbl_Singer.fill = GridBagConstraints.VERTICAL;
-		gbc_lbl_Singer.gridx = 0;
-		gbc_lbl_Singer.gridy = 1;
-		pnl_Info.add(lbl_Singer, gbc_lbl_Singer);
+		pnl_Info.add(lbl_Singer);
 		
 		txt_Singer = new JTextField();
+		txt_Singer.setBounds(95, 96, 194, 25);
 		txt_Singer.setFont(font);
 		txt_Singer.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_txt_Singer = new GridBagConstraints();
-		gbc_txt_Singer.insets = new Insets(0, 0, 5, 5);
-		gbc_txt_Singer.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txt_Singer.gridx = 1;
-		gbc_txt_Singer.gridy = 1;
-		pnl_Info.add(txt_Singer, gbc_txt_Singer);
+		pnl_Info.add(txt_Singer);
 		txt_Singer.setColumns(10);
-		if(mode != ADDMODE) lbl_Image = new ChangeableImage();
-		else {
+		lbl_Image = new ChangeableImage();
+		if(!designmode) {
 			lbl_Image = new ChangeableImage() {
 				@Override
 				public void setImageCurrent(String directory) {
@@ -248,8 +231,10 @@ public class AddMusic extends JFrame {
 				}
 			};
 		}
+		lbl_Image.setBounds(116, 229, 160, 143);
+
 		if(info != null)lbl_Image.setImageCurrentwithImage(info.getCover());
-		lbl_Image.setPreferredSize(new Dimension(100,120));
+		lbl_Image.setPreferredSize(new Dimension(lbl_Image.getWidth(),lbl_Image.getHeight()));
 		GridBagConstraints gbc_lbl_Image = new GridBagConstraints();
 		gbc_lbl_Image.weighty = 1.0;
 		gbc_lbl_Image.weightx = 1.0;
@@ -262,48 +247,28 @@ public class AddMusic extends JFrame {
 		lbl_Image.setVisible(true);
 		
 		JLabel lbl_Time = new JLabel("Time");
+		lbl_Time.setBounds(21, 147, 44, 21);
 		lbl_Time.setFont(new Font("Verdana", Font.BOLD, 16));
-		GridBagConstraints gbc_lbl_Time = new GridBagConstraints();
-		gbc_lbl_Time.insets = new Insets(0, 0, 5, 5);
-		gbc_lbl_Time.gridx = 0;
-		gbc_lbl_Time.gridy = 2;
-		pnl_Info.add(lbl_Time, gbc_lbl_Time);
+		pnl_Info.add(lbl_Time);
 		
 		txt_Time = new JTextField();
+		txt_Time.setBounds(95, 145, 194, 25);
 		txt_Time.setFont(new Font("Verdana", Font.BOLD, 16));
 		txt_Time.setColumns(10);
 		txt_Time.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		txt_Time.setEnabled(false);
-		GridBagConstraints gbc_txt_Time = new GridBagConstraints();
-		gbc_txt_Time.insets = new Insets(0, 0, 5, 5);
-		gbc_txt_Time.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txt_Time.gridx = 1;
-		gbc_txt_Time.gridy = 2;
-		pnl_Info.add(txt_Time, gbc_txt_Time);
+		pnl_Info.add(txt_Time);
 		
 		JLabel lbl_Date = new JLabel("Date");
+		lbl_Date.setBounds(21, 194, 42, 21);
 		lbl_Date.setVerticalAlignment(SwingConstants.BOTTOM);
 		lbl_Date.setFont(new Font("Verdana", Font.BOLD, 16));
-		GridBagConstraints gbc_lbl_Date = new GridBagConstraints();
-		gbc_lbl_Date.insets = new Insets(0, 0, 5, 5);
-		gbc_lbl_Date.gridx = 0;
-		gbc_lbl_Date.gridy = 3;
-		pnl_Info.add(lbl_Date, gbc_lbl_Date);
+		pnl_Info.add(lbl_Date);
 		
 		JPanel pnl_Date = new JPanel();
-		GridBagConstraints gbc_pnl_Date = new GridBagConstraints();
-		gbc_pnl_Date.fill = GridBagConstraints.HORIZONTAL;
-		gbc_pnl_Date.insets = new Insets(0, 0, 5, 5);
-		gbc_pnl_Date.gridx = 1;
-		gbc_pnl_Date.gridy = 3;
-		pnl_Info.add(pnl_Date, gbc_pnl_Date);
+		pnl_Date.setBounds(95, 194, 194, 25);
+		pnl_Info.add(pnl_Date);
 		pnl_Date.setLayout(new BorderLayout(0, 0));
-		
-		txt_Date = new JTextField();
-		txt_Date.setFont(new Font("Verdana", Font.BOLD, 16));
-		txt_Date.setColumns(10);
-		txt_Date.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnl_Date.add(txt_Date, BorderLayout.CENTER);
 		
 		btn_SetDate = new JButton("");
 		btn_SetDate.addMouseListener(new MouseAdapter() {
@@ -324,7 +289,14 @@ public class AddMusic extends JFrame {
 				btn_SetDate.getPreferredSize().height)
 				);
 		
+		txt_Date = new JTextField();
+		pnl_Date.add(txt_Date, BorderLayout.CENTER);
+		txt_Date.setFont(new Font("Verdana", Font.BOLD, 16));
+		txt_Date.setColumns(10);
+		txt_Date.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
 		btn_Ok = new Mybutton("Add");
+		btn_Ok.setBounds(126, 382, 111, 41);
 		btn_Ok.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -343,15 +315,7 @@ public class AddMusic extends JFrame {
 				}
 			}
 		});
-
-		GridBagConstraints gbc_btn_Add = new GridBagConstraints();
-		gbc_btn_Add.ipady = 20;
-		gbc_btn_Add.weighty = 0.2;
-		gbc_btn_Add.ipadx = 60;
-		gbc_btn_Add.insets = new Insets(0, 0, 0, 5);
-		gbc_btn_Add.gridx = 1;
-		gbc_btn_Add.gridy = 4;
-		pnl_Info.add(btn_Ok, gbc_btn_Add);
+		pnl_Info.add(btn_Ok);
 		setIsActiveInput(false);
 	}
 	private void close() {
@@ -399,6 +363,7 @@ public class AddMusic extends JFrame {
 		txt_Singer.setEnabled(isActiveInput);
 		txt_Date.setEnabled(false);
 		btn_SetDate.setEnabled(isActiveInput);
+		lbl_Image.setEnabled(isActiveInput);
 	}
 
 	public Musicinfo getInfo() {
@@ -494,4 +459,5 @@ public class AddMusic extends JFrame {
 				0,
 				-calendarpanel.getHeight()-boss.getPreferredSize().height);
 	}
+	
 }

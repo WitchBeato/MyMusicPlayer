@@ -1,5 +1,6 @@
 package userUI.information;
 
+import java.awt.CheckboxMenuItem;
 import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
@@ -71,7 +72,7 @@ public class Musicinfo implements Serializable{
 		this.id = id;
 	}
 	public String getName() {
-		return name;
+		return checkIt(name);
 	}
 	public void setNamewithDirectory(String name) {
 		if(name == null) return;
@@ -85,13 +86,13 @@ public class Musicinfo implements Serializable{
 		this.name = name;
 	}
 	public String getSinger() {
-		return singer;
+		return checkIt(singer);
 	}
 	public void setSinger(String singer) {
 		this.singer = singer;
 	}
 	public String getDate() {
-		return date;
+		return checkIt(date);
 	}
 	public void setDate(String date) {
 		this.date = date;
@@ -157,6 +158,10 @@ public class Musicinfo implements Serializable{
 	private void setDirectoryFamily(String directory) {
 		String directoryFamily = StringEditor.giveStringforIterative(directory, '\\', 2).substring(1);;
 		this.directoryFamily = directoryFamily;
+	}
+	private String checkIt(String text) {
+		if(text == null) return "N/A";
+		return text;
 	}
 
 }

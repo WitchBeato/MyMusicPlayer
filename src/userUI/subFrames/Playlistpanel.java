@@ -7,6 +7,7 @@ import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
 import userUI.information.Playlist;
 import userUI.information.Settings;
+import userUI.mycomponents.ListMusicPanel;
 import userUI.mycomponents.Mainmenu;
 import userUI.mycomponents.Submenu;
 
@@ -142,6 +143,7 @@ public class Playlistpanel extends JPanel {
 	private void openLastListened() {
 		Playlist playlist = setting.getLastListened();
 		Musicpanel musicpanel = new Musicpanel(playlist, parent);
+		musicpanel.thisLastListened();
 		parent.panelChange(musicpanel);
 		
 	}

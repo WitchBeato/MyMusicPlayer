@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicSplitPaneUI.BasicVerticalLayoutManager;
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
@@ -44,6 +46,7 @@ public class Musicpanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private String directory = null;
 	private Playlist playlist = null;
+	private Mybutton btn_Settings;
 	private JLabel lbl_Text;
 	private int column, row;
 	private Musicpanel me = this;
@@ -90,7 +93,7 @@ public class Musicpanel extends JPanel {
 		pnl_North.setPreferredSize(new Dimension(0,100));
 		pnl_North.setLayout(new BorderLayout(0, 0));
 		
-		Mybutton btn_Settings = new Mybutton();
+		btn_Settings = new Mybutton();
 		btn_Settings.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -132,8 +135,10 @@ public class Musicpanel extends JPanel {
 		JPanel pnl_South = new JPanel();
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
+		pnl_Musics = new ListMusicPanel();
 		
-		pnl_Musics = new ListMusicPanel(list,isDirectory,frame);
+		if(playlist != null) pnl_Musics = new ListMusicPanel(playlist,isDirectory,frame);
+		else pnl_Musics = new ListMusicPanel(list,isDirectory,frame);
 		pnl_Musics.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -190,5 +195,16 @@ public class Musicpanel extends JPanel {
 	public void repaintMusiclist() {
 		pnl_Musics.sortItems();
 		pnl_Musics.revalidate();
+	}
+	public ListMusicPanel getMusicList() {
+		return pnl_Musics;
+	}
+	//code work on only this panel should be last listened
+	public void thisLastListened() {
+		if(lbl_Text == null) return;
+		pnl_Musics.setIsDirectory(true);
+		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
+		btn_Settings.setVisible(false);
+		
 	}
 }

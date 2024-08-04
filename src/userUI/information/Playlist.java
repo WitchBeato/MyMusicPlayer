@@ -43,6 +43,7 @@ public class Playlist implements Serializable{
 		int id = info.getId();
 		list.remove(id);
 		listSearch.remove(info.getDirectory());
+		if(list.size() == 0) return;
 		Musicinfo last = list.getLast();
 		last.setId(id);
 		list.add(last);

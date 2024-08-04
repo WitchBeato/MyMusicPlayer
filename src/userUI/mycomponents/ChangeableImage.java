@@ -28,6 +28,7 @@ public class ChangeableImage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel lbl_AddLogo, lbl_Image;
+	private Boolean enabled;
 	private BufferedImage currentImage = null;
 	public ChangeableImage() {
 		init();
@@ -58,6 +59,7 @@ public class ChangeableImage extends JPanel {
 		lpnl_Content.add(lbl_Image,JLayeredPane.DEFAULT_LAYER);
 		
 		lbl_AddLogo = new JLabel("");
+		lbl_AddLogo.setVerticalAlignment(SwingConstants.TOP);
 		lbl_AddLogo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -106,12 +108,14 @@ public class ChangeableImage extends JPanel {
 		currentImage = Photoeditor.iconToBufferedImage(icon);
 	}
 	private void mouseOn() {
+	if(!enabled) return;
 	lbl_AddLogo.setVisible(true);
 	}
 	private void mouseExit() {
 		lbl_AddLogo.setVisible(false);
 	}
 	private void mouseClick(){
+		if(!enabled) return;
 		String imagedtr = StringEditor.selectFile(SupportedTypes.photoExt);
 		if(imagedtr != null) {
 			setImageCurrent(imagedtr);
@@ -122,11 +126,20 @@ public class ChangeableImage extends JPanel {
 		// TODO Auto-generated method stub
 		super.setPreferredSize(preferredSize);
 		if(lbl_AddLogo == null) return;
+		lbl_AddLogo.setPreferredSize(preferredSize);
 		lbl_AddLogo.setIcon(Photoeditor.photoScaleImage(
 				Dtr.getImage("add.png")
 				, preferredSize.width
 				, preferredSize.height));
 		
+	}
+	@Override
+	public void setEnabled(boolean enabled) {
+		// TODO Auto-generated method stub
+		this.enabled = enabled;
+		super.setEnabled(enabled);
+		if(lbl_AddLogo == null) return;
+		lbl_AddLogo.setEnabled(enabled);
 	}
 	public BufferedImage getCurrentImage() {
 		return currentImage;

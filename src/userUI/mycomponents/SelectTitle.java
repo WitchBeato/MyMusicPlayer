@@ -42,10 +42,10 @@ public class SelectTitle extends JPanel {
 	private Boolean isDirectory;
 	private Mybutton btn_Play, btn_Property, btn_Delete;
 	private JLabel lbl_Title, lbl_Photo;
-	private MainFrame mainframe;
-	public SelectTitle(Musicinfo info, Boolean isDirectory, MainFrame mainframe) {
+	private ListMusicPanel parent;
+	public SelectTitle(Musicinfo info, Boolean isDirectory, ListMusicPanel parent) {
 		this.isDirectory = isDirectory;
-		this.mainframe = mainframe;
+		this.parent = parent;
 		init();
 		setTitle(info);
 	}
@@ -70,7 +70,7 @@ public class SelectTitle extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ClickedRight(e);
-				if(e.getClickCount() == 2) {
+				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
 					playMusic(title.getDirectory());
 				}
 			}
@@ -86,15 +86,15 @@ public class SelectTitle extends JPanel {
 			}
 		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_Photo.setBounds(25, 0, 73,95);
+		lbl_Photo.setBounds(30, 0, 76,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
 		
 		btn_Delete = new Mybutton();
-		btn_Delete.setBounds(0, 0, 29, 29);
+		btn_Delete.setBounds(0, 0, 20, 20);
 		lpnl_Photo.add(btn_Delete,JLayeredPane.POPUP_LAYER);
 		
 		btn_Property = new Mybutton();
-		btn_Property.setBounds(98, 0, 29, 29);
+		btn_Property.setBounds(107, 0, 20, 20);
 		lpnl_Photo.add(btn_Property,JLayeredPane.POPUP_LAYER);
 		
 		
@@ -105,6 +105,9 @@ public class SelectTitle extends JPanel {
 		lbl_Title.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+					playMusic(title.getDirectory());
+				}
 				ClickedRight(e);
 			}
 		});
@@ -122,7 +125,7 @@ public class SelectTitle extends JPanel {
 				lbl_Photo.getSize().height));
 		
 		btn_Play = new Mybutton();
-		btn_Play.setBounds(98, 66, 29, 29);
+		btn_Play.setBounds(107, 75, 20, 20);
 		btn_Play.setIcon(Photoeditor.photoScaleImage(Imagedtr.playbutton,
 				btn_Play.getSize().width, 
 				btn_Play.getSize().height));
@@ -145,6 +148,7 @@ public class SelectTitle extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(SwingUtilities.isLeftMouseButton(e))
 				playMusic(title.getDirectory());
 			}
 			@Override
@@ -163,6 +167,12 @@ public class SelectTitle extends JPanel {
 				// TODO Auto-generated method stub
 				mouseLeaveGlob();
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				removeItem();
+			}
 		});
 		btn_Delete.setVisible(false);
 		btn_Property.addMouseListener(new MouseAdapter() {
@@ -174,6 +184,11 @@ public class SelectTitle extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
 				mouseLeaveGlob();
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				openFeature();
 			}
 		});
 		setButtonsVisible(false);
@@ -206,30 +221,47 @@ public class SelectTitle extends JPanel {
 		setButtonsVisible(true);
 	}
 	private void playMusic(String directory) {
-		MusicPlayer player = mainframe.getPlayer();
+		MusicPlayer player = parent.getMainFrame().getPlayer();
 		player.play(title,0);
-		mainframe.setFullTime(MusicPlayer.giveLenght(directory));
+		parent.getMainFrame().setFullTime(MusicPlayer.giveLenght(directory));
 		addLastListened();
 		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
 	}
 	private void ClickedRight(MouseEvent e) {
 	if(!SwingUtilities.isRightMouseButton(e)) return;
-	JMenuItem detail = MenuItemlist.detail;
-	detail.addActionListener(ae -> openFeature());
 	JPopupMenu menu = new JPopupMenu();
-	if(!isDirectory) menu.add(detail);
+	JMenuItem detail = MenuItemlist.detail;
+	menu.add(detail);
+	detail.addActionListener(ae -> openFeature());
+	if(!isDirectory) {
+		JMenuItem remove = new JMenuItem("Remove");
+		remove.addActionListener(ae -> removeItem());
+		menu.add(remove);
+	}
+
 	menu.show(e.getComponent(), e.getX(), e.getY());
    }
     private void openFeature() {
-		AddMusic addmusic = mainframe.getAddpanel();
-		if(addmusic != null) addmusic.dispose();
-		mainframe.setAddpanel(new AddMusic(AddMusic.UPDATEMODE));
-		addmusic = mainframe.getAddpanel();
+		AddMusic addmusic = parent.getMainFrame().getAddpanel();
+		if(addmusic != null) {
+			addmusic.dispose();
+
+		}
+		addmusic = new AddMusic(AddMusic.UPDATEMODE);
+		if(isDirectory) addmusic.thisDirectoryfile();
+		parent.getMainFrame().setAddpanel(addmusic);
 		addmusic.setInfo(title);
+		addmusic.setFocusable(true);
 		addmusic.setVisible(true);
 	}
     private void addLastListened() {
-    	Playlist lastlistened = mainframe.getSettings().getLastListened();
+    	Playlist lastlistened = parent.getMainFrame().getSettings().getLastListened();
     	lastlistened.addtoList(title);
+    }
+    private void removeItem() {
+    	Playlist playlist = parent.getPlaylist();
+    	playlist.removeList(title);
+    	parent.sortItems();
+    	parent.repaint();
     }
 }
