@@ -20,18 +20,25 @@ import userUI.subFrames.Playlistpanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
+
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	public static final int MINMODE = 0, STDMODE = 1;
+	private int mode;
+	private MainFrame me = this;
 	private JPanel contentPane, pnl_Songs;
 	private Playlistpanel pnl_Selection;
 	private Settings setting = new Settings();
 	private MusicPlayer player;
 	private Playerpanel pnl_Player;
 	private AddMusic addpanel;
+	private Dimension minSize = new Dimension(430,400);
 	/**
 	 * Launch the application.
 	 */
@@ -59,7 +66,9 @@ public class MainFrame extends JFrame {
 				super.windowClosing(e);
 				setting.saveAll();
 			}
+			
 		});
+		this.setMinimumSize(minSize);
 		setPlayer(new MusicPlayer());
 		setTitle("MymusicPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,8 +102,44 @@ public class MainFrame extends JFrame {
 		pnl_Songs =  new JPanel();
 		pnl_Center.add(pnl_Songs, BorderLayout.CENTER);
 		pnl_Songs.setLayout(new BorderLayout(0, 0));
-		PlayerError playererror = new PlayerError(PlayerMessages.noChoice);
+		PlayerError playererror = new PlayerError(PlayerMessages.noChoice,this);
 		panelChange(playererror);
+		this.addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				int widht = me.getWidth();
+				int height = me.getHeight();
+				if(pnl_Selection == null) return;
+				if(widht<500 && mode != MINMODE) {
+					setMinimumMode();
+					mode = MINMODE;
+				}
+				else if(widht>500 && mode != STDMODE){
+					setSubFramesVisibility(true);
+					mode = STDMODE;
+				}
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	public void panelChange(JPanel panel) {
 		pnl_Songs.removeAll();
@@ -132,5 +177,13 @@ public class MainFrame extends JFrame {
 	public void musiclistRepaint() {
 		pnl_Songs.repaint();
 	}
-	
+	private void setMinimumMode() {
+		setSubFramesVisibility(false);
+	}
+	private void setSubFramesVisibility(Boolean visible) {
+		pnl_Selection.setVisible(visible);
+	}
+	public int getMinMode() {
+		return mode;
+	}
 }

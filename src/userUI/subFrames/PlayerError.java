@@ -1,4 +1,5 @@
 package userUI.subFrames;
+import userUI.MainFrame;
 import userUI.information.MessageData;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -11,6 +12,8 @@ import staticinfo.Mycolors;
 
 import java.awt.Font;
 import javax.swing.SpringLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class PlayerError extends JPanel {
 
@@ -18,14 +21,37 @@ public class PlayerError extends JPanel {
 	public static Font universal = new Font("Yu Gothic UI", Font.PLAIN, 25);
 	private JLabel lbl_Entry, lbl_Text;
 	private JPanel pnl_North;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
+	public PlayerError(MessageData data,MainFrame frame) {
+		this.frame = frame;
+		init();
+		readMessage(data);
+	}
 	public PlayerError(MessageData data) {
 		init();
 		readMessage(data);
 	}
 	public PlayerError() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				if(frame == null) return;
+				int getMode = frame.getMinMode();
+				switch (getMode) {
+				case MainFrame.MINMODE:
+					lbl_Entry.setVerticalAlignment(SwingConstants.WEST);
+					break;
+                case MainFrame.STDMODE:
+					lbl_Entry.setVerticalAlignment(SwingConstants.CENTER);
+					break;
+				default:
+					break;
+				}
+			}
+		});
 		init();
 	}
 	private void init() {

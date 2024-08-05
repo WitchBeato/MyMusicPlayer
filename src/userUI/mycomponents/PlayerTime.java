@@ -121,7 +121,12 @@ public class PlayerTime extends JPanel {
 		if(player == null) return;
 		Timer timer = mother.getTimer();
 		mother.closeMusic();
-		player.play(player.getInfo(), value);
+		try {
+			player.play(player.getInfo(), value);
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			return;
+		}
 		mother.setCurrent(value);
 		mother.setisplay(true);
 		//mother.setTimer();

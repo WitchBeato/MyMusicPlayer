@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import userUI.MainFrame;
+import userUI.ShowPlaylistProperty;
 import userUI.information.MessageData;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
@@ -52,6 +53,7 @@ public class Musicpanel extends JPanel {
 	private Musicpanel me = this;
 	private MainFrame frame;
 	private ListMusicPanel pnl_Musics;
+	private ArrayList<Musicinfo> list;
 	/**
 	 * Create the panel.
 	 */
@@ -73,7 +75,7 @@ public class Musicpanel extends JPanel {
 	private void init() {
 		this.setBounds(0, 0, 667, 469);
 		Boolean isDirectory = null;
-		ArrayList<Musicinfo> list = new ArrayList<>();
+		list = new ArrayList<>();
 		MessageData messagedata = null;
 		if(directory != null) {
 			list = Playlistbackend.Directorytoplaylist(directory).getList(); 
@@ -98,6 +100,7 @@ public class Musicpanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				rightClick(e);
+				showPlaylistInfo();
 			}
 		});
 		btn_Settings.setPreferredSize(new Dimension(60,0));
@@ -206,5 +209,19 @@ public class Musicpanel extends JPanel {
 		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
 		btn_Settings.setVisible(false);
 		
+	}
+	private void showPlaylistInfo() {
+		ShowPlaylistProperty sa = null;
+		if(playlist == null) sa = new ShowPlaylistProperty(directory,list,this);
+		else sa = new ShowPlaylistProperty(playlist,this);
+		sa.setVisible(true);
+	}
+	@Override
+	public void repaint() {
+		// TODO Auto-generated method stub
+		super.repaint();
+		if(playlist == null) return;
+		lbl_Text.setText(playlist.getName());
+		frame.playlistRepaint();
 	}
 }
