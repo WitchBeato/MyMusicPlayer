@@ -54,6 +54,7 @@ public class Musicpanel extends JPanel {
 	private MainFrame frame;
 	private ListMusicPanel pnl_Musics;
 	private ArrayList<Musicinfo> list;
+	private SortMusics pnl_Sort;
 	/**
 	 * Create the panel.
 	 */
@@ -138,6 +139,10 @@ public class Musicpanel extends JPanel {
 		JPanel pnl_South = new JPanel();
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
+		
+		JPanel pnl_Items = new JPanel();
+		pnl_South.add(pnl_Items);
+		
 		pnl_Musics = new ListMusicPanel();
 		
 		if(playlist != null) pnl_Musics = new ListMusicPanel(playlist,isDirectory,frame);
@@ -148,9 +153,14 @@ public class Musicpanel extends JPanel {
 				rightClick(e);
 			}
 		});
+		pnl_Items.setLayout(new BorderLayout(0, 0));
 		pnl_Musics.setBackground(new Color(255, 255, 255));
-		pnl_South.add(pnl_Musics);
+		pnl_Items.add(pnl_Musics);
 		
+		pnl_Sort = new SortMusics(pnl_Musics,isDirectory);
+		pnl_Sort.setPreferredSize(new Dimension(pnl_Musics.getWidth(),40));
+		pnl_Items.add(pnl_Sort, BorderLayout.NORTH);
+		pnl_Sort.setVisible(false);
 		JPanel panel1 = new JPanel();
 		panel1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -187,13 +197,21 @@ public class Musicpanel extends JPanel {
 		}
 	}
 	private void rightClick(MouseEvent e) {
+		pnl_Sort.setVisible(false);
 		if(!SwingUtilities.isRightMouseButton(e)) return;
 		JPopupMenu menu = new JPopupMenu();
 		JMenuItem refresh = MenuItemlist.refresh;
 		refresh.addActionListener(ae -> repaintMusiclist());
+		addSort(pnl_Sort,menu, e);
 		menu.add(refresh);
 		menu.show(e.getComponent(), e.getX(), e.getY());
 		
+	}
+	public void addSort(JPanel visiblePanel,JPopupMenu menu,MouseEvent e) {
+		if(!SwingUtilities.isRightMouseButton(e)) return;
+		JMenuItem sort = MenuItemlist.sort;
+		sort.addActionListener(ae -> pnl_Sort.setVisible(true));
+		menu.add(sort);
 	}
 	public void repaintMusiclist() {
 		pnl_Musics.sortItems();

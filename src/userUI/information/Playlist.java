@@ -2,6 +2,7 @@ package userUI.information;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 
@@ -37,13 +38,25 @@ public class Playlist implements Serializable{
 	public void addtoList(Musicinfo info) {
 		String directory = info.getDirectory();
 		if(listSearch.containsKey(directory)) return;
-		if(listIDSearch.containsKey(info.getId())) info.setId(list.size());
+		try {
+			if(listIDSearch.containsKey(info.getId())) info.setId(list.size());
+		} catch (NullPointerException e) {
+			info.setId(0);
+		}
+
 		list.add(info);
 		listSearch.put(directory, info);
-		listIDSearch.put(info.getId(), info);
+		try {
+			listIDSearch.put(info.getId(), info);
+		} catch (NullPointerException e) {
+			listIDSearch = new HashMap<>();
+			listIDSearch.put(info.getId(), info);
+		}
+
 	}
 	public void removeList(Musicinfo info) {
 		int id = info.getId();
+		if(!(list.get(id) == info)) return;
 		list.remove(id);
 		listSearch.remove(info.getDirectory());
 		listIDSearch.remove(info.getId());
@@ -65,4 +78,20 @@ public class Playlist implements Serializable{
 	public void mergePlaylist(Playlist another) {
 		list.addAll(another.getList());
 	}
+	public void mergePlaylist(ArrayList<Musicinfo> another) {
+		list.addAll(another);
+	}
+	
+	public void removeAll(ArrayList<Musicinfo> difList) {
+		for (Musicinfo musicinfo : difList) {
+			this.removeList(musicinfo);
+		}
+	}
+	//this method take all item from this playlist to newPlaylist
+	public void movefromPlaylist(ArrayList<Musicinfo> diflist, Playlist newPlaylist) {
+		if(newPlaylist == null) return;
+		removeAll(diflist);
+		newPlaylist.mergePlaylist(diflist);
+	}
+
 }
