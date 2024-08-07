@@ -242,4 +242,10 @@ public class Musicpanel extends JPanel {
 		lbl_Text.setText(playlist.getName());
 		frame.playlistRepaint();
 	}
+	public int getListSize() {
+		return list.size();
+	}
+	public Musicinfo getInfo(int id) {
+		return list.get(id);
+	}
 }

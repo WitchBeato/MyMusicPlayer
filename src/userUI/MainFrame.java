@@ -11,14 +11,17 @@ import javax.swing.border.EmptyBorder;
 import backend.MusicPlayer;
 import staticinfo.Mycolors;
 import staticinfo.PlayerMessages;
+import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
 import userUI.information.Playlist;
 import userUI.information.Settings;
+import userUI.subFrames.Musicpanel;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
@@ -81,7 +84,7 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		pnl_Player = new Playerpanel(this.contentPane,player);
+		pnl_Player = new Playerpanel(this,player);
 		pnl_Player.setPreferredSize(new Dimension(0,51));
 		contentPane.add(pnl_Player, BorderLayout.SOUTH);
 		pnl_Player.setBackground(Mycolors.openGray);
@@ -186,5 +189,30 @@ public class MainFrame extends JFrame {
 	}
 	public int getMinMode() {
 		return mode;
+	}
+	public Musicpanel getMusicList() {
+		for (Component componenet : pnl_Songs.getComponents()) {
+			if(componenet instanceof Musicpanel) {
+				return (Musicpanel) componenet;
+			}
+		}
+		return null;
+	}
+	public Musicinfo setNextSong(int skipped) {
+		if(player == null) return null;
+		int id = player.getID();
+		Musicpanel musicpanel = getMusicList();
+		if(musicpanel == null) return null;
+		int newID = id+skipped;
+		if(!isSongExist(newID)) return null;
+		Musicinfo info = musicpanel.getInfo(newID);
+		player.play(info, 0);
+		return info;
+	}
+	public Boolean isSongExist(int id) {
+		Musicpanel musicpanel = getMusicList();
+		if(id < 0 || id == musicpanel.getListSize()) return false;
+		if(musicpanel.getInfo(id) != null) return true;
+		else return false;
 	}
 }
