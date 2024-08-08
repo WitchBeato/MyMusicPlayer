@@ -123,6 +123,9 @@ public class ListMusicPanel extends JPanel {
 		this.isSelectMode = isSelectMode;
 		setComponentsMode(isSelectMode);
 	}
+	public MainFrame getFrame() {
+		return frame;
+	}
 	private void setComponentsMode(Boolean isSelectMode) {
 		Component componentList[] = this.getComponents();
 		for (int i = 0; i < componentList.length; i++) {
@@ -136,5 +139,6 @@ public class ListMusicPanel extends JPanel {
 			}
 		}
 	}
+	
 
 }

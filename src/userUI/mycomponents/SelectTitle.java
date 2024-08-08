@@ -13,6 +13,7 @@ import backend.Photoeditor;
 import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
 import userUI.AddMusic;
+import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.information.Settings;
@@ -263,7 +264,19 @@ public class SelectTitle extends JPanel {
 		player.play(title,0);
 		parent.getMainFrame().setFullTime(MusicPlayer.giveLenght(directory));
 		addLastListened();
+		setBtnVisibility();
 		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
+	}
+	public void setBtnVisibility() {
+		MainFrame frame = getMainFrame();
+		int id = frame.getPlayer().getID();
+		Boolean isNextExist = frame.isSongExist(id+1);
+		Boolean isPrevExist = frame.isSongExist(id-1);
+		frame.setPrevEnabled(isPrevExist);
+		frame.setNextEnabled(isNextExist);
+	}
+	private MainFrame getMainFrame() {
+		return parent.getFrame();
 	}
 	private void ClickedRight(MouseEvent e) {
 	if(!SwingUtilities.isRightMouseButton(e)) return;

@@ -290,5 +290,11 @@ public class Playerpanel extends JPanel {
 		if(info == null) return;
 		setFulltime(info.getTime());
 	}
+	public void setPrevVisibility(Boolean isActive) {
+		btn_Prev.setEnabled(isActive);
+	}
+	public void setNextVisibility(Boolean isActive) {
+		btn_Onward.setEnabled(isActive);
+	}
 
 }
