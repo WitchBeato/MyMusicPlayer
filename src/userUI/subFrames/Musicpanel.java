@@ -226,7 +226,12 @@ public class Musicpanel extends JPanel {
 		pnl_Musics.setIsDirectory(true);
 		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
 		btn_Settings.setVisible(false);
-		
+	}
+	public void thisAllMusics() {
+		if(lbl_Text == null) return;
+		pnl_Musics.setIsDirectory(false);
+		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
+		btn_Settings.setVisible(false);
 	}
 	private void showPlaylistInfo() {
 		ShowPlaylistProperty sa = null;

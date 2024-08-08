@@ -2,9 +2,9 @@ package userUI.mycomponents;
 
 import javax.swing.JPopupMenu;
 
-public class MyPopUp extends JPopupMenu{
+public class Popupconstant extends JPopupMenu{
 	Boolean isHideAllowed;
-	public MyPopUp(){
+	public Popupconstant(){
 		super();
 		isHideAllowed = false;
 	}

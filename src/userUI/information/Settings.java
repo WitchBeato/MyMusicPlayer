@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import staticinfo.Dtr;
 import staticinfo.StaticNames;
@@ -13,7 +14,8 @@ import staticinfo.StaticNames;
 public class Settings {
 	public static Boolean DEBUG_MODE = true;
 	private Musiclist musiclist[] = new Musiclist[2];
-	private Playlist lastListened = new Playlist("Last listened", -1) {
+	private Playlist allMusic = new Playlist("All Musics", -1);
+	private Playlist lastListened = new Playlist("Last listened", -2) {
 		@Override
 		public void addtoList(Musicinfo info) {
 			if(this.getList().size()>20)return;
@@ -21,8 +23,10 @@ public class Settings {
 			
 		};
 	};
+
 	public void saveAll() {
 		saveMusiclist();
+		saveLastlistened();
 	}
 	public Musiclist[] getMusiclistArray() {
 		if(musiclist == null) return null;
@@ -71,6 +75,16 @@ public class Settings {
 	public void openPlaylist() {
 		String lastListeneddtr = Dtr.getDataDirectory() + StaticNames.lastListenedName;
 		lastListened = (Playlist) openObject(lastListeneddtr);
+	}
+	public void openAllMusics(Musiclist list) {
+		if(allMusic.getList().size() != 0) return;
+		ArrayList<Playlist> playlistList = list.getMusiclist();
+		for (Playlist playlist : playlistList) {
+			allMusic.mergePlaylist(playlist);
+		}
+	}
+	public Playlist getAllMusic() {
+		return allMusic;
 	}
 	private void saveObject(String directory, Object data) throws FileNotFoundException {
 	    ObjectOutputStream oos = null;
