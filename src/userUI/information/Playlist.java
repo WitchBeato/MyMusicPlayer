@@ -62,9 +62,11 @@ public class Playlist implements Serializable{
 		listIDSearch.remove(info.getId());
 		if(list.size() == 0) return;
 		Musicinfo last = list.getLast();
-		listIDSearch.remove(last.getId());
-		last.setId(id);
-		addtoList(info);
+		int lastID = last.getId();
+		if(lastID < id) return;
+		listIDSearch.remove(lastID);
+		last.setId(id);	
+		addtoList(last);
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -92,6 +94,10 @@ public class Playlist implements Serializable{
 		if(newPlaylist == null) return;
 		removeAll(diflist);
 		newPlaylist.mergePlaylist(diflist);
+	}
+	public Boolean isMusicInfoExist(String directory) {
+		if(listSearch.get(directory) != null) return true;
+		else return false;
 	}
 
 }
