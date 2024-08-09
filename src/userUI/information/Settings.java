@@ -18,7 +18,7 @@ public class Settings {
 	private Playlist allMusic = new Playlist("All Musics", -1) {
 		@Override
 		public void removeList(Musicinfo info) {
-			super.removeList(info);
+			super.removeListAllMusic(info);
 			removeonAll(info);
 		};
 		
