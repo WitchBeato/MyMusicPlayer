@@ -218,6 +218,7 @@ public class Musicpanel extends JPanel {
 		if(!SwingUtilities.isRightMouseButton(e)) return;
 		JMenuItem sort = MenuItemlist.sort;
 		sort.addActionListener(ae -> setSortVisible(true));
+		pnl_Sort.setSelectMode(false);
 		menu.add(sort);
 	}
 	public void repaintMusiclist() {
@@ -263,7 +264,6 @@ public class Musicpanel extends JPanel {
 	public void setSortVisible(Boolean visible) {
 		
 		pnl_Sort.setVisible(visible);
-		pnl_Sort.isSelectMode(true);
 	}
 	public SortMusics getSortMusic() {
 		return pnl_Sort;

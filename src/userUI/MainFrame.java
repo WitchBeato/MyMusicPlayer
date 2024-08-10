@@ -244,6 +244,7 @@ public class MainFrame extends JFrame {
 		SortMusics sortmusic = getsortMusic();
 		if(sortmusic == null) return;
 		sortmusic.setSelected(value);
+		if(!sortmusic.getSelectMode())sortmusic.setSelectMode(true);
 	}
 	public int getSelectedValue() {
 		SortMusics sortmusic = getsortMusic();

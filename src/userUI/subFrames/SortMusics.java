@@ -31,11 +31,14 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SortMusics extends JPanel {
 	private JComboBox cmb_Sort;
 	private static final long serialVersionUID = 1L;
 	private int selected = 0, max = 0;
+	private Boolean isSelect;
 	private IntegerLabel lbl_Selected,lbl_Size;
 	/**
 	 * Create the panel.
@@ -57,7 +60,7 @@ public class SortMusics extends JPanel {
 	    init();
 		setAllItems();
 		setMode(isDirectory);
-		isSelectMode(false);
+		setSelectMode(false);
 	}
 	public SortMusics() {
        init();
@@ -143,8 +146,7 @@ public class SortMusics extends JPanel {
 		btn_Close.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				musicpanel.getMusicList().setSelectMode(false);
-				me.setVisible(false);
+				closeSelectMode();
 			}
 		});
 		btn_Close.setBackground(Color.red);
@@ -191,6 +193,13 @@ public class SortMusics extends JPanel {
 		listmusicpanel.sortItems();
 		listmusicpanel.revalidate();
 		listmusicpanel.repaint();
+		closeSelectMode();
+	}
+	private void closeSelectMode() {
+		musicpanel.getMusicList().setSelectMode(false);
+		this.setVisible(false);
+		setSelectMode(false);
+		setSelected(0);
 	}
 	private void getSelectedList() {
 		Chosedlist = musicpanel.getMusicList().turnSelectedtoMusic();
@@ -198,6 +207,7 @@ public class SortMusics extends JPanel {
 	private void setMergePlaylist(Settings setting) {
 		SelectPlaylist selectPlaylist = new SelectPlaylist(setting);
 		selectPlaylist.setVisible(true);
+		closeSelectMode();
 	}
 	public int getSelected() {
 		return selected;
@@ -212,15 +222,23 @@ public class SortMusics extends JPanel {
 	public void setMax(int max) {
 		this.max = max;
 	}
-	public void isSelectMode(Boolean istrue) {
+	public void setSelectMode(Boolean istrue) {
 		pnl_Choices.setVisible(istrue);
 		btn_Close.setVisible(istrue);
 		lbl_Selected.setVisible(istrue);
 		lbl_Size.setVisible(istrue);
 		lbl_Slash.setVisible(istrue);
+		this.isSelect = istrue;
+	}
+	public Boolean getSelectMode() {
+		return isSelect;
 	}
 }
 class IntegerLabel extends JLabel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3978184245000985974L;
 	IntegerLabel(){
 		
 	}
