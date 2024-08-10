@@ -7,6 +7,7 @@ import staticinfo.PlaylistComparators;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.mycomponents.ListMusicPanel;
+import userUI.mycomponents.Mybutton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,82 +21,112 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import javazoom.jl.player.advanced.jlap;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SortMusics extends JPanel {
 	private JComboBox cmb_Sort;
 	private static final long serialVersionUID = 1L;
-	private int Selected = 0, max = 0;
+	private int selected = 0, max = 0;
 	private IntegerLabel lbl_Selected,lbl_Size;
 	/**
 	 * Create the panel.
 	 */
-	private ListMusicPanel musicpanel;
+	private SortMusics me = this;
+	private Musicpanel musicpanel;
 	private Playlist Workedlist;
 	private ArrayList<Musicinfo> Chosedlist;
 	private JLabel lbl_Slash;
-	private JLabel lbl_Message;
-	public SortMusics(ListMusicPanel musicpanel,Boolean isDirectory) {
+	private JPanel pnl_Center;
+	private JPanel pnl_East;
+	private Mybutton btn_Close;
+	private JPanel pnl_Choices;
+	public SortMusics(Musicpanel musicpanel,Boolean isDirectory) {
 		this.musicpanel = musicpanel;
-		Workedlist = musicpanel.getPlayList();
+		Workedlist = musicpanel.getMusicList().getPlaylist();
 	    init();
 		setAllItems();
 		setMode(isDirectory);
-
+		isSelectMode(false);
 	}
 	public SortMusics() {
        init();
 	}
 	private void init() {
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
+		setLayout(new BorderLayout(0, 0));
+		
+		pnl_Center = new JPanel();
+		add(pnl_Center);
+		pnl_Center.setLayout(new BorderLayout(0, 0));
 		
 		cmb_Sort = new JComboBox();
+		pnl_Center.add(cmb_Sort);
 		cmb_Sort.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() != ItemEvent.SELECTED) return;
 				Comparator<Musicinfo> item = (Comparator<Musicinfo>) cmb_Sort.getSelectedItem();
 				if(item == null) return;
 				doSort(item);
+				setSelected(0);
 			}
 		});
-		springLayout.putConstraint(SpringLayout.NORTH, cmb_Sort, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, cmb_Sort, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, cmb_Sort, 36, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, cmb_Sort, 311, SpringLayout.WEST, this);
-		add(cmb_Sort);
+		
+		pnl_East = new JPanel();
+		pnl_East.setPreferredSize(new Dimension(300,0));
+		add(pnl_East, BorderLayout.EAST);
+		SpringLayout sl_pnl_East = new SpringLayout();
+		pnl_East.setLayout(sl_pnl_East);
 		
 		lbl_Selected = new IntegerLabel("00");
-		springLayout.putConstraint(SpringLayout.NORTH, lbl_Selected, 1, SpringLayout.NORTH, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.WEST, lbl_Selected, 6, SpringLayout.EAST, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.EAST, lbl_Selected, 55, SpringLayout.EAST, cmb_Sort);
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, lbl_Selected, 10, SpringLayout.NORTH, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.WEST, lbl_Selected, 10, SpringLayout.WEST, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, lbl_Selected, -249, SpringLayout.EAST, pnl_East);
+		pnl_East.add(lbl_Selected);
 		lbl_Selected.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Selected.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		add(lbl_Selected);
 		
 		lbl_Slash = new JLabel("/");
-		springLayout.putConstraint(SpringLayout.NORTH, lbl_Slash, -2, SpringLayout.NORTH, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.WEST, lbl_Slash, 6, SpringLayout.EAST, lbl_Selected);
-		springLayout.putConstraint(SpringLayout.SOUTH, lbl_Slash, -2, SpringLayout.SOUTH, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.EAST, lbl_Slash, -237, SpringLayout.EAST, this);
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, lbl_Slash, 0, SpringLayout.NORTH, lbl_Selected);
+		sl_pnl_East.putConstraint(SpringLayout.WEST, lbl_Slash, 6, SpringLayout.EAST, lbl_Selected);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, lbl_Slash, -202, SpringLayout.EAST, pnl_East);
+		pnl_East.add(lbl_Slash);
 		lbl_Slash.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Slash.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		add(lbl_Slash);
 		
 		lbl_Size = new IntegerLabel("00");
-		springLayout.putConstraint(SpringLayout.NORTH, lbl_Size, 1, SpringLayout.NORTH, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.WEST, lbl_Size, 6, SpringLayout.EAST, lbl_Slash);
-		springLayout.putConstraint(SpringLayout.EAST, lbl_Size, -182, SpringLayout.EAST, this);
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, lbl_Size, 0, SpringLayout.NORTH, lbl_Selected);
+		sl_pnl_East.putConstraint(SpringLayout.WEST, lbl_Size, 6, SpringLayout.EAST, lbl_Slash);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, lbl_Size, -165, SpringLayout.EAST, pnl_East);
+		pnl_East.add(lbl_Size);
 		lbl_Size.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_Size.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		add(lbl_Size);
 		
-		lbl_Message = new JLabel("Selected");
-		springLayout.putConstraint(SpringLayout.NORTH, lbl_Message, 1, SpringLayout.NORTH, cmb_Sort);
-		springLayout.putConstraint(SpringLayout.WEST, lbl_Message, 6, SpringLayout.EAST, lbl_Size);
-		springLayout.putConstraint(SpringLayout.EAST, lbl_Message, -100, SpringLayout.EAST, this);
-		lbl_Message.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_Message.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		add(lbl_Message);
+		pnl_Choices = new JPanel();
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, pnl_Choices, 0, SpringLayout.NORTH, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.WEST, pnl_Choices, 6, SpringLayout.EAST, lbl_Size);
+		sl_pnl_East.putConstraint(SpringLayout.SOUTH, pnl_Choices, 0, SpringLayout.SOUTH, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, pnl_Choices, -44, SpringLayout.EAST, pnl_East);
+		pnl_East.add(pnl_Choices);
+		pnl_Choices.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		btn_Close = new Mybutton("");
+		btn_Close.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				musicpanel.getMusicList().setSelectMode(false);
+				me.setVisible(false);
+			}
+		});
+		btn_Close.setBackground(Color.red);
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, btn_Close, 10, SpringLayout.NORTH, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, 37, SpringLayout.NORTH, pnl_East);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -5, SpringLayout.EAST, pnl_East);
+		pnl_East.add(btn_Close);
 	}
 	private void setAllItems() {
 	    PlaylistComparators.setCompareTypes();
@@ -107,7 +138,7 @@ public class SortMusics extends JPanel {
 		try {
 			max = Workedlist.getList().size();
 			lbl_Size.setText(String.valueOf(max));
-			lbl_Selected.setText(String.valueOf(Selected));
+			lbl_Selected.setText(String.valueOf(selected));
 		} catch (NullPointerException e) {
 			// TODO: handle exception
 			return;
@@ -116,7 +147,7 @@ public class SortMusics extends JPanel {
 	}
 	private void doSort(Comparator<Musicinfo> id) {
 		if(musicpanel == null ) return;
-		musicpanel.sortIt(id);
+		musicpanel.getMusicList().sortIt(id);
 	}
 	private void setMode(Boolean isDirectory) {
 		if (isDirectory) {
@@ -128,10 +159,10 @@ public class SortMusics extends JPanel {
 		}
 	}
 	public int getSelected() {
-		return Selected;
+		return selected;
 	}
 	public void setSelected(int selected) {
-		Selected = selected;
+		this.selected = selected;
 		lbl_Selected.setText(String.valueOf(selected));
 	}
 	public int getMax() {
@@ -139,6 +170,13 @@ public class SortMusics extends JPanel {
 	}
 	public void setMax(int max) {
 		this.max = max;
+	}
+	public void isSelectMode(Boolean istrue) {
+		pnl_Choices.setVisible(istrue);
+		btn_Close.setVisible(istrue);
+		lbl_Selected.setVisible(istrue);
+		lbl_Size.setVisible(istrue);
+		lbl_Slash.setVisible(istrue);
 	}
 }
 class IntegerLabel extends JLabel{
@@ -164,5 +202,6 @@ class IntegerLabel extends JLabel{
 		}
 		super.setText(text);
 	}
+
 	
 }

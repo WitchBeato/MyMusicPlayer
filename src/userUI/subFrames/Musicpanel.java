@@ -157,7 +157,7 @@ public class Musicpanel extends JPanel {
 		pnl_Musics.setBackground(new Color(255, 255, 255));
 		pnl_Items.add(pnl_Musics);
 		
-		pnl_Sort = new SortMusics(pnl_Musics,isDirectory);
+		pnl_Sort = new SortMusics(this,isDirectory);
 		pnl_Sort.setPreferredSize(new Dimension(pnl_Musics.getWidth(),40));
 		pnl_Items.add(pnl_Sort, BorderLayout.NORTH);
 		pnl_Sort.setVisible(false);
@@ -197,7 +197,7 @@ public class Musicpanel extends JPanel {
 		}
 	}
 	private void rightClick(MouseEvent e) {
-		pnl_Sort.setVisible(false);
+		if(!pnl_Musics.getSelectMode()) setSortVisible(false);
 		if(!SwingUtilities.isRightMouseButton(e)) return;
 		JPopupMenu menu = new JPopupMenu();
 		JMenuItem refresh = MenuItemlist.refresh;
@@ -210,7 +210,7 @@ public class Musicpanel extends JPanel {
 	public void addSort(JPanel visiblePanel,JPopupMenu menu,MouseEvent e) {
 		if(!SwingUtilities.isRightMouseButton(e)) return;
 		JMenuItem sort = MenuItemlist.sort;
-		sort.addActionListener(ae -> pnl_Sort.setVisible(true));
+		sort.addActionListener(ae -> setSortVisible(true));
 		menu.add(sort);
 	}
 	public void repaintMusiclist() {
@@ -252,5 +252,13 @@ public class Musicpanel extends JPanel {
 	}
 	public Musicinfo getInfo(int id) {
 		return list.get(id);
+	}
+	public void setSortVisible(Boolean visible) {
+		
+		pnl_Sort.setVisible(visible);
+		pnl_Sort.isSelectMode(true);
+	}
+	public SortMusics getSortMusic() {
+		return pnl_Sort;
 	}
 }

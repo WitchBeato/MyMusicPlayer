@@ -19,6 +19,7 @@ import userUI.subFrames.Musicpanel;
 import userUI.subFrames.PlayerError;
 import userUI.subFrames.Playerpanel;
 import userUI.subFrames.Playlistpanel;
+import userUI.subFrames.SortMusics;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -198,6 +199,17 @@ public class MainFrame extends JFrame {
 		}
 		return null;
 	}
+	public void setSortPanelVisible(Boolean visibility) {
+		Musicpanel panel = null;
+		try {
+			panel = getMusicList();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		panel.setSortVisible(visibility);
+	}
 	public Musicinfo setNextSong(int skipped) {
 		if(player == null) return null;
 		int id = player.getID();
@@ -222,5 +234,20 @@ public class MainFrame extends JFrame {
 	public void setNextEnabled(Boolean isActive) {
 		pnl_Player.setNextVisibility(isActive);
 		
+	}
+	private SortMusics getsortMusic() {
+		Musicpanel musicpanel = getMusicList();
+		if(musicpanel == null) return null;
+		return musicpanel.getSortMusic();
+	}
+	public void setSelectedValue(int value) {
+		SortMusics sortmusic = getsortMusic();
+		if(sortmusic == null) return;
+		sortmusic.setSelected(value);
+	}
+	public int getSelectedValue() {
+		SortMusics sortmusic = getsortMusic();
+		if(sortmusic == null) return 0;
+		return sortmusic.getSelected();
 	}
 }

@@ -1,5 +1,6 @@
 package userUI.mycomponents;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -20,13 +21,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.awt.FlowLayout;
 
-public class ListMusicPanel extends JPanel {
+public class ListMusicPanel extends JLayeredPane {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel me = this;
+	private JLayeredPane me = this;
 	private int column, row = 1;
 	private Playlist playlist;
 	private ArrayList<Musicinfo> list = null;
+	private ArrayList<Musicinfo> selectedMusic = new ArrayList<>();
 	private boolean isDirectory, isSelectMode;
 	private MainFrame frame;
 	
@@ -35,7 +37,7 @@ public class ListMusicPanel extends JPanel {
 		this.playlist = playlist;
 		this.list = playlist.getList();
 		playlistinit(isDirectory, mainFrame);
-		setSelectMode(true);
+		//setSelectMode(true);
 	}
 	public ListMusicPanel(ArrayList<Musicinfo> list, boolean isDirectory,MainFrame mainFrame) {
 		this.list = list;
@@ -72,7 +74,7 @@ public class ListMusicPanel extends JPanel {
 		Dimension titlesize = SelectTitle.SELECTSIZE;
 		adjustColumnRow(titlesize);
 		addMusics();
-		revalidate();
+		setSelectTitleMode(isSelectMode);
 	}
 	private void adjustColumnRow(Dimension titlesize) {
 		if(titlesize.width == 0) return;
@@ -116,17 +118,18 @@ public class ListMusicPanel extends JPanel {
 		if(playlist == null) return null;
 		return playlist;
 	}
-	public boolean isSelectMode() {
+	public boolean getSelectMode() {
 		return isSelectMode;
 	}
 	public void setSelectMode(boolean isSelectMode) {
 		this.isSelectMode = isSelectMode;
-		setComponentsMode(isSelectMode);
+		frame.setSortPanelVisible(isSelectMode);
+		setSelectTitleMode(isSelectMode);
 	}
 	public MainFrame getFrame() {
 		return frame;
 	}
-	private void setComponentsMode(Boolean isSelectMode) {
+	private void setSelectTitleMode(Boolean isSelectMode) {
 		Component componentList[] = this.getComponents();
 		for (int i = 0; i < componentList.length; i++) {
 			Component component = componentList[i];
@@ -136,6 +139,15 @@ public class ListMusicPanel extends JPanel {
 				title.setSelectMode(isSelectMode);
 				title.repaint();
 				System.out.println(title.getSelectMode());
+			}
+		}
+	}
+	public void turnSelectedtoMusic() {
+		if(selectedMusic.size() != 0) selectedMusic = new ArrayList<>();
+		for (Component component : this.getComponents()) {
+			if(component instanceof SelectTitle) {
+				SelectTitle title = (SelectTitle) component;
+				if(title.getisSelected())selectedMusic.add(title.getMusic());
 			}
 		}
 	}

@@ -30,6 +30,10 @@ import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class SelectTitle extends JPanel {
 
@@ -71,8 +75,11 @@ public class SelectTitle extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ClickedRight(e);
-				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-					playMusic(title.getDirectory());
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					if(e.isControlDown()) turnToSelectMode();
+					if(e.getClickCount() == 2) {
+						playMusic(title.getDirectory());
+					}
 				}
 			}
 			@Override
@@ -103,6 +110,13 @@ public class SelectTitle extends JPanel {
 				btn_Delete.getSize().height));
 		
 		chb_Select = new JCheckBox("New check box");
+		chb_Select.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setisSelected(chb_Select.isSelected());
+			}
+		});
+	
 		chb_Select.setBounds(0, 0, 20, 20);
 		pnl_Delete.add(chb_Select,JLayeredPane.DRAG_LAYER);
 		chb_Select.setVisible(false);
@@ -146,8 +160,11 @@ public class SelectTitle extends JPanel {
 		lbl_Title.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-					playMusic(title.getDirectory());
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					if(e.isControlDown()) turnToSelectMode();
+					if(e.getClickCount() == 2) {
+						playMusic(title.getDirectory());
+					}
 				}
 				ClickedRight(e);
 			}
@@ -229,29 +246,50 @@ public class SelectTitle extends JPanel {
 		lbl_Title.setText(title.getName());
 	}
 	public void setButtonsVisible(Boolean buttonsVisible) {
-		if(isDirectory == null) return;
-		if(!isDirectory) btn_Delete.setVisible(buttonsVisible);
+		if(isDirectory == null || selectmode) return;
+		if(!isDirectory) {
+			if(selectmode) chb_Select.setVisible(true);
+			else btn_Delete.setVisible(buttonsVisible);
+		}
 		btn_Play.setVisible(buttonsVisible);
 		btn_Property.setVisible(buttonsVisible);
 	}
 	public void setSelectMode(Boolean newSelectmode) {
-		selectmode = newSelectmode;
+		this.selectmode = newSelectmode;
 		if(selectmode) {
 			chb_Select.setVisible(true);
 			btn_Delete.setVisible(false);
 			pnl_Delete.setSize(chb_Select.getPreferredSize());
 		}
 		else {
+			setisSelected(false);
+			chb_Select.setSelected(false);
 			chb_Select.setVisible(false);
 			btn_Delete.setVisible(true);
 			pnl_Delete.setSize(btn_Delete.getPreferredSize());
 		}
+		
 	}
     public void debugMessage() {
     	if(Settings.DEBUG_MODE) System.out.println(title.getName());
     }
+    // it set visibility of player panel next buttons visibility
+	public void setNextBTNVisibility() {
+		MainFrame frame = getMainFrame();
+		int id = frame.getPlayer().getID();
+		Boolean isNextExist = frame.isSongExist(id+1);
+		Boolean isPrevExist = frame.isSongExist(id-1);
+		frame.setPrevEnabled(isPrevExist);
+		frame.setNextEnabled(isNextExist);
+	}
     public Boolean getSelectMode() {
     	return selectmode;
+    }
+    public Boolean getisSelected() {
+    	return chb_Select.isSelected();
+    }
+    public Musicinfo getMusic() {
+    	return title;
     }
 	private void mouseLeaveGlob() {
 		setButtonsVisible(false);
@@ -260,21 +298,15 @@ public class SelectTitle extends JPanel {
 		setButtonsVisible(true);
 	}
 	private void playMusic(String directory) {
+		if(selectmode) return;
 		MusicPlayer player = parent.getMainFrame().getPlayer();
 		player.play(title,0);
 		parent.getMainFrame().setFullTime(MusicPlayer.giveLenght(directory));
 		addLastListened();
-		setBtnVisibility();
+		setNextBTNVisibility();
 		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
 	}
-	public void setBtnVisibility() {
-		MainFrame frame = getMainFrame();
-		int id = frame.getPlayer().getID();
-		Boolean isNextExist = frame.isSongExist(id+1);
-		Boolean isPrevExist = frame.isSongExist(id-1);
-		frame.setPrevEnabled(isPrevExist);
-		frame.setNextEnabled(isNextExist);
-	}
+
 	private MainFrame getMainFrame() {
 		return parent.getFrame();
 	}
@@ -315,5 +347,27 @@ public class SelectTitle extends JPanel {
     	playlist.removeList(title);
     	parent.sortItems();
     	parent.repaint();
+    }
+    private void setisSelected(Boolean isSelected) {
+    	MainFrame frame =parent.getFrame();
+    	   	int selected = frame.getSelectedValue();
+        	if(isSelected) selected++;
+        	else selected--;
+        	if(selected <0) selected = 0;
+        	frame.setSelectedValue(selected);
+        	
+        
+    	
+    }
+    private void turnToSelectMode() {
+    	setButtonsVisible(false);
+    	setisSelected(true);
+    	chb_Select.setSelected(true);
+    	if(parent.getSelectMode()) {
+    		setisSelected(false);
+    		return;
+    		
+    	}
+    	parent.setSelectMode(true);
     }
 }
