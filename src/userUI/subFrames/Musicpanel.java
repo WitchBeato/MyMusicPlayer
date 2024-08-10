@@ -268,4 +268,7 @@ public class Musicpanel extends JPanel {
 	public SortMusics getSortMusic() {
 		return pnl_Sort;
 	}
+	public MainFrame getFrame() {
+		return frame;
+	}
 }

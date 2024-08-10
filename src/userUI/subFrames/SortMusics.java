@@ -4,8 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import staticinfo.PlaylistComparators;
+import userUI.SelectPlaylist;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
+import userUI.information.Settings;
 import userUI.mycomponents.ListMusicPanel;
 import userUI.mycomponents.Mybutton;
 
@@ -128,6 +130,12 @@ public class SortMusics extends JPanel {
 		pnl_Choices.add(btn_DeleteAll);
 		
 		btn_Merge = new Mybutton("");
+		btn_Merge.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setMergePlaylist(musicpanel.getFrame().getSettings());
+			}
+		});
 		btn_Merge.setBackground(UIManager.getColor("Button.disabledShadow"));
 		pnl_Choices.add(btn_Merge);
 		
@@ -186,6 +194,10 @@ public class SortMusics extends JPanel {
 	}
 	private void getSelectedList() {
 		Chosedlist = musicpanel.getMusicList().turnSelectedtoMusic();
+	}
+	private void setMergePlaylist(Settings setting) {
+		SelectPlaylist selectPlaylist = new SelectPlaylist(setting);
+		selectPlaylist.setVisible(true);
 	}
 	public int getSelected() {
 		return selected;
