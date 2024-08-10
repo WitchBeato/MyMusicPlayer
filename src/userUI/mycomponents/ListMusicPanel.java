@@ -142,14 +142,15 @@ public class ListMusicPanel extends JLayeredPane {
 			}
 		}
 	}
-	public void turnSelectedtoMusic() {
-		if(selectedMusic.size() != 0) selectedMusic = new ArrayList<>();
+	public ArrayList<Musicinfo> turnSelectedtoMusic() {
+		ArrayList<Musicinfo> selectedMusic = new ArrayList<>();
 		for (Component component : this.getComponents()) {
 			if(component instanceof SelectTitle) {
 				SelectTitle title = (SelectTitle) component;
 				if(title.getisSelected())selectedMusic.add(title.getMusic());
 			}
 		}
+		return selectedMusic;
 	}
 	
 

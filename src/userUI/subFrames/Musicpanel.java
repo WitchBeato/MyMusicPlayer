@@ -41,6 +41,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class Musicpanel extends JPanel {
 
@@ -155,11 +156,17 @@ public class Musicpanel extends JPanel {
 		});
 		pnl_Items.setLayout(new BorderLayout(0, 0));
 		pnl_Musics.setBackground(new Color(255, 255, 255));
-		pnl_Items.add(pnl_Musics);
+		
 		
 		pnl_Sort = new SortMusics(this,isDirectory);
 		pnl_Sort.setPreferredSize(new Dimension(pnl_Musics.getWidth(),40));
 		pnl_Items.add(pnl_Sort, BorderLayout.NORTH);
+		
+		JScrollPane spnl_Musics = new JScrollPane();
+		pnl_Items.add(spnl_Musics, BorderLayout.CENTER);
+		
+		spnl_Musics.add(pnl_Musics);
+		spnl_Musics.setViewportView(pnl_Musics);
 		pnl_Sort.setVisible(false);
 		JPanel panel1 = new JPanel();
 		panel1.addMouseListener(new MouseAdapter() {

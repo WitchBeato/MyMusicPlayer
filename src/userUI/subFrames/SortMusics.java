@@ -28,6 +28,7 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.UIManager;
 
 public class SortMusics extends JPanel {
 	private JComboBox cmb_Sort;
@@ -46,6 +47,8 @@ public class SortMusics extends JPanel {
 	private JPanel pnl_East;
 	private Mybutton btn_Close;
 	private JPanel pnl_Choices;
+	private Mybutton btn_DeleteAll;
+	private Mybutton btn_Merge;
 	public SortMusics(Musicpanel musicpanel,Boolean isDirectory) {
 		this.musicpanel = musicpanel;
 		Workedlist = musicpanel.getMusicList().getPlaylist();
@@ -114,6 +117,20 @@ public class SortMusics extends JPanel {
 		pnl_East.add(pnl_Choices);
 		pnl_Choices.setLayout(new GridLayout(1, 0, 0, 0));
 		
+		btn_DeleteAll = new Mybutton("");
+		btn_DeleteAll.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deleteAll();
+			}
+		});
+		btn_DeleteAll.setBackground(Color.RED);
+		pnl_Choices.add(btn_DeleteAll);
+		
+		btn_Merge = new Mybutton("");
+		btn_Merge.setBackground(UIManager.getColor("Button.disabledShadow"));
+		pnl_Choices.add(btn_Merge);
+		
 		btn_Close = new Mybutton("");
 		btn_Close.addMouseListener(new MouseAdapter() {
 			@Override
@@ -157,6 +174,18 @@ public class SortMusics extends JPanel {
 		else {
 			setVariable();
 		}
+	}
+	private void deleteAll() {
+		getSelectedList();
+		if(Workedlist == null) return;
+		Workedlist.removeAll(Chosedlist);
+		ListMusicPanel listmusicpanel = musicpanel.getMusicList();
+		listmusicpanel.sortItems();
+		listmusicpanel.revalidate();
+		listmusicpanel.repaint();
+	}
+	private void getSelectedList() {
+		Chosedlist = musicpanel.getMusicList().turnSelectedtoMusic();
 	}
 	public int getSelected() {
 		return selected;
@@ -202,6 +231,7 @@ class IntegerLabel extends JLabel{
 		}
 		super.setText(text);
 	}
+
 
 	
 }
