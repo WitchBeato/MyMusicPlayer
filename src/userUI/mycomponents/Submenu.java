@@ -185,7 +185,7 @@ public class Submenu extends JPanel {
 		if(!SwingUtilities.isLeftMouseButton(e)) return;
 		Musicpanel mscPanel = null;
 		if(directory == null) {
-			list.checkDatabase();
+			list.checkandFixDatabase();
 			mscPanel = new Musicpanel(list,greatparent);
 			
 		}

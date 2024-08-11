@@ -82,7 +82,7 @@ public class Playlist implements Serializable{
 		last.setId(id);	
 		addtoList(last);
 	}
-	public void checkDatabase() {
+	public void checkandFixDatabase() {
 		if(list.size() == listIDSearch.size() && listIDSearch.size() == listSearch.size()) 
 			return;
 		for (Musicinfo musicinfo : list) {

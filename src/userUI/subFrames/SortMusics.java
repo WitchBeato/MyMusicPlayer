@@ -9,6 +9,7 @@ import userUI.SelectPlaylist;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.information.Settings;
+import userUI.mycomponents.IntegerLabel;
 import userUI.mycomponents.ListMusicPanel;
 import userUI.mycomponents.Mybutton;
 
@@ -66,6 +67,7 @@ public class SortMusics extends JPanel {
 		setAllItems();
 		setMode(isDirectory);
 		setSelectMode(false);
+		
 	}
 	public SortMusics() {
        init();
@@ -272,34 +274,4 @@ public class SortMusics extends JPanel {
 	}
 	
 }
-class IntegerLabel extends JLabel{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3978184245000985974L;
-	IntegerLabel(){
-		
-	}
-	public IntegerLabel(String string) {
-		// TODO Auto-generated constructor stub
-		setText(string);
-	}
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-		try {
-			Integer.parseInt(text);
-			
-		} catch (NumberFormatException e) {
-			return;
-		}
-		String newString = null;
-		if(text.length() < 2) {
-			newString = "0"+text;
-		}
-		super.setText(text);
-	}
 
-
-	
-}
