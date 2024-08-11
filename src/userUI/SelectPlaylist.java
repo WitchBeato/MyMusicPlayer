@@ -17,6 +17,8 @@ import java.awt.Font;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SelectPlaylist extends JFrame {
 
@@ -24,6 +26,7 @@ public class SelectPlaylist extends JFrame {
 	private JPanel contentPane;
 	private Playlist playlist;
 	private JList<Playlist> lst_Playlist;
+	private JButton btn_OK;
 	/**
 	 * Launch the application.
 	 */
@@ -73,14 +76,29 @@ public class SelectPlaylist extends JFrame {
 		lst_Playlist.setBounds(10, 10, 223, 369);
 		contentPane.add(lst_Playlist);
 		
-		JButton btn_OK = new JButton("OK");
+		btn_OK = new JButton("OK");
+		btn_OK.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				closeIt();
+			}
+		});
 		btn_OK.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_OK.setBounds(37, 385, 178, 55);
 		contentPane.add(btn_OK);
+	}
+	public JButton getBtn_OK() {
+		return btn_OK;
+	}
+	public Playlist getPlaylist() {
+		return playlist;
 	}
 	private void fillList(Settings setting) {
 		Playlist[] playlistofList = setting.getMusiclist(Musiclist.PLAYLIST).getMusiclist().stream().toArray(Playlist[]::new);
 		lst_Playlist.setListData(playlistofList);
 		repaint();
+	}
+	private void closeIt() {
+		this.dispose();
 	}
 }

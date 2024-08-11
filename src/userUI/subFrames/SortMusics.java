@@ -3,6 +3,7 @@ package userUI.subFrames;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
+import staticinfo.Dtr;
 import staticinfo.PlaylistComparators;
 import userUI.SelectPlaylist;
 import userUI.information.Musicinfo;
@@ -29,8 +30,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent;import java.awt.event.MouseMotionListener;
+
 import javax.swing.UIManager;
+
+import backend.Photoeditor;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -130,19 +135,29 @@ public class SortMusics extends JPanel {
 			}
 		});
 		btn_DeleteAll.setBackground(Color.RED);
+
 		pnl_Choices.add(btn_DeleteAll);
+		btn_DeleteAll.setIcon(Photoeditor.photoScaleImage(
+				Dtr.getImage("trashcan.png")
+				,btn_DeleteAll.getPreferredSize().width
+				,btn_DeleteAll.getPreferredSize().height+20));
 		
 		btn_Merge = new Mybutton("");
 		btn_Merge.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				setMergePlaylist(musicpanel.getFrame().getSettings());
+				openMergePlaylist(musicpanel.getFrame().getSettings());
 			}
 		});
 		btn_Merge.setBackground(UIManager.getColor("Button.disabledShadow"));
 		pnl_Choices.add(btn_Merge);
+		btn_Merge.setIcon(Photoeditor.photoScaleImage(
+				Dtr.getImage("move.png")
+				,btn_Merge.getPreferredSize().width
+				,btn_Merge.getPreferredSize().height+20));
 		
 		btn_Close = new Mybutton("");
+		sl_pnl_East.putConstraint(SpringLayout.WEST, btn_Close, 6, SpringLayout.EAST, pnl_Choices);
 		btn_Close.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -154,6 +169,10 @@ public class SortMusics extends JPanel {
 		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, 37, SpringLayout.NORTH, pnl_East);
 		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -5, SpringLayout.EAST, pnl_East);
 		pnl_East.add(btn_Close);
+		btn_Close.setIcon(Photoeditor.photoScaleImage(
+				Dtr.getImage("cancel.png")
+				, btn_Close.getPreferredSize().width
+				, btn_Close.getPreferredSize().height+10));
 	}
 	private void setAllItems() {
 	    PlaylistComparators.setCompareTypes();
@@ -204,9 +223,27 @@ public class SortMusics extends JPanel {
 	private void getSelectedList() {
 		Chosedlist = musicpanel.getMusicList().turnSelectedtoMusic();
 	}
-	private void setMergePlaylist(Settings setting) {
+	private void openMergePlaylist(Settings setting) {
 		SelectPlaylist selectPlaylist = new SelectPlaylist(setting);
+		try {
+			selectPlaylist.getBtn_OK().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+					MergePlaylist(selectPlaylist.getPlaylist());
+				}
+			});
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		selectPlaylist.setVisible(true);
+		
+	}
+	private void MergePlaylist(Playlist playlist) throws NullPointerException{
+		getSelectedList();
+		if(playlist == null) return;
+		playlist.mergePlaylist(Chosedlist);
 		closeSelectMode();
 	}
 	public int getSelected() {
@@ -233,6 +270,7 @@ public class SortMusics extends JPanel {
 	public Boolean getSelectMode() {
 		return isSelect;
 	}
+	
 }
 class IntegerLabel extends JLabel{
 	/**

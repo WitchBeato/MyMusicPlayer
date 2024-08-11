@@ -183,9 +183,15 @@ public class Submenu extends JPanel {
 	}
 	private void menuClicked(MouseEvent e) {
 		if(!SwingUtilities.isLeftMouseButton(e)) return;
-		Musicpanel mscPanel = (directory == null) ? 
-				new Musicpanel(list,greatparent) : 
-				new Musicpanel(directory,greatparent);
+		Musicpanel mscPanel = null;
+		if(directory == null) {
+			list.checkDatabase();
+			mscPanel = new Musicpanel(list,greatparent);
+			
+		}
+		else {
+			mscPanel = new Musicpanel(directory,greatparent);
+		}
 			greatparent.panelChange(mscPanel);
 			mscPanel.revalidate();
 	}

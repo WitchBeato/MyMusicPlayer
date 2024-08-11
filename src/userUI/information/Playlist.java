@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 
@@ -60,7 +61,7 @@ public class Playlist implements Serializable{
 		list.remove(id);
 		removeSearches(info);
 		if(list.size() == 0) return;
-		replaceMusic(id);
+		//replaceMusic(id);
 	}
 	//this method created for all music
 	public void removeListAllMusic(Musicinfo info) {
@@ -80,6 +81,20 @@ public class Playlist implements Serializable{
 		listIDSearch.remove(lastID);
 		last.setId(id);	
 		addtoList(last);
+	}
+	public void checkDatabase() {
+		if(list.size() == listIDSearch.size() && listIDSearch.size() == listSearch.size()) 
+			return;
+		for (Musicinfo musicinfo : list) {
+			String directory = musicinfo.getDirectory();
+			int ID = musicinfo.getId();
+			if(!listSearch.containsKey(directory)) {
+				listSearch.put(directory, musicinfo);
+			}
+			if(!listIDSearch.containsKey(ID)) {
+				listIDSearch.put(ID, musicinfo);
+			}
+		}
 	}
 	public void setName(String name) {
 		this.name = name;
