@@ -1,6 +1,12 @@
 package backend;
 
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Port;
+import javax.sound.sampled.Line.Info;
+
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 public class MusicplayerRunnable implements Runnable{
@@ -28,6 +34,7 @@ public class MusicplayerRunnable implements Runnable{
 				e.printStackTrace();
 			}
 		 }
+	
 	public void stopPlayer() {
 		isStop = true;
 	}

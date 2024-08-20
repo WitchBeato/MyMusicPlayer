@@ -6,6 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Line.Info;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.*;
+import javax.sound.sampled.Port;
+
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -135,6 +142,31 @@ public void reverseisPlay() {
 	}
 	public int getID() {
 		return info.getId();
+	}
+	public void setVolume(float volume) {
+		setSound.setVolume(volume);
+	}
+}
+class setSound {
+	public static void setVolume(float volume) {
+        try {
+			AudioFormat format = new AudioFormat(44100, 16, 2, true, false);
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+			if (AudioSystem.isLineSupported(info)) {
+				SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+				line.open(format);
+				FloatControl volCtrl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+				volCtrl.setValue(volume);
+			}
+			else {
+				System.out.println("desteklenmiyor");
+			}
+			
+	
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 

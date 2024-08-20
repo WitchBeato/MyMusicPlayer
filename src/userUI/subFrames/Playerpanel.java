@@ -29,6 +29,8 @@ import userUI.information.Musicinfo;
 import userUI.mycomponents.PlayerTime;
 
 import javax.swing.JProgressBar;
+import javax.swing.JSlider;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -46,6 +48,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Playerpanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -167,7 +171,7 @@ public class Playerpanel extends JPanel {
 		
 		btn_Soundicon = new JButton("");
 		btn_Soundicon.setIcon(Photoeditor.photoScaleImage(Imagedtr.sound, 45, 51));
-		
+		btn_Soundicon.setVisible(false);
 		pnl_Soundicon.add(btn_Soundicon, BorderLayout.CENTER);
 		
 		JPanel pnl_Timeline = new JPanel();
@@ -205,7 +209,6 @@ public class Playerpanel extends JPanel {
 	    SwingUtilities.invokeLater(() -> {
 	    	pb_Time.SetTime(second);
 	    });
-		//pb_Time.SetTime(second);
 		if(fulltime <= current) {
 			player.playerclose();
 			
@@ -252,14 +255,25 @@ public class Playerpanel extends JPanel {
 		btn_Soundicon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Soundpanel soundpanel = new Soundpanel(btn_Soundicon);
+				JSlider slider = soundpanel.getSlider();
+				slider.setValue(20);
+				slider.addChangeListener(new ChangeListener() {
+					
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						// TODO Auto-generated method stub
+						float volume = (float)(slider.getValue())/100f;
+						player.setVolume(volume);
+					}
+				});
 				soundpanel.setSize(new Dimension(393,85));
 				JPopupMenu menu = new JPopupMenu();
 				menu.setPopupSize(soundpanel.getSize());
 				menu.add(soundpanel);
 				menu.setSize(new Dimension(soundpanel.getWidth(),soundpanel.getHeight()));
-				menu.show(father, father.getWidth()-soundpanel.getWidth()/2,
-						father.getHeight()-btn_Soundicon.getPreferredSize().height
-						-soundpanel.getHeight());
+				menu.show(father, 
+						father.getWidth()-soundpanel.getWidth()/2,
+						father.getHeight()-btn_Soundicon.getPreferredSize().height-soundpanel.getHeight());
 			}
 		});
 	}

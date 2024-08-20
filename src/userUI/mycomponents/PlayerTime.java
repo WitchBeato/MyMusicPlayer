@@ -9,6 +9,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.SpringLayout;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
@@ -27,6 +29,7 @@ public class PlayerTime extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	private Boolean isMistake = false;
 	private JProgressBar pb_Time;
 	private JSlider sb_Time;
 	private Boolean isPlay;
@@ -49,7 +52,11 @@ public class PlayerTime extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				JSlider bar = (JSlider)e.getSource();
+				int oldvalue = sb_Time.getValue();
 				if(!bar.getValueIsAdjusting()) {
+					if(oldvalue == sb_Time.getValue()) {
+						isMistake = true;
+					}
 					valueChangedbyHand(bar.getValue());
 					mother.setisplay(false);
 				}
@@ -57,12 +64,26 @@ public class PlayerTime extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						
+					}
+				});
 			}
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
 				if(sb_Time.getValueIsAdjusting()) {
-					mother.setisplay(true);
+					if(!isMistake) {
+						mother.setisplay(true);
+					}
+					else {
+						isMistake = false;
+					}
 				}
 				super.mouseDragged(e);
 			}
@@ -116,7 +137,10 @@ public class PlayerTime extends JPanel {
 	}
 	private void valueChangedbyHand(int value) {
 		if(mother == null) return;
-		
+		if(isMistake) {
+			isMistake = false;
+			return;
+		}
 		MusicPlayer player = mother.getPlayer();
 		if(player == null) return;
 		Timer timer = mother.getTimer();
