@@ -5,7 +5,9 @@ import javax.swing.JPanel;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Musiclist;
-import userUI.information.Mycolors;
+import userUI.information.Playlist;
+import userUI.information.Settings;
+import userUI.mycomponents.ListMusicPanel;
 import userUI.mycomponents.Mainmenu;
 import userUI.mycomponents.Submenu;
 
@@ -16,9 +18,13 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import backend.Photoeditor;
-import directories.Imagedtr;
+import staticinfo.Dtr;
+import staticinfo.Imagedtr;
+import staticinfo.Mycolors;
+import staticinfo.StaticNames;
 
 import java.awt.Font;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,20 +38,23 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import java.awt.FlowLayout;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Playlistpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame parent = null;
-	private Musiclist[] musiclist = new Musiclist[2];
+	private Settings setting;
 	private AtomicInteger  chosedID = new AtomicInteger();
 	private JPanel pnl_List;
 	private JButton btn_Last;
 	/**
 	 * Create the panel.
 	 */
-	public Playlistpanel(MainFrame parent) {
+	public Playlistpanel(MainFrame parent,Settings setting) {
 		this.parent = parent;
+		this.setting = setting;
 		init();
 	}
 	public Playlistpanel() {
@@ -90,6 +99,12 @@ public class Playlistpanel extends JPanel {
 		pnl_Lastlisten.add(spt_1_1, BorderLayout.SOUTH);
 		
 		btn_Last = new JButton("Last listened");
+		btn_Last.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				openLastListened();
+			}
+		});
 		btn_Last.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		pnl_Lastlisten.add(btn_Last, BorderLayout.CENTER);
 		btn_Last.setBorderPainted(false);
@@ -109,20 +124,40 @@ public class Playlistpanel extends JPanel {
 	}
 	//this method initiliaze menu list of Directories and Playlist
 	private void initiliazeList() {
-		musiclist[0] = new Musiclist(0, "Directories ", null); 
-		musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
-		musiclist[1] = new Musiclist(1, "Playlist       ", null); 
-		musiclist[1].addPlaylist("ahmetkaya");
+		Musiclist musiclist[] = setting.getMusiclistArray();
+		File file = new File(Dtr.getDataDirectory()+StaticNames.musiclistName);
+		if(file.exists()) {
+			setting.openMusiclist();
+		}
+		else {
+			musiclist[0] = new Musiclist(0, "Directories", null); 
+			musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
+			musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
+			musiclist[1] = new Musiclist(1, "Playlist", null); 
+			musiclist[1].addPlaylist("deneme");
+			setting.setMusiclist(musiclist);
+			setting.saveMusiclist();
+		}
+
+	}
+	private void openLastListened() {
+		Playlist playlist = setting.getLastListened();
+		Musicpanel musicpanel = new Musicpanel(playlist, parent);
+		musicpanel.thisLastListened();
+		parent.panelChange(musicpanel);
+		
 	}
 	//it add Mainitems for drop down menu
 	private void addMainItems(JPanel panel) {
-		Dimension size = new Dimension(120,50);
+		Musiclist musiclist[] = setting.getMusiclistArray();
+		Dimension sizeMain = new Dimension(130,70);
+		Dimension sizeSub = new Dimension(130,50);
 		for (int i = 0; i < musiclist.length; i++) {
 			Mainmenu menu = new Mainmenu(musiclist[i],chosedID,this);
-			menu.setSize(size); 
+			menu.setPreferredSize(sizeMain); 
 			menu.setBackground(Mycolors.openGray);
 			panel.add(menu);
-			if(i == chosedID.get()) addSubItems(panel, musiclist,size);
+			if(i == chosedID.get()) addSubItems(panel, musiclist,sizeSub);
 		}
 	}
 	//it add subitems for drop down menu
@@ -130,7 +165,7 @@ public class Playlistpanel extends JPanel {
 		ArrayList<String> stringlist = list[chosedID.get()].getDirectorylist();
 		for (int i = 0; i < stringlist.size(); i++) {
 			Submenu menu = null;
-			if(chosedID.get() == 0) {
+			if(chosedID.get() == Musiclist.DIRECTORY) {
 				 menu = new Submenu(list[chosedID.get()].getDirectory(i),null,parent);
 			}
 			else {
@@ -140,6 +175,7 @@ public class Playlistpanel extends JPanel {
 			menu.setBackground(Mycolors.openGray);
 			panel.add(menu);
 		}
+		
 	}
 	@Override
 	public void repaint() {
@@ -159,5 +195,12 @@ public class Playlistpanel extends JPanel {
 		btn_Last.setBackground(bg);
 		pnl_List.setBackground(bg);
 	}
+	public MainFrame getParent() {
+		return parent;
+	}
+	public Musiclist getMusiclist(int id) {
+		return setting.getMusiclist(id);
+	}
+
 
 }

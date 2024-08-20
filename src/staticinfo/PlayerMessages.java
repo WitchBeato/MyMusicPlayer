@@ -1,4 +1,6 @@
-package userUI.information;
+package staticinfo;
+
+import userUI.information.MessageData;
 
 public class PlayerMessages {
 	public static MessageData directoryNoFile = new MessageData(

@@ -1,9 +1,16 @@
 package userUI.information;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Musiclist {
+public class Musiclist implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1530676910997852633L;
+	//this tell us which type of musiclist
+	public static int DIRECTORY = 0, PLAYLIST = 1;
 	private Integer id;
 	private Boolean nullIDExist;
 	private String name;
@@ -76,5 +83,8 @@ public class Musiclist {
 		int newID = (musiclist.size()>0) ? musiclist.getLast().getId()+1 : 0;
 		Playlist playlist = new Playlist(name, newID);
 		musiclist.add(playlist);
+	}
+	public void removePlaylist(Playlist playlist) {
+		musiclist.remove(playlist);
 	}
 }

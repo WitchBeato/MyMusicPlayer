@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import userUI.information.Mycolors;
+import staticinfo.Mycolors;
 
 import java.awt.Font;
 import javax.swing.SpringLayout;

@@ -1,5 +1,15 @@
 package backend;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.JTree;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.TreeSelectionModel;
+
+import staticinfo.SupportedTypes;
+
 public class StringEditor {
 	//it found last iteratives of letter according to qualitive
 	public static int[] lastCharLocation(String text, char letter, int qualitive) {
@@ -30,10 +40,14 @@ public class StringEditor {
 		int[] location = lastCharLocation(text, letter, qualitive);
 		String newText = (qualitive != 1) ?
 				text.substring(location[1], location[0]) : 
-				text.substring(location[0], text.length()-1);
+				text.substring(location[0], text.length());
 		return newText;
 		
 	}
+	public static String giveExtension(String text) {
+		return giveStringforIterative(text, '.', 1);
+	}
+
 	//give me reverse of the string
 	public static String reverseString(String input){
         byte[] strAsByteArray = input.getBytes();
@@ -45,4 +59,36 @@ public class StringEditor {
 
        return new String(result);
     }	
+	public static String selectFolder() {
+	    int result;
+        
+	    JFileChooser chooser = new JFileChooser(); 
+	    chooser.setCurrentDirectory(new java.io.File("."));
+	    chooser.setDialogTitle("please select a path");
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    //
+	    // disable the "All files" option.
+	    //
+	    chooser.setAcceptAllFileFilterUsed(false);
+	    result = chooser.showOpenDialog(chooser);
+	    //    
+	    String directory = (result == JFileChooser.APPROVE_OPTION) ? 
+	    		chooser.getSelectedFile().getAbsolutePath() :
+	    		null;	
+	    return directory;
+	}
+	public static String selectFile(SupportedTypes type) {
+		int result;
+		FileNameExtensionFilter extFilter = new FileNameExtensionFilter(
+				type.getExplanationwithExtension(), 
+				type.getExtensions());
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(extFilter);
+		result = chooser.showOpenDialog(null);
+		if(result == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().getAbsolutePath();
+		}
+		return null;
+		
+	}
 }
