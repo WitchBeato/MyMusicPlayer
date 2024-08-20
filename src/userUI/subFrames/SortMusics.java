@@ -159,7 +159,10 @@ public class SortMusics extends JPanel {
 				,btn_Merge.getPreferredSize().height+20));
 		
 		btn_Close = new Mybutton("");
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, btn_Close, 0, SpringLayout.NORTH, lbl_Selected);
 		sl_pnl_East.putConstraint(SpringLayout.WEST, btn_Close, 6, SpringLayout.EAST, pnl_Choices);
+		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, -10, SpringLayout.SOUTH, pnl_Choices);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -7, SpringLayout.EAST, pnl_East);
 		btn_Close.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -167,13 +170,10 @@ public class SortMusics extends JPanel {
 			}
 		});
 		btn_Close.setBackground(Color.red);
-		sl_pnl_East.putConstraint(SpringLayout.NORTH, btn_Close, 10, SpringLayout.NORTH, pnl_East);
-		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, 37, SpringLayout.NORTH, pnl_East);
-		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -5, SpringLayout.EAST, pnl_East);
 		pnl_East.add(btn_Close);
 		btn_Close.setIcon(Photoeditor.photoScaleImage(
 				Dtr.getImage("cancel.png")
-				, btn_Close.getPreferredSize().width
+				, btn_Close.getPreferredSize().width-5
 				, btn_Close.getPreferredSize().height+10));
 	}
 	private void setAllItems() {

@@ -106,10 +106,16 @@ public class Playlist implements Serializable{
 		return id;
 	}
 	public void mergePlaylist(Playlist another) {
-		list.addAll(another.getList());
+		ArrayList<Musicinfo> musicInfoList = another.getList();
+		addOneByOne(musicInfoList);
 	}
 	public void mergePlaylist(ArrayList<Musicinfo> another) {
-		list.addAll(another);
+		addOneByOne(another);
+	}
+	private void addOneByOne(ArrayList<Musicinfo> another) {
+		for (Musicinfo musicinfo : another) {
+			addtoList(musicinfo);
+		}
 	}
 	
 	public void removeAll(ArrayList<Musicinfo> difList) {

@@ -188,6 +188,8 @@ public class Playerpanel extends JPanel {
 		sl_pnl_Timeline.putConstraint(SpringLayout.SOUTH, pb_Time, 41, SpringLayout.NORTH, pnl_Timeline);
 		pb_Time.setForeground(new Color(102, 0, 153));
 		pnl_Timeline.add(pb_Time);
+		btn_Prev.setEnabled(false);
+		btn_Onward.setEnabled(false);
 	}
 
 	public int getFulltime() {
