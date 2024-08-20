@@ -27,6 +27,7 @@ public class Soundpanel extends JPanel {
 	private JButton btn_Sound;
 	private JLabel lbl_Photo;
 	private String prevDirect = null;
+	private JSlider sld_Sound;
 	public Soundpanel(JButton btn_Sound) {
 
 		initiliazer();
@@ -53,7 +54,7 @@ public class Soundpanel extends JPanel {
 		SpringLayout sl_pnl_Soundsetter = new SpringLayout();
 		pnl_Soundsetter.setLayout(sl_pnl_Soundsetter);
 		
-		JSlider sld_Sound = new JSlider();
+		sld_Sound = new JSlider();
 		sl_pnl_Soundsetter.putConstraint(SpringLayout.WEST, sld_Sound, -281, SpringLayout.EAST, pnl_Soundsetter);
 		sl_pnl_Soundsetter.putConstraint(SpringLayout.EAST, sld_Sound, -10, SpringLayout.EAST, pnl_Soundsetter);
 		sld_Sound.setValue(0);
@@ -96,5 +97,8 @@ public class Soundpanel extends JPanel {
 					, btn_Sound.getIcon().getIconHeight()));
 			prevDirect = dtr;
 		}
+	}
+	public JSlider getSlider() {
+		return sld_Sound;
 	}
 }

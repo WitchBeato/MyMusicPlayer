@@ -25,9 +25,12 @@ import backend.StringEditor;
 import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
 import userUI.MainFrame;
+import userUI.information.Musicinfo;
 import userUI.mycomponents.PlayerTime;
 
 import javax.swing.JProgressBar;
+import javax.swing.JSlider;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -45,10 +48,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Playerpanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Playerpanel me = this;
+	private MainFrame father;
 	private JPanel pnl_Buttons, pnl_Time, pnl_Soundicon;
 	private PlayerTime pb_Time;
 	private JButton btn_Soundicon;
@@ -59,13 +65,17 @@ public class Playerpanel extends JPanel {
 	private Boolean isStop = false;
 	private final Object lock = new Object();
 	private int current = 0;
+	private JButton btn_Prev;
+	private JButton btn_Stop;
+	private JButton btn_Onward;
 	/**
 	 * Create the panel.
 	 */
 	public Playerpanel() {
 		initiliaze();
 	}
-	public Playerpanel(JPanel father, MusicPlayer player) {
+	public Playerpanel(MainFrame father, MusicPlayer player) {
+		this.father = father;
 		initiliaze();
 		globalListeners(father);
 		this.player = player;
@@ -84,7 +94,13 @@ public class Playerpanel extends JPanel {
 		SpringLayout sl_pnl_Prev = new SpringLayout();
 		pnl_Prev.setLayout(sl_pnl_Prev);
 		
-		JButton btn_Prev = new JButton("");
+		btn_Prev = new JButton("");
+		btn_Prev.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				prevSong();
+			}
+		});
 		btn_Prev.setIcon(Photoeditor.photoScaleImage(Imagedtr.prev, 10, 50));
 		sl_pnl_Prev.putConstraint(SpringLayout.NORTH, btn_Prev, 10, SpringLayout.NORTH, pnl_Prev);
 		sl_pnl_Prev.putConstraint(SpringLayout.WEST, btn_Prev, 10, SpringLayout.WEST, pnl_Prev);
@@ -96,7 +112,7 @@ public class Playerpanel extends JPanel {
 		pnl_Buttons.add(pnl_Stop);
 		pnl_Stop.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_Stop = new JButton("");
+		btn_Stop = new JButton("");
 		btn_Stop.setIcon(Photoeditor.photoScaleImage(Imagedtr.stop, 30, 51));
 		btn_Stop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,7 +126,13 @@ public class Playerpanel extends JPanel {
 		SpringLayout sl_pnl_Onward = new SpringLayout();
 		pnl_Onward.setLayout(sl_pnl_Onward);
 		
-		JButton btn_Onward = new JButton("");
+		btn_Onward = new JButton("");
+		btn_Onward.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				nextSong();
+			}
+		});
 		btn_Onward.setIcon(Photoeditor.photoScaleImage(Imagedtr.onward, 10, 50));
 		sl_pnl_Onward.putConstraint(SpringLayout.NORTH, btn_Onward, 10, SpringLayout.NORTH, pnl_Onward);
 		sl_pnl_Onward.putConstraint(SpringLayout.WEST, btn_Onward, 10, SpringLayout.WEST, pnl_Onward);
@@ -149,7 +171,7 @@ public class Playerpanel extends JPanel {
 		
 		btn_Soundicon = new JButton("");
 		btn_Soundicon.setIcon(Photoeditor.photoScaleImage(Imagedtr.sound, 45, 51));
-		
+		btn_Soundicon.setVisible(false);
 		pnl_Soundicon.add(btn_Soundicon, BorderLayout.CENTER);
 		
 		JPanel pnl_Timeline = new JPanel();
@@ -187,7 +209,6 @@ public class Playerpanel extends JPanel {
 	    SwingUtilities.invokeLater(() -> {
 	    	pb_Time.SetTime(second);
 	    });
-		//pb_Time.SetTime(second);
 		if(fulltime <= current) {
 			player.playerclose();
 			
@@ -230,18 +251,29 @@ public class Playerpanel extends JPanel {
 		}
 		this.isStop = isstop;
 	}
-	private void globalListeners(JPanel father) {
+	private void globalListeners(MainFrame father) {
 		btn_Soundicon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Soundpanel soundpanel = new Soundpanel(btn_Soundicon);
+				JSlider slider = soundpanel.getSlider();
+				slider.setValue(20);
+				slider.addChangeListener(new ChangeListener() {
+					
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						// TODO Auto-generated method stub
+						float volume = (float)(slider.getValue())/100f;
+						player.setVolume(volume);
+					}
+				});
 				soundpanel.setSize(new Dimension(393,85));
 				JPopupMenu menu = new JPopupMenu();
 				menu.setPopupSize(soundpanel.getSize());
 				menu.add(soundpanel);
 				menu.setSize(new Dimension(soundpanel.getWidth(),soundpanel.getHeight()));
-				menu.show(father, father.getWidth()-soundpanel.getWidth()/2,
-						father.getHeight()-btn_Soundicon.getPreferredSize().height
-						-soundpanel.getHeight());
+				menu.show(father, 
+						father.getWidth()-soundpanel.getWidth()/2,
+						father.getHeight()-btn_Soundicon.getPreferredSize().height-soundpanel.getHeight());
 			}
 		});
 	}
@@ -255,4 +287,28 @@ public class Playerpanel extends JPanel {
 		fulltime = 0;
 		if(timer != null) timer.cancel();
 	}
+	private void nextSong() {
+		setInfo(1);
+		Boolean nextExist = father.isSongExist(player.getID()+1);
+		btn_Onward.setEnabled(nextExist);
+		btn_Prev.setEnabled(!nextExist);
+	}
+	private void prevSong() {
+		setInfo(-1);
+		Boolean prevExist = father.isSongExist(player.getID()-1);
+		btn_Prev.setEnabled(prevExist);
+		btn_Onward.setEnabled(!prevExist);
+	}
+	private void setInfo(int skipped) {
+		Musicinfo info = father.setNextSong(skipped);
+		if(info == null) return;
+		setFulltime(info.getTime());
+	}
+	public void setPrevVisibility(Boolean isActive) {
+		btn_Prev.setEnabled(isActive);
+	}
+	public void setNextVisibility(Boolean isActive) {
+		btn_Onward.setEnabled(isActive);
+	}
+
 }

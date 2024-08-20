@@ -16,7 +16,7 @@ import userUI.information.Playlist;
 import userUI.mycomponents.ChangeableImage;
 import userUI.mycomponents.JLabelClickable;
 import userUI.mycomponents.JTextwithFolder;
-import userUI.mycomponents.MyPopUp;
+import userUI.mycomponents.Popupconstant;
 import userUI.mycomponents.Mybutton;
 
 import java.awt.BorderLayout;
@@ -85,7 +85,7 @@ public class AddMusic extends JFrame {
 	private Playlist playlist;
 	private Musicinfo info;
 	private int mode;
-	private MyPopUp popup;
+	private Popupconstant popup;
 	private JTextwithFolder txt_Directory;
 	private ChangeableImage lbl_Image;
 	/**
@@ -426,7 +426,7 @@ public class AddMusic extends JFrame {
 		lbl_addFolder.setVisible(isAdd);
 	}
 	private void showCalendar(Component boss,JTextField txt_Changed) {
-		popup = new MyPopUp();
+		popup = new Popupconstant();
 		DatePickerSettings dateSetting = new DatePickerSettings();
 		JPanel panel = new JPanel();
 		CalendarPanel calendarpanel = new CalendarPanel(dateSetting);

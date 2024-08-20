@@ -6,11 +6,10 @@ import javax.swing.JPopupMenu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JLabel;
-import javax.swing.SpringLayout;
+
 
 import backend.MusicPlayer;
 import backend.Photoeditor;
-import backend.StringEditor;
 import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
 import userUI.AddMusic;
@@ -22,7 +21,6 @@ import userUI.information.Settings;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -31,7 +29,11 @@ import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class SelectTitle extends JPanel {
 
@@ -43,6 +45,9 @@ public class SelectTitle extends JPanel {
 	private Mybutton btn_Play, btn_Property, btn_Delete;
 	private JLabel lbl_Title, lbl_Photo;
 	private ListMusicPanel parent;
+	private JLayeredPane pnl_Delete;
+	private Boolean selectmode = false;
+	private JCheckBox chb_Select;
 	public SelectTitle(Musicinfo info, Boolean isDirectory, ListMusicPanel parent) {
 		this.isDirectory = isDirectory;
 		this.parent = parent;
@@ -70,8 +75,11 @@ public class SelectTitle extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ClickedRight(e);
-				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-					playMusic(title.getDirectory());
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					if(e.isControlDown()) turnToSelectMode();
+					if(e.getClickCount() == 2) {
+						playMusic(title.getDirectory());
+					}
 				}
 			}
 			@Override
@@ -89,9 +97,47 @@ public class SelectTitle extends JPanel {
 		lbl_Photo.setBounds(30, 0, 76,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
 		
+		pnl_Delete = new JLayeredPane();
+		pnl_Delete.setBounds(0, 0, 20, 20);
+		lpnl_Photo.add(pnl_Delete);
+		pnl_Delete.setLayout(null);
+		
 		btn_Delete = new Mybutton();
 		btn_Delete.setBounds(0, 0, 20, 20);
-		lpnl_Photo.add(btn_Delete,JLayeredPane.POPUP_LAYER);
+		pnl_Delete.add(btn_Delete);
+		btn_Delete.setIcon(Photoeditor.photoScaleImage(Imagedtr.cancel,
+				btn_Delete.getSize().width,
+				btn_Delete.getSize().height));
+		
+		chb_Select = new JCheckBox("New check box");
+		chb_Select.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setisSelected(chb_Select.isSelected());
+			}
+		});
+	
+		chb_Select.setBounds(0, 0, 20, 20);
+		pnl_Delete.add(chb_Select,JLayeredPane.DRAG_LAYER);
+		chb_Select.setVisible(false);
+		btn_Delete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				mouseEnterGlob();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				mouseLeaveGlob();
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				removeItem();
+			}
+		});
+		btn_Delete.setVisible(false);
 		
 		btn_Property = new Mybutton();
 		btn_Property.setBounds(107, 0, 20, 20);
@@ -101,12 +147,24 @@ public class SelectTitle extends JPanel {
 		JPanel pnl_Title = new JPanel();
 		add(pnl_Title,BorderLayout.CENTER);
 		pnl_Title.setLayout(new BorderLayout(0, 0));
-		lbl_Title = new JLabel("text");
+		lbl_Title = new JLabel("text") {
+			@Override
+			public void setText(String text) {
+				// TODO Auto-generated method stub
+				if(text.length()>17) {
+					text = text.substring(0,17)+"...";
+				}
+				super.setText(text);
+			}
+		};
 		lbl_Title.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-					playMusic(title.getDirectory());
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					if(e.isControlDown()) turnToSelectMode();
+					if(e.getClickCount() == 2) {
+						playMusic(title.getDirectory());
+					}
 				}
 				ClickedRight(e);
 			}
@@ -117,9 +175,6 @@ public class SelectTitle extends JPanel {
 		btn_Property.setIcon(Photoeditor.photoScaleImage(Imagedtr.threeDot,
 				btn_Property.getSize().width,
 				btn_Property.getSize().height));
-		btn_Delete.setIcon(Photoeditor.photoScaleImage(Imagedtr.cancel,
-				btn_Delete.getSize().width,
-				btn_Delete.getSize().height));
 		lbl_Photo.setIcon(Photoeditor.photoScaleImage(Imagedtr.musicIcon,
 				lbl_Photo.getSize().width/2,
 				lbl_Photo.getSize().height));
@@ -157,24 +212,6 @@ public class SelectTitle extends JPanel {
 				mouseLeaveGlob();
 			}
 		});
-		btn_Delete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				mouseEnterGlob();
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				mouseLeaveGlob();
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseClicked(e);
-				removeItem();
-			}
-		});
-		btn_Delete.setVisible(false);
 		btn_Property.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -209,11 +246,51 @@ public class SelectTitle extends JPanel {
 		lbl_Title.setText(title.getName());
 	}
 	public void setButtonsVisible(Boolean buttonsVisible) {
-		if(isDirectory == null) return;
-		if(!isDirectory) btn_Delete.setVisible(buttonsVisible);
+		if(isDirectory == null || selectmode) return;
+		if(!isDirectory) {
+			if(selectmode) chb_Select.setVisible(true);
+			else btn_Delete.setVisible(buttonsVisible);
+		}
 		btn_Play.setVisible(buttonsVisible);
 		btn_Property.setVisible(buttonsVisible);
 	}
+	public void setSelectMode(Boolean newSelectmode) {
+		this.selectmode = newSelectmode;
+		if(selectmode) {
+			chb_Select.setVisible(true);
+			btn_Delete.setVisible(false);
+			pnl_Delete.setSize(chb_Select.getPreferredSize());
+		}
+		else {
+			setisSelected(false);
+			chb_Select.setSelected(false);
+			chb_Select.setVisible(false);
+			btn_Delete.setVisible(true);
+			pnl_Delete.setSize(btn_Delete.getPreferredSize());
+		}
+		
+	}
+    public void debugMessage() {
+    	if(Settings.DEBUG_MODE) System.out.println(title.getName());
+    }
+    // it set visibility of player panel next buttons visibility
+	public void setNextBTNVisibility() {
+		MainFrame frame = getMainFrame();
+		int id = frame.getPlayer().getID();
+		Boolean isNextExist = frame.isSongExist(id+1);
+		Boolean isPrevExist = frame.isSongExist(id-1);
+		frame.setPrevEnabled(isPrevExist);
+		frame.setNextEnabled(isNextExist);
+	}
+    public Boolean getSelectMode() {
+    	return selectmode;
+    }
+    public Boolean getisSelected() {
+    	return chb_Select.isSelected();
+    }
+    public Musicinfo getMusic() {
+    	return title;
+    }
 	private void mouseLeaveGlob() {
 		setButtonsVisible(false);
 	}
@@ -221,11 +298,17 @@ public class SelectTitle extends JPanel {
 		setButtonsVisible(true);
 	}
 	private void playMusic(String directory) {
+		if(selectmode) return;
 		MusicPlayer player = parent.getMainFrame().getPlayer();
 		player.play(title,0);
 		parent.getMainFrame().setFullTime(MusicPlayer.giveLenght(directory));
 		addLastListened();
+		setNextBTNVisibility();
 		if(Settings.DEBUG_MODE) MusicPlayer.fileRead(directory);
+	}
+
+	private MainFrame getMainFrame() {
+		return parent.getFrame();
 	}
 	private void ClickedRight(MouseEvent e) {
 	if(!SwingUtilities.isRightMouseButton(e)) return;
@@ -258,10 +341,33 @@ public class SelectTitle extends JPanel {
     	Playlist lastlistened = parent.getMainFrame().getSettings().getLastListened();
     	lastlistened.addtoList(title);
     }
+
     private void removeItem() {
     	Playlist playlist = parent.getPlaylist();
     	playlist.removeList(title);
     	parent.sortItems();
     	parent.repaint();
+    }
+    private void setisSelected(Boolean isSelected) {
+    	MainFrame frame =parent.getFrame();
+    	   	int selected = frame.getSelectedValue();
+        	if(isSelected) selected++;
+        	else selected--;
+        	if(selected <0) selected = 0;
+        	frame.setSelectedValue(selected);
+        	
+        
+    	
+    }
+    private void turnToSelectMode() {
+    	setButtonsVisible(false);
+    	setisSelected(true);
+    	chb_Select.setSelected(true);
+    	if(parent.getSelectMode()) {
+    		setisSelected(false);
+    		return;
+    		
+    	}
+    	parent.setSelectMode(true);
     }
 }

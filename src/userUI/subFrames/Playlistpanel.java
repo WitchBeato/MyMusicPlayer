@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import backend.Photoeditor;
 import staticinfo.Dtr;
@@ -63,6 +64,7 @@ public class Playlistpanel extends JPanel {
 	private void init() {
 		setLayout(new BorderLayout(0, 0));
 		initiliazeList();
+		setSize(new Dimension(133,600));
 		chosedID.set(-1);
 		
 		JPanel pnl_Logo = new JPanel();
@@ -98,7 +100,7 @@ public class Playlistpanel extends JPanel {
 		spt_1_1.setForeground(new Color(153, 0, 255));
 		pnl_Lastlisten.add(spt_1_1, BorderLayout.SOUTH);
 		
-		btn_Last = new JButton("Last listened");
+		btn_Last = new JButton("<html>Last Listened</html>");
 		btn_Last.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -110,15 +112,30 @@ public class Playlistpanel extends JPanel {
 		btn_Last.setBorderPainted(false);
 		btn_Last.setFocusPainted(false);
 		
+		JButton btn_All = new JButton("All");
+		btn_All.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				openAllMusic(e);
+			}
+		});
+		btn_All.setPreferredSize(new Dimension(0,30));
+		btn_All.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btn_All.setFocusPainted(false);
+		btn_All.setBorderPainted(false);
+		btn_All.setBackground(new Color(210, 210, 210));
+		pnl_Lastlisten.add(btn_All, BorderLayout.NORTH);
+		
 		JScrollPane spn_List = new JScrollPane();
 		spn_List.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		pnl_South.add(spn_List, BorderLayout.CENTER);
 		
 		pnl_List = new JPanel();
-		pnl_List.setPreferredSize(new Dimension(100,1000)); 
+		pnl_List.setPreferredSize(new Dimension(131,400)); 
 		
 		spn_List.add(pnl_List);
 		spn_List.setViewportView(pnl_List);
+		spn_List.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pnl_List.setLayout(new FlowLayout(FlowLayout.TRAILING, 0,0));
 		setBackground(Mycolors.openGray);
 	}
@@ -176,6 +193,14 @@ public class Playlistpanel extends JPanel {
 			panel.add(menu);
 		}
 		
+	}
+	//worked on
+	private void openAllMusic(MouseEvent e) {
+		if(!SwingUtilities.isLeftMouseButton(e)) return;
+		setting.openAllMusics(getMusiclist(Musiclist.PLAYLIST));
+		Musicpanel musicpanel = new Musicpanel(setting.getAllMusic(), parent);
+		musicpanel.thisAllMusics();
+		parent.panelChange(musicpanel);
 	}
 	@Override
 	public void repaint() {

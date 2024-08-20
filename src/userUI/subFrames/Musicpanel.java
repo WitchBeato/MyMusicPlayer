@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import userUI.MainFrame;
+import userUI.ShowPlaylistProperty;
 import userUI.information.MessageData;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
@@ -40,6 +41,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class Musicpanel extends JPanel {
 
@@ -52,6 +54,8 @@ public class Musicpanel extends JPanel {
 	private Musicpanel me = this;
 	private MainFrame frame;
 	private ListMusicPanel pnl_Musics;
+	private ArrayList<Musicinfo> list;
+	private SortMusics pnl_Sort;
 	/**
 	 * Create the panel.
 	 */
@@ -73,7 +77,7 @@ public class Musicpanel extends JPanel {
 	private void init() {
 		this.setBounds(0, 0, 667, 469);
 		Boolean isDirectory = null;
-		ArrayList<Musicinfo> list = new ArrayList<>();
+		list = new ArrayList<>();
 		MessageData messagedata = null;
 		if(directory != null) {
 			list = Playlistbackend.Directorytoplaylist(directory).getList(); 
@@ -98,6 +102,7 @@ public class Musicpanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				rightClick(e);
+				showPlaylistInfo();
 			}
 		});
 		btn_Settings.setPreferredSize(new Dimension(60,0));
@@ -135,6 +140,10 @@ public class Musicpanel extends JPanel {
 		JPanel pnl_South = new JPanel();
 		add(pnl_South, BorderLayout.CENTER);
 		pnl_South.setLayout(new BorderLayout(0, 0));
+		
+		JPanel pnl_Items = new JPanel();
+		pnl_South.add(pnl_Items);
+		
 		pnl_Musics = new ListMusicPanel();
 		
 		if(playlist != null) pnl_Musics = new ListMusicPanel(playlist,isDirectory,frame);
@@ -145,9 +154,20 @@ public class Musicpanel extends JPanel {
 				rightClick(e);
 			}
 		});
+		pnl_Items.setLayout(new BorderLayout(0, 0));
 		pnl_Musics.setBackground(new Color(255, 255, 255));
-		pnl_South.add(pnl_Musics);
 		
+		
+		pnl_Sort = new SortMusics(this,isDirectory);
+		pnl_Sort.setPreferredSize(new Dimension(pnl_Musics.getWidth(),40));
+		pnl_Items.add(pnl_Sort, BorderLayout.NORTH);
+		
+		JScrollPane spnl_Musics = new JScrollPane();
+		pnl_Items.add(spnl_Musics, BorderLayout.CENTER);
+		
+		spnl_Musics.add(pnl_Musics);
+		spnl_Musics.setViewportView(pnl_Musics);
+		pnl_Sort.setVisible(false);
 		JPanel panel1 = new JPanel();
 		panel1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -184,13 +204,22 @@ public class Musicpanel extends JPanel {
 		}
 	}
 	private void rightClick(MouseEvent e) {
+		if(!pnl_Musics.getSelectMode()) setSortVisible(false);
 		if(!SwingUtilities.isRightMouseButton(e)) return;
 		JPopupMenu menu = new JPopupMenu();
 		JMenuItem refresh = MenuItemlist.refresh;
 		refresh.addActionListener(ae -> repaintMusiclist());
+		addSort(pnl_Sort,menu, e);
 		menu.add(refresh);
 		menu.show(e.getComponent(), e.getX(), e.getY());
 		
+	}
+	public void addSort(JPanel visiblePanel,JPopupMenu menu,MouseEvent e) {
+		if(!SwingUtilities.isRightMouseButton(e)) return;
+		JMenuItem sort = MenuItemlist.sort;
+		sort.addActionListener(ae -> setSortVisible(true));
+		pnl_Sort.setSelectMode(false);
+		menu.add(sort);
 	}
 	public void repaintMusiclist() {
 		pnl_Musics.sortItems();
@@ -205,6 +234,41 @@ public class Musicpanel extends JPanel {
 		pnl_Musics.setIsDirectory(true);
 		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
 		btn_Settings.setVisible(false);
+	}
+	public void thisAllMusics() {
+		if(lbl_Text == null) return;
+		pnl_Musics.setIsDirectory(false);
+		lbl_Text.setHorizontalAlignment(SwingConstants.CENTER);
+		btn_Settings.setVisible(false);
+	}
+	private void showPlaylistInfo() {
+		ShowPlaylistProperty sa = null;
+		if(playlist == null) sa = new ShowPlaylistProperty(directory,list,this);
+		else sa = new ShowPlaylistProperty(playlist,this);
+		sa.setVisible(true);
+	}
+	@Override
+	public void repaint() {
+		// TODO Auto-generated method stub
+		super.repaint();
+		if(playlist == null) return;
+		lbl_Text.setText(playlist.getName());
+		frame.playlistRepaint();
+	}
+	public int getListSize() {
+		return list.size();
+	}
+	public Musicinfo getInfo(int id) {
+		return list.get(id);
+	}
+	public void setSortVisible(Boolean visible) {
 		
+		pnl_Sort.setVisible(visible);
+	}
+	public SortMusics getSortMusic() {
+		return pnl_Sort;
+	}
+	public MainFrame getFrame() {
+		return frame;
 	}
 }

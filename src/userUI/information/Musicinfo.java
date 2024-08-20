@@ -68,7 +68,6 @@ public class Musicinfo implements Serializable{
 		return id;
 	}
 	public void setId(int id) {
-		if(this.id != null) return;
 		this.id = id;
 	}
 	public String getName() {

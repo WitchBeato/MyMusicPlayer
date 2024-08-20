@@ -33,8 +33,14 @@ public class StringEditor {
 		int minute = second / 60  - (hour * 60);
 		second = second % 60;
 		String textHour = (hour != 0) ? hour + ":" : "";
-		String text = textHour + minute + ":" + second;
+		String textMinute = turnNumberToText(minute);
+		String textSecond = turnNumberToText(second);
+		String text = textHour + textMinute + ":" + textSecond;
 		return text;
+	}
+	private static String turnNumberToText(int value) {
+		if(value <10) return "0"+value;
+		else return String.valueOf(value);
 	}
 	public static String giveStringforIterative(String text, char letter, int qualitive) {
 		int[] location = lastCharLocation(text, letter, qualitive);
