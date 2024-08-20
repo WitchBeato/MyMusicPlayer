@@ -228,6 +228,10 @@ public class MainFrame extends JFrame {
 		if(musicpanel.getInfo(id) != null) return true;
 		else return false;
 	}
+	public int getMusicListSize() {
+		Musicpanel musicpanel = getMusicList();
+		return musicpanel.getListSize();
+	}
 	public void setPrevEnabled(Boolean isActive) {
 		pnl_Player.setPrevVisibility(isActive);
 		
