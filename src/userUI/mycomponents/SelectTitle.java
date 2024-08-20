@@ -74,13 +74,12 @@ public class SelectTitle extends JPanel {
 		lbl_Photo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ClickedRight(e);
+
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()) turnToSelectMode();
-					if(e.getClickCount() == 2) {
-						playMusic(title.getDirectory());
-					}
 				}
+				ClickedLeftButton(e);
+				ClickedRight(e);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -109,7 +108,14 @@ public class SelectTitle extends JPanel {
 				btn_Delete.getSize().width,
 				btn_Delete.getSize().height));
 		
-		chb_Select = new JCheckBox("New check box");
+		chb_Select = new JCheckBox("New check box") {
+			@Override
+			public void setSelected(boolean b) {
+				// TODO Auto-generated method stub
+				super.setSelected(b);
+				setisSelected(chb_Select.isSelected());
+			}
+		};
 		chb_Select.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -162,10 +168,9 @@ public class SelectTitle extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()) turnToSelectMode();
-					if(e.getClickCount() == 2) {
-						playMusic(title.getDirectory());
-					}
+					
 				}
+				ClickedLeftButton(e);
 				ClickedRight(e);
 			}
 		});
@@ -321,9 +326,16 @@ public class SelectTitle extends JPanel {
 		remove.addActionListener(ae -> removeItem());
 		menu.add(remove);
 	}
-
-	menu.show(e.getComponent(), e.getX(), e.getY());
    }
+	private void ClickedLeftButton(MouseEvent e) {
+	     if(!SwingUtilities.isLeftMouseButton(e)) return;
+	     if(selectmode) {
+	    	 chb_Select.setSelected(!chb_Select.isSelected());
+	     }
+	     else if(e.getClickCount() == 2) {
+	    	 playMusic(title.getDirectory());			
+		}
+	}
     private void openFeature() {
 		AddMusic addmusic = parent.getMainFrame().getAddpanel();
 		if(addmusic != null) {
@@ -349,25 +361,33 @@ public class SelectTitle extends JPanel {
     	parent.repaint();
     }
     private void setisSelected(Boolean isSelected) {
+    	    setSelectedValue(isSelected);
+    	   	
+    }
+    private void setSelectedValue(Boolean isIncrease) {
     	MainFrame frame =parent.getFrame();
-    	   	int selected = frame.getSelectedValue();
-        	if(isSelected) selected++;
-        	else selected--;
-        	if(selected <0) selected = 0;
-        	frame.setSelectedValue(selected);
-        	
-        
-    	
+    	int selected = frame.getSelectedValue();
+    	if(isIncrease) selected++;
+    	else selected--;
+    	if(selected <0) selected = 0;
+    	frame.setSelectedValue(selected);
     }
     private void turnToSelectMode() {
     	setButtonsVisible(false);
-    	setisSelected(true);
-    	chb_Select.setSelected(true);
     	if(parent.getSelectMode()) {
     		setisSelected(false);
     		return;
     		
     	}
     	parent.setSelectMode(true);
+    	SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+		    	chb_Select.setSelected(true);
+		    	setSelectedValue(false);
+			}
+		});
     }
 }
