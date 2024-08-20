@@ -92,6 +92,7 @@ public class Settings {
 		lastListened = (Playlist) openObject(lastListeneddtr);
 	}
 	public void openAllMusics(Musiclist list) {
+		if(allMusic.getList().size() >0) allMusic = new Playlist("All Musics", -1);
 		ArrayList<Playlist> playlistList = list.getMusiclist();
 		for (Playlist playlist : playlistList) {
 			allMusic.mergePlaylist(playlist);
