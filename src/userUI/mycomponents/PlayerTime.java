@@ -35,6 +35,8 @@ public class PlayerTime extends JPanel {
 	private Boolean isPlay;
 	private int prevValue = 0;
 	private Playerpanel mother;
+
+	private JLayeredPane lpnl_Content;
 	public PlayerTime(Playerpanel mother) {
 		this.mother = mother;
 		init();
@@ -42,7 +44,7 @@ public class PlayerTime extends JPanel {
 	private void init() {
 		setLayout(new BorderLayout(0, 0));
 		
-		JLayeredPane lpnl_Content = new JLayeredPane();
+		lpnl_Content = new JLayeredPane();
 		add(lpnl_Content, BorderLayout.CENTER);
 		SpringLayout sl_lpnl_Content = new SpringLayout();
 		lpnl_Content.setLayout(sl_lpnl_Content);
@@ -154,5 +156,14 @@ public class PlayerTime extends JPanel {
 		mother.setCurrent(value);
 		mother.setisplay(true);
 		//mother.setTimer();
+	}
+	@Override
+	public void setBackground(Color bg) {
+		// TODO Auto-generated method stub
+		super.setBackground(bg);
+		if(pb_Time == null) return;
+		pb_Time.setBackground(bg);
+		sb_Time.setBackground(bg);
+		lpnl_Content.setBackground(bg);
 	}
 }

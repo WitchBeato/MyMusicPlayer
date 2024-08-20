@@ -25,6 +25,7 @@ import staticinfo.Mycolors;
 import staticinfo.StaticNames;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -147,11 +148,13 @@ public class Playlistpanel extends JPanel {
 			setting.openMusiclist();
 		}
 		else {
-			musiclist[0] = new Musiclist(0, "Directories", null); 
-			musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
-			musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
-			musiclist[1] = new Musiclist(1, "Playlist", null); 
-			musiclist[1].addPlaylist("deneme");
+			if(setting.DEBUG_MODE) {
+				musiclist[0] = new Musiclist(0, "Directories", null); 
+				musiclist[0].addDirectorylist("C:\\Users\\aliko\\OneDrive\\Belgeler\\çalışılacak");
+				musiclist[0].addDirectorylist("C:\\Users\\aliko\\eclipse-workspace\\myMusicPlayer\\project management\\musics");
+				musiclist[1] = new Musiclist(1, "Playlist", null); 
+				musiclist[1].addPlaylist("deneme");
+			}
 			setting.setMusiclist(musiclist);
 			setting.saveMusiclist();
 		}
@@ -201,6 +204,11 @@ public class Playlistpanel extends JPanel {
 		Musicpanel musicpanel = new Musicpanel(setting.getAllMusic(), parent);
 		musicpanel.thisAllMusics();
 		parent.panelChange(musicpanel);
+	}
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
+		super.paint(g);
 	}
 	@Override
 	public void repaint() {

@@ -26,6 +26,7 @@ import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
+import userUI.mycomponents.Mybutton;
 import userUI.mycomponents.PlayerTime;
 
 import javax.swing.JProgressBar;
@@ -65,9 +66,8 @@ public class Playerpanel extends JPanel {
 	private Boolean isStop = false;
 	private final Object lock = new Object();
 	private int current = 0;
-	private JButton btn_Prev;
-	private JButton btn_Stop;
-	private JButton btn_Onward;
+	private JButton btn_Prev, btn_Stop,btn_Onward;
+	private JPanel pnl_Timeline, pnl_Onward,pnl_Stop,pnl_Prev;
 	/**
 	 * Create the panel.
 	 */
@@ -89,12 +89,12 @@ public class Playerpanel extends JPanel {
 		add(pnl_Buttons, BorderLayout.WEST);
 		pnl_Buttons.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		JPanel pnl_Prev = new JPanel();
+		pnl_Prev = new JPanel();
 		pnl_Buttons.add(pnl_Prev);
 		SpringLayout sl_pnl_Prev = new SpringLayout();
 		pnl_Prev.setLayout(sl_pnl_Prev);
 		
-		btn_Prev = new JButton("");
+		btn_Prev = new Mybutton("");
 		btn_Prev.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -108,11 +108,11 @@ public class Playerpanel extends JPanel {
 		sl_pnl_Prev.putConstraint(SpringLayout.EAST, btn_Prev, 23, SpringLayout.WEST, pnl_Prev);
 		pnl_Prev.add(btn_Prev);
 		
-		JPanel pnl_Stop = new JPanel();
+		pnl_Stop = new JPanel();
 		pnl_Buttons.add(pnl_Stop);
 		pnl_Stop.setLayout(new BorderLayout(0, 0));
 		
-		btn_Stop = new JButton("");
+		btn_Stop = new Mybutton("");
 		btn_Stop.setIcon(Photoeditor.photoScaleImage(Imagedtr.stop, 30, 51));
 		btn_Stop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -121,12 +121,12 @@ public class Playerpanel extends JPanel {
 		});
 		pnl_Stop.add(btn_Stop, BorderLayout.CENTER);
 		
-		JPanel pnl_Onward = new JPanel();
+		pnl_Onward = new JPanel();
 		pnl_Buttons.add(pnl_Onward);
 		SpringLayout sl_pnl_Onward = new SpringLayout();
 		pnl_Onward.setLayout(sl_pnl_Onward);
 		
-		btn_Onward = new JButton("");
+		btn_Onward = new Mybutton("");
 		btn_Onward.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -174,7 +174,7 @@ public class Playerpanel extends JPanel {
 		btn_Soundicon.setVisible(false);
 		pnl_Soundicon.add(btn_Soundicon, BorderLayout.CENTER);
 		
-		JPanel pnl_Timeline = new JPanel();
+		pnl_Timeline = new JPanel();
 		pnl_East.add(pnl_Timeline, BorderLayout.CENTER);
 		SpringLayout sl_pnl_Timeline = new SpringLayout();
 		pnl_Timeline.setLayout(sl_pnl_Timeline);
@@ -310,5 +310,21 @@ public class Playerpanel extends JPanel {
 	public void setNextVisibility(Boolean isActive) {
 		btn_Onward.setEnabled(isActive);
 	}
-
+	@Override
+	public void setBackground(Color bg) {
+		// TODO Auto-generated method stub
+		super.setBackground(bg);
+		if(btn_Onward == null) return;
+		btn_Onward.setBackground(bg);
+		btn_Prev.setBackground(bg);
+		btn_Stop.setBackground(bg);
+		pb_Time.setBackground(bg);
+		pnl_Time.setBackground(bg);
+		pnl_Timeline.setBackground(bg);
+		pnl_Buttons.setBackground(bg);
+		pnl_Soundicon.setBackground(bg);
+		pnl_Prev.setBackground(bg);
+		pnl_Onward.setBackground(bg);
+		pnl_Stop.setBackground(bg);
+	}
 }
