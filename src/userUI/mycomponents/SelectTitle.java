@@ -381,7 +381,6 @@ public class SelectTitle extends JPanel {
     	}
     	parent.setSelectMode(true);
     	SwingUtilities.invokeLater(new Runnable() {
-			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub

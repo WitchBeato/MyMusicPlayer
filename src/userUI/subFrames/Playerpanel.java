@@ -208,9 +208,7 @@ public class Playerpanel extends JPanel {
 	public void setCurrent(int second) {
 		current = second;
 		lbl_Currenttime.setText(StringEditor.giveTimeinSecond(current));
-	    SwingUtilities.invokeLater(() -> {
-	    	pb_Time.SetTime(second);
-	    });
+	    pb_Time.SetTime(second);
 		if(fulltime <= current) {
 			player.playerclose();
 			
@@ -281,6 +279,7 @@ public class Playerpanel extends JPanel {
 	}
 	private void setlbl_Current(float speed) {
 		if (isStop) return;
+		if(!pb_Time.getIsTimeChanging())
 		setCurrent((int)(current+speed));
 
 	}
