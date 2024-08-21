@@ -15,6 +15,9 @@ import userUI.information.Settings;
 import javax.swing.JList;
 import java.awt.Font;
 import javax.swing.event.ListSelectionListener;
+
+import staticinfo.Dtr;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -54,6 +57,7 @@ public class SelectPlaylist extends JFrame {
 		init();
 	}
 	private void init() {
+		this.setIconImage(Dtr.logo.getImage());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 257, 487);

@@ -2,6 +2,7 @@ package userUI;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,6 +10,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 
 import backend.MusicPlayer;
+import staticinfo.Dtr;
 import staticinfo.Mycolors;
 import staticinfo.PlayerMessages;
 import userUI.information.Musicinfo;
@@ -66,6 +68,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		this.setIconImage(Dtr.logo.getImage());
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

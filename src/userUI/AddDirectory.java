@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import backend.AddtoMusiclist;
 import backend.Photoeditor;
 import backend.StringEditor;
+import staticinfo.Dtr;
 import staticinfo.Imagedtr;
 import userUI.information.Musiclist;
 import userUI.mycomponents.JTextwithFolder;
@@ -57,6 +58,7 @@ public class AddDirectory extends JFrame {
 	 * Create the frame.
 	 */
 	public AddDirectory(Musiclist list,JPanel mother) {
+		this.setIconImage(Dtr.logo.getImage());
 		txt_Folder = new JTextwithFolder(list.getId(),JTextwithFolder.FOLDERMODE);
 		this.list = list;
 		this.Mother = mother;
@@ -71,6 +73,7 @@ public class AddDirectory extends JFrame {
 		init();
 	}
 	private void init() {
+		this.setIconImage(Dtr.logo.getImage());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 405, 131);
