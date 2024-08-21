@@ -36,6 +36,7 @@ public class Playlist implements Serializable{
 	public void setList(ArrayList<Musicinfo> list) {
 		this.list = list;
 	}
+	//this method add musicinfo to our playlist
 	public void addtoList(Musicinfo info) {
 		
 		String directory = info.getDirectory();
