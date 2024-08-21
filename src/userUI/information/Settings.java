@@ -1,11 +1,16 @@
 package userUI.information;
 
+import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,7 +18,7 @@ import staticinfo.Dtr;
 import staticinfo.StaticNames;
 
 public class Settings {
-	public static Boolean DEBUG_MODE = false;
+	public static Boolean DEBUG_MODE = true;
 	private Musiclist musiclist[] = new Musiclist[2];
 	private Playlist allMusic = new Playlist("All Musics", -1) {
 		@Override
@@ -106,13 +111,25 @@ public class Settings {
 	    FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(directory);
-			oos = new ObjectOutputStream(fos);
-			oos.writeObject(data);
-		} catch (IOException e) {
+		} 
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			Path path = Paths.get(directory);
+			try {
+				Files.createDirectories(path.getParent());
+				Files.createFile(path);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    try {
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(data);
 			oos.close();
 			fos.close();
 		} catch (IOException e) {
@@ -127,15 +144,21 @@ public class Settings {
 		try {
 			fis = new FileInputStream(directory);
 			ois = new ObjectInputStream(fis);
-			object = ois.readObject();
-		} catch (IOException | ClassNotFoundException e) {
+		} 
+		catch (EOFException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
+
+			object = ois.readObject();
 			fis.close();
 			ois.close();
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

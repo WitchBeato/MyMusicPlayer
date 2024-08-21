@@ -204,7 +204,8 @@ public class Submenu extends JPanel {
 		if(!removeisSure()) return;
 		int ID = getID();
 		Musiclist musiclist = greatparent.getMusiclist(ID);
-		AddtoMusiclist.removefromMusiclist(musiclist, list);
+		if(ID == Musiclist.PLAYLIST)AddtoMusiclist.removefromMusiclist(musiclist, list);
+		else AddtoMusiclist.removefromDirectoryList(musiclist, directory);
 		removeInside();
 	}
 	private int getID() {
