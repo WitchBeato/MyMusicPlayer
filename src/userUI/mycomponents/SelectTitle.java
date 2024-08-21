@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 
@@ -34,6 +35,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.SystemColor;
 
 public class SelectTitle extends JPanel {
 
@@ -117,6 +119,8 @@ public class SelectTitle extends JPanel {
 				setisSelected(chb_Select.isSelected());
 			}
 		};
+		chb_Select.setBackground(SystemColor.windowText);
+		chb_Select.setOpaque(false);
 		chb_Select.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -328,6 +332,7 @@ public class SelectTitle extends JPanel {
 		remove.addActionListener(ae -> removeItem());
 		menu.add(remove);
 	}
+	menu.show(me, e.getX(), e.getY());
    }
 	private void ClickedLeftButton(MouseEvent e) {
 	     if(!SwingUtilities.isLeftMouseButton(e)) return;

@@ -37,6 +37,7 @@ public class Playlist implements Serializable{
 		this.list = list;
 	}
 	public void addtoList(Musicinfo info) {
+		
 		String directory = info.getDirectory();
 		if(listSearch.containsKey(directory)) return;
 		try {
@@ -57,11 +58,10 @@ public class Playlist implements Serializable{
 	}
 	public void removeList(Musicinfo info) {
 		int id = info.getId();
-		if(!(list.get(id) == info)) return;
-		list.remove(id);
+		if(id < 0) return;
+		list.remove(info);
 		removeSearches(info);
 		if(list.size() == 0) return;
-		//replaceMusic(id);
 	}
 	//this method created for all music
 	public void removeListAllMusic(Musicinfo info) {
@@ -82,6 +82,7 @@ public class Playlist implements Serializable{
 		last.setId(id);	
 		addtoList(last);
 	}
+	//this method check database errors and fix it for good usage
 	public void checkandFixDatabase() {
 		if(list.size() == listIDSearch.size() && listIDSearch.size() == listSearch.size()) 
 			return;
@@ -113,6 +114,7 @@ public class Playlist implements Serializable{
 		addOneByOne(another);
 	}
 	private void addOneByOne(ArrayList<Musicinfo> another) {
+		checkandFixDatabase();
 		for (Musicinfo musicinfo : another) {
 			addtoList(musicinfo);
 		}
