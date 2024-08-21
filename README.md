@@ -27,7 +27,11 @@ improve myself in java development.
 
 ### Installing
 
-* go to any folder and write the on command panel ''git clone https://github.com/WitchBeato/MyMusicPlayer ''
+* go to any folder and write the on command panel 
+```
+$ git clone https://github.com/WitchBeato/MyMusicPlayer
+```
+
 * if you doesnt have any dependencies, download them throught maven or any project management system have contain them in database
 * now you can continue to development!
 
