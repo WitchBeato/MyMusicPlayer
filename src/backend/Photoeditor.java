@@ -1,6 +1,7 @@
 package backend;
 
 import java.awt.AlphaComposite;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Transparency;
@@ -17,6 +18,13 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
+import net.coobird.thumbnailator.*;
+import net.coobird.thumbnailator.makers.FixedSizeThumbnailMaker;
+import net.coobird.thumbnailator.resizers.DefaultResizerFactory;
+import net.coobird.thumbnailator.resizers.Resizer;
 
 public class Photoeditor {
 	//scale photo to wanted resolution
@@ -28,8 +36,22 @@ public class Photoeditor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Image scaledImage = originalImage.getScaledInstance(widht, height, Image.SCALE_SMOOTH);
-		return scaledImage;	
+		Image scaledImage = null;
+		try {
+			 scaledImage = originalImage.getScaledInstance(widht, height, Image.SCALE_SMOOTH);
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, directory + " is missing, program will close himself");
+			System.exit(1);
+		}
+		
+		Resizer resizer = DefaultResizerFactory.getInstance().getResizer(
+				  new Dimension(originalImage.getWidth(), originalImage.getHeight()), 
+				  new Dimension(widht, height));
+				BufferedImage newImage = new FixedSizeThumbnailMaker
+						(widht, height, false, true)
+						.resizer(resizer).make(originalImage);
+		return newImage;	
 	}
 	//turn photoscale's bufferedimage to imageicon
 	public static ImageIcon photoScaleImage(String directory, int widht,int height) {

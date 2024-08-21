@@ -10,8 +10,12 @@ import javax.swing.JButton;
 public class Mybutton extends JButton{
 	public Mybutton(String text) {
 		super(text);
+		init();
 	}
 	public Mybutton(){
+		init();
+	}
+	private void init() {
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setFocusPainted(false);

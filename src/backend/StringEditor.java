@@ -1,12 +1,20 @@
 package backend;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeSelectionModel;
+
+import com.privatejgoodies.forms.util.FormUtils;
 
 import staticinfo.SupportedTypes;
 
@@ -96,5 +104,14 @@ public class StringEditor {
 		}
 		return null;
 		
+	}
+	public static String readTextFile(String Directory) {
+		Path path = Paths.get(Directory);
+	    try {
+			return Files.readString(path,  Charset.defaultCharset());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 }

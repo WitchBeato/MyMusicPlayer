@@ -22,6 +22,11 @@
   		<version>0.9.1</version>
   	</dependency>
   	<dependency>
+  <groupId>net.coobird</groupId>
+  <artifactId>thumbnailator</artifactId>
+  <version>[0.4, 0.5)</version>
+</dependency>
+  	<dependency>
   		<groupId>com.github.umjammer</groupId>
   		<artifactId>jlayer</artifactId>
   		<version>1.0.3</version>

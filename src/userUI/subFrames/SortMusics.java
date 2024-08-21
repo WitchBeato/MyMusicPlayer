@@ -159,7 +159,10 @@ public class SortMusics extends JPanel {
 				,btn_Merge.getPreferredSize().height+20));
 		
 		btn_Close = new Mybutton("");
+		sl_pnl_East.putConstraint(SpringLayout.NORTH, btn_Close, 0, SpringLayout.NORTH, lbl_Selected);
 		sl_pnl_East.putConstraint(SpringLayout.WEST, btn_Close, 6, SpringLayout.EAST, pnl_Choices);
+		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, -10, SpringLayout.SOUTH, pnl_Choices);
+		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -7, SpringLayout.EAST, pnl_East);
 		btn_Close.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -167,13 +170,10 @@ public class SortMusics extends JPanel {
 			}
 		});
 		btn_Close.setBackground(Color.red);
-		sl_pnl_East.putConstraint(SpringLayout.NORTH, btn_Close, 10, SpringLayout.NORTH, pnl_East);
-		sl_pnl_East.putConstraint(SpringLayout.SOUTH, btn_Close, 37, SpringLayout.NORTH, pnl_East);
-		sl_pnl_East.putConstraint(SpringLayout.EAST, btn_Close, -5, SpringLayout.EAST, pnl_East);
 		pnl_East.add(btn_Close);
 		btn_Close.setIcon(Photoeditor.photoScaleImage(
 				Dtr.getImage("cancel.png")
-				, btn_Close.getPreferredSize().width
+				, btn_Close.getPreferredSize().width-5
 				, btn_Close.getPreferredSize().height+10));
 	}
 	private void setAllItems() {
@@ -183,13 +183,25 @@ public class SortMusics extends JPanel {
 		}
 	}
 	private void setVariable() {
+
 		try {
-			max = Workedlist.getList().size();
-			lbl_Size.setText(String.valueOf(max));
+
 			lbl_Selected.setText(String.valueOf(selected));
 		} catch (NullPointerException e) {
 			// TODO: handle exception
 			return;
+		}
+		try {
+			setMax(Workedlist.getList().size()); 
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			int musiclistSize = 0;
+			try {
+				musiclistSize = musicpanel.getFrame().getMusicListSize();
+			} catch (NullPointerException e2) {
+				musiclistSize = 0;
+			}
+			setMax(musiclistSize);
 		}
 		
 	}
@@ -199,12 +211,9 @@ public class SortMusics extends JPanel {
 	}
 	private void setMode(Boolean isDirectory) {
 		if (isDirectory) {
-			lbl_Selected.setVisible(false);
-			lbl_Size.setVisible(false);
+			btn_DeleteAll.setVisible(false);
 		}
-		else {
-			setVariable();
-		}
+		setVariable();
 	}
 	private void deleteAll() {
 		getSelectedList();
@@ -260,6 +269,7 @@ public class SortMusics extends JPanel {
 	}
 	public void setMax(int max) {
 		this.max = max;
+		lbl_Size.setText(String.valueOf(max));
 	}
 	public void setSelectMode(Boolean istrue) {
 		pnl_Choices.setVisible(istrue);
@@ -267,6 +277,9 @@ public class SortMusics extends JPanel {
 		lbl_Selected.setVisible(istrue);
 		lbl_Size.setVisible(istrue);
 		lbl_Slash.setVisible(istrue);
+		if(istrue) {
+			setVariable();
+		}
 		this.isSelect = istrue;
 	}
 	public Boolean getSelectMode() {

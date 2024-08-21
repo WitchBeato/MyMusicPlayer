@@ -2,13 +2,18 @@ package staticinfo;
 
 import java.io.File;
 
+import javax.swing.ImageIcon;
+
+import net.coobird.thumbnailator.util.exif.IfdStructure;
 import userUI.information.Settings;
 
 public class Dtr {
 	/* this method make us reach directories more easily,
 	 * maybe you can see legacy version as Imagedtr 
 	 */
-	private final static String local = System.getProperty("user.dir") + "\\project management";
+	
+	private final static String local = StaticNames.local;
+	public final static ImageIcon logo = new ImageIcon(Dtr.getImage("Musicicon.png"));
 	private final static String imageDirectory = "\\img\\";
 	private final static String dataDirectory = "\\data\\";
 	/*

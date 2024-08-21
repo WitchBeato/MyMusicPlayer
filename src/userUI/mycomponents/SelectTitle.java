@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 
@@ -34,6 +35,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.SystemColor;
 
 public class SelectTitle extends JPanel {
 
@@ -74,13 +76,12 @@ public class SelectTitle extends JPanel {
 		lbl_Photo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ClickedRight(e);
+
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()) turnToSelectMode();
-					if(e.getClickCount() == 2) {
-						playMusic(title.getDirectory());
-					}
 				}
+				ClickedLeftButton(e);
+				ClickedRight(e);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -94,10 +95,11 @@ public class SelectTitle extends JPanel {
 			}
 		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_Photo.setBounds(30, 0, 76,95);
+		lbl_Photo.setBounds(0, 0, 127,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
 		
 		pnl_Delete = new JLayeredPane();
+		lpnl_Photo.setLayer(pnl_Delete, 1);
 		pnl_Delete.setBounds(0, 0, 20, 20);
 		lpnl_Photo.add(pnl_Delete);
 		pnl_Delete.setLayout(null);
@@ -109,7 +111,16 @@ public class SelectTitle extends JPanel {
 				btn_Delete.getSize().width,
 				btn_Delete.getSize().height));
 		
-		chb_Select = new JCheckBox("New check box");
+		chb_Select = new JCheckBox("New check box") {
+			@Override
+			public void setSelected(boolean b) {
+				// TODO Auto-generated method stub
+				super.setSelected(b);
+				setisSelected(chb_Select.isSelected());
+			}
+		};
+		chb_Select.setBackground(SystemColor.windowText);
+		chb_Select.setOpaque(false);
 		chb_Select.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -162,10 +173,9 @@ public class SelectTitle extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()) turnToSelectMode();
-					if(e.getClickCount() == 2) {
-						playMusic(title.getDirectory());
-					}
+					
 				}
+				ClickedLeftButton(e);
 				ClickedRight(e);
 			}
 		});
@@ -248,7 +258,9 @@ public class SelectTitle extends JPanel {
 	public void setButtonsVisible(Boolean buttonsVisible) {
 		if(isDirectory == null || selectmode) return;
 		if(!isDirectory) {
-			if(selectmode) chb_Select.setVisible(true);
+			if(selectmode) {
+				chb_Select.setVisible(true);
+			}
 			else btn_Delete.setVisible(buttonsVisible);
 		}
 		btn_Play.setVisible(buttonsVisible);
@@ -265,7 +277,6 @@ public class SelectTitle extends JPanel {
 			setisSelected(false);
 			chb_Select.setSelected(false);
 			chb_Select.setVisible(false);
-			btn_Delete.setVisible(true);
 			pnl_Delete.setSize(btn_Delete.getPreferredSize());
 		}
 		
@@ -317,13 +328,21 @@ public class SelectTitle extends JPanel {
 	menu.add(detail);
 	detail.addActionListener(ae -> openFeature());
 	if(!isDirectory) {
-		JMenuItem remove = new JMenuItem("Remove");
+		JMenuItem remove = new JMenuItem("remove");
 		remove.addActionListener(ae -> removeItem());
 		menu.add(remove);
 	}
-
-	menu.show(e.getComponent(), e.getX(), e.getY());
+	menu.show(me, e.getX(), e.getY());
    }
+	private void ClickedLeftButton(MouseEvent e) {
+	     if(!SwingUtilities.isLeftMouseButton(e)) return;
+	     if(selectmode) {
+	    	 chb_Select.setSelected(!chb_Select.isSelected());
+	     }
+	     else if(e.getClickCount() == 2) {
+	    	 playMusic(title.getDirectory());			
+		}
+	}
     private void openFeature() {
 		AddMusic addmusic = parent.getMainFrame().getAddpanel();
 		if(addmusic != null) {
@@ -349,25 +368,32 @@ public class SelectTitle extends JPanel {
     	parent.repaint();
     }
     private void setisSelected(Boolean isSelected) {
+    	    setSelectedValue(isSelected);
+    	   	
+    }
+    private void setSelectedValue(Boolean isIncrease) {
     	MainFrame frame =parent.getFrame();
-    	   	int selected = frame.getSelectedValue();
-        	if(isSelected) selected++;
-        	else selected--;
-        	if(selected <0) selected = 0;
-        	frame.setSelectedValue(selected);
-        	
-        
-    	
+    	int selected = frame.getSelectedValue();
+    	if(isIncrease) selected++;
+    	else selected--;
+    	if(selected <0) selected = 0;
+    	frame.setSelectedValue(selected);
     }
     private void turnToSelectMode() {
     	setButtonsVisible(false);
-    	setisSelected(true);
-    	chb_Select.setSelected(true);
     	if(parent.getSelectMode()) {
     		setisSelected(false);
     		return;
     		
     	}
     	parent.setSelectMode(true);
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+		    	chb_Select.setSelected(true);
+		    	setSelectedValue(false);
+			}
+		});
     }
 }

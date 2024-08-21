@@ -128,6 +128,7 @@ public class AddMusic extends JFrame {
 		this.setSize(new Dimension(this.getWidth(),this.getHeight()-100));
 	}
 	private void init() {
+		this.setIconImage(Dtr.logo.getImage());
 		setResizable(false);
 		Font font = new Font("Verdana", Font.BOLD, 16);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

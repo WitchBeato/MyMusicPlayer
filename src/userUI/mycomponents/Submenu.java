@@ -22,6 +22,7 @@ import backend.AddtoMusiclist;
 import backend.MusicPlayer;
 import backend.Photoeditor;
 import backend.StringEditor;
+import staticinfo.Dtr;
 import staticinfo.Imagedtr;
 import staticinfo.MenuItemlist;
 import staticinfo.Mycolors;
@@ -62,18 +63,21 @@ public class Submenu extends JPanel {
 		this.greatparent = greatparent;
 		player = greatparent.getPlayer();
 		String name = null;
-		ImageIcon icon = null;
+		String icon = null;
 		if(directory == null) {
 			name = list.toString();
-			icon = new ImageIcon(Imagedtr.playlist);
+			icon = Dtr.getImage("Playlist.png");
 			btn_Add.setVisible(true);
 		}
 		else {
 			name = directory;
-			icon = new ImageIcon(Imagedtr.folder);
+			icon = Dtr.getImage("folder.png");
 			btn_Add.setVisible(false);
 		}
-		lbl_Image.setIcon(icon);
+		lbl_Image.setIcon(Photoeditor.photoScaleImage(
+				icon, 
+				50, 
+				50));
 		lbl_Text.setText(name);
 	}
 	public Submenu(String text) {
@@ -200,7 +204,8 @@ public class Submenu extends JPanel {
 		if(!removeisSure()) return;
 		int ID = getID();
 		Musiclist musiclist = greatparent.getMusiclist(ID);
-		AddtoMusiclist.removefromMusiclist(musiclist, list);
+		if(ID == Musiclist.PLAYLIST)AddtoMusiclist.removefromMusiclist(musiclist, list);
+		else AddtoMusiclist.removefromDirectoryList(musiclist, directory);
 		removeInside();
 	}
 	private int getID() {
