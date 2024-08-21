@@ -48,3 +48,11 @@ alisonkorkmaz@gmail.com
 ## Version History
 
 * you can look at to commit changes for it
+<h1 align="center">ScreenShots</h1>
+
+![Ekran görüntüsü 2024-08-21 143851](https://github.com/user-attachments/assets/8e2cc8df-3ba8-41fb-9cc3-523f47fc5663)
+![Ekran görüntüsü 2024-08-21 143916](https://github.com/user-attachments/assets/9d49d519-617d-489f-8464-684c06cfd263)
+![Ekran görüntüsü 2024-08-21 143958](https://github.com/user-attachments/assets/2d665dfa-a35c-4325-88ab-a2df92f7cf8a)
+
+
+
