@@ -13,7 +13,7 @@ import staticinfo.Dtr;
 import staticinfo.StaticNames;
 
 public class Settings {
-	public static Boolean DEBUG_MODE = true;
+	public static Boolean DEBUG_MODE = false;
 	private Musiclist musiclist[] = new Musiclist[2];
 	private Playlist allMusic = new Playlist("All Musics", -1) {
 		@Override

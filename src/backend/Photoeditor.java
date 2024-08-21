@@ -18,6 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import net.coobird.thumbnailator.*;
 import net.coobird.thumbnailator.makers.FixedSizeThumbnailMaker;
@@ -34,7 +36,15 @@ public class Photoeditor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Image scaledImage = originalImage.getScaledInstance(widht, height, Image.SCALE_SMOOTH);
+		Image scaledImage = null;
+		try {
+			 scaledImage = originalImage.getScaledInstance(widht, height, Image.SCALE_SMOOTH);
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, directory + " is missing, program will close himself");
+			System.exit(1);
+		}
+		
 		Resizer resizer = DefaultResizerFactory.getInstance().getResizer(
 				  new Dimension(originalImage.getWidth(), originalImage.getHeight()), 
 				  new Dimension(widht, height));
