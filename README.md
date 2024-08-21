@@ -11,10 +11,10 @@ improve myself in java development.
 
 ## Features
 
-*Add, remove musics to playlist
-*read folders plays musics in it.
-*update information of music
-*select one than more music, move them to another playlist
+* Add, remove musics to playlist
+* read folders plays musics in it.
+* update information of music
+* select one than more music, move them to another playlist
 
 ## Getting Started
 
@@ -33,11 +33,11 @@ improve myself in java development.
 
 ### Executing program
 
-*download release version and put files in one directory
-*run musicplayer.exe
+* download release version and put files in one directory
+* run musicplayer.exe
 
 
-## Contanc informations
+## Contact informations
 
 Discord-Goldenwitchbeatorice
 
