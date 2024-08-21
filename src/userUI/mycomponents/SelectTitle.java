@@ -93,10 +93,11 @@ public class SelectTitle extends JPanel {
 			}
 		});
 		lbl_Photo.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_Photo.setBounds(30, 0, 76,95);
+		lbl_Photo.setBounds(0, 0, 127,95);
 		lpnl_Photo.add(lbl_Photo, JLayeredPane.DEFAULT_LAYER);
 		
 		pnl_Delete = new JLayeredPane();
+		lpnl_Photo.setLayer(pnl_Delete, 1);
 		pnl_Delete.setBounds(0, 0, 20, 20);
 		lpnl_Photo.add(pnl_Delete);
 		pnl_Delete.setLayout(null);
@@ -253,7 +254,9 @@ public class SelectTitle extends JPanel {
 	public void setButtonsVisible(Boolean buttonsVisible) {
 		if(isDirectory == null || selectmode) return;
 		if(!isDirectory) {
-			if(selectmode) chb_Select.setVisible(true);
+			if(selectmode) {
+				chb_Select.setVisible(true);
+			}
 			else btn_Delete.setVisible(buttonsVisible);
 		}
 		btn_Play.setVisible(buttonsVisible);
@@ -270,7 +273,6 @@ public class SelectTitle extends JPanel {
 			setisSelected(false);
 			chb_Select.setSelected(false);
 			chb_Select.setVisible(false);
-			btn_Delete.setVisible(true);
 			pnl_Delete.setSize(btn_Delete.getPreferredSize());
 		}
 		
@@ -322,7 +324,7 @@ public class SelectTitle extends JPanel {
 	menu.add(detail);
 	detail.addActionListener(ae -> openFeature());
 	if(!isDirectory) {
-		JMenuItem remove = new JMenuItem("Remove");
+		JMenuItem remove = new JMenuItem("remove");
 		remove.addActionListener(ae -> removeItem());
 		menu.add(remove);
 	}
