@@ -3,7 +3,7 @@ package staticinfo;
 import java.io.File;
 
 public class Imagedtr {
-	private static String local = System.getProperty("user.dir") + "\\project management\\img\\";
+	private static String local = StaticNames.local+"\\img\\";
 	static public String logo = local+ "logo.png";
 	static public String sound = local+ "sound.png", soundlvl1 = local+"sound+.png", 
 			soundlvl2 = local+"sound++.png",

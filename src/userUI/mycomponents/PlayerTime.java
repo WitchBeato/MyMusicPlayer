@@ -29,12 +29,14 @@ public class PlayerTime extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	private Boolean isMistake = false;
+	private Boolean isTimeChanging = false;
 	private JProgressBar pb_Time;
 	private JSlider sb_Time;
 	private Boolean isPlay;
 	private int prevValue = 0;
 	private Playerpanel mother;
+
+	private JLayeredPane lpnl_Content;
 	public PlayerTime(Playerpanel mother) {
 		this.mother = mother;
 		init();
@@ -42,7 +44,7 @@ public class PlayerTime extends JPanel {
 	private void init() {
 		setLayout(new BorderLayout(0, 0));
 		
-		JLayeredPane lpnl_Content = new JLayeredPane();
+		lpnl_Content = new JLayeredPane();
 		add(lpnl_Content, BorderLayout.CENTER);
 		SpringLayout sl_lpnl_Content = new SpringLayout();
 		lpnl_Content.setLayout(sl_lpnl_Content);
@@ -54,12 +56,19 @@ public class PlayerTime extends JPanel {
 				JSlider bar = (JSlider)e.getSource();
 				int oldvalue = sb_Time.getValue();
 				if(!bar.getValueIsAdjusting()) {
-					if(oldvalue == sb_Time.getValue()) {
-						isMistake = true;
-					}
-					valueChangedbyHand(bar.getValue());
-					mother.setisplay(false);
+					SwingUtilities.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							valueChangedbyHand(bar.getValue());
+						}
+					});
+
+					mother.setisplay(true);
+					setIsTimeChanging(false);
 				}
+				
 
 			}
 			@Override
@@ -69,7 +78,7 @@ public class PlayerTime extends JPanel {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-
+						
 						
 					}
 				});
@@ -77,14 +86,7 @@ public class PlayerTime extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if(sb_Time.getValueIsAdjusting()) {
-					if(!isMistake) {
-						mother.setisplay(true);
-					}
-					else {
-						isMistake = false;
-					}
-				}
+				sb_Time.setValueIsAdjusting(true);
 				super.mouseDragged(e);
 			}
 		});
@@ -137,22 +139,28 @@ public class PlayerTime extends JPanel {
 	}
 	private void valueChangedbyHand(int value) {
 		if(mother == null) return;
-		if(isMistake) {
-			isMistake = false;
-			return;
-		}
 		MusicPlayer player = mother.getPlayer();
 		if(player == null) return;
 		Timer timer = mother.getTimer();
 		mother.closeMusic();
-		try {
-			player.play(player.getInfo(), value);
-		} catch (NullPointerException e) {
-			// TODO: handle exception
-			return;
-		}
+		player.play(player.getInfo(), value);
 		mother.setCurrent(value);
-		mother.setisplay(true);
+		mother.setisplay(false);
 		//mother.setTimer();
+	}
+	@Override
+	public void setBackground(Color bg) {
+		// TODO Auto-generated method stub
+		super.setBackground(bg);
+		if(pb_Time == null) return;
+		pb_Time.setBackground(bg);
+		sb_Time.setBackground(bg);
+		lpnl_Content.setBackground(bg);
+	}
+	public Boolean getIsTimeChanging() {
+		return isTimeChanging;
+	}
+	public void setIsTimeChanging(Boolean isTimeChanging) {
+		this.isTimeChanging = isTimeChanging;
 	}
 }

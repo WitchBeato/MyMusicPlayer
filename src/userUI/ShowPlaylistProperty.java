@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import staticinfo.Dtr;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
 import userUI.mycomponents.Mybutton;
@@ -76,6 +77,7 @@ public class ShowPlaylistProperty extends JFrame {
 		init();
 	}
 	private void init() {
+		this.setIconImage(Dtr.logo.getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 239);
 		contentPane = new JPanel();

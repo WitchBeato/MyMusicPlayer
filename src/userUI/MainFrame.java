@@ -2,6 +2,7 @@ package userUI;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,6 +10,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 
 import backend.MusicPlayer;
+import staticinfo.Dtr;
 import staticinfo.Mycolors;
 import staticinfo.PlayerMessages;
 import userUI.information.Musicinfo;
@@ -52,6 +54,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					System.setProperty("sun.java2d.uiScale", "1.0");
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -65,6 +68,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		this.setIconImage(Dtr.logo.getImage());
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -78,7 +82,7 @@ public class MainFrame extends JFrame {
 		setPlayer(new MusicPlayer());
 		setTitle("MymusicPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 510);
+		setBounds(100, 100, 900, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -226,6 +230,10 @@ public class MainFrame extends JFrame {
 		if(id < 0 || id == musicpanel.getListSize()) return false;
 		if(musicpanel.getInfo(id) != null) return true;
 		else return false;
+	}
+	public int getMusicListSize() {
+		Musicpanel musicpanel = getMusicList();
+		return musicpanel.getListSize();
 	}
 	public void setPrevEnabled(Boolean isActive) {
 		pnl_Player.setPrevVisibility(isActive);

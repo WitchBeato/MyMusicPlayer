@@ -8,6 +8,7 @@ import staticinfo.PlaylistComparators;
 import userUI.MainFrame;
 import userUI.information.Musicinfo;
 import userUI.information.Playlist;
+import userUI.information.Settings;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -138,7 +139,7 @@ public class ListMusicPanel extends JLayeredPane {
 				//title.debugMessage();
 				title.setSelectMode(isSelectMode);
 				title.repaint();
-				System.out.println(title.getSelectMode());
+				if(Settings.DEBUG_MODE)System.out.println(title.getSelectMode());
 			}
 		}
 	}

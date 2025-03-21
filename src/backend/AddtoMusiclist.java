@@ -20,6 +20,9 @@ public class AddtoMusiclist {
 			removePlaylist(musiclist, (Playlist)playlistorText);
 		}
 	}
+	public static void removefromDirectoryList(Musiclist musiclist,String directory) {
+		musiclist.removeDirectorylist(directory);
+	}
 	public static String addMusicfromDirectory(Playlist playlist, String directory) {
 		File files[] = readAllFiles(directory);
 		int size = 0;
